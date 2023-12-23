@@ -5,7 +5,7 @@ import pygame
 pygame.init()
 width = 800
 height = 600
-map_width = 3500
+map_width = 3200
 map_height = 600
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -88,11 +88,19 @@ class Player(pygame.sprite.Sprite):
                 enemy_sample.rect.x -=3
 
         elif direction == "l":
-            main_page_rect.x +=3
-            screen.blit(main_page,(main_page_rect.x,main_page_rect.y))
-            all_sprites.draw(screen)
-            for enemy_sample in enemy_sample_list:
-                enemy_sample.rect.x +=3
+            if not main_page_rect.x>150:
+                main_page_rect.x +=3
+                screen.blit(main_page,(main_page_rect.x,main_page_rect.y))
+                all_sprites.draw(screen)
+                for enemy_sample in enemy_sample_list:
+                    enemy_sample.rect.x +=3
+            else:
+                main_page_rect.x = 150
+                x = 0
+                for enemy_sample in enemy_sample_list:
+                    enemy_sample.rect.x = enemy_x_position[x]+150
+                    x += 1
+        
 class enemy(pygame.sprite.Sprite):
     def __init__(self,image):
         pygame.sprite.Sprite.__init__(self)
