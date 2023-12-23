@@ -72,7 +72,9 @@ class Player(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image = image
         self.rect = self.image.get_rect()
+        self.rect.x = 350
         self.rect.y = 490
+
 
     def update(self,direction):
         global move_status
@@ -188,6 +190,7 @@ choosing = False
 First_run = False
 money = 1000
 enemy_list = []
+enemy_sample_list = []
 pykey = {
     1:49,
     2:50,
@@ -252,7 +255,7 @@ while True:
                 choosing_mode_entering()
 
             elif event.key == pygame.K_f:
-                try:
+                # try:
                     text = f.render("Text",True,(255,0,0),(0,0,0))
                     total_cost = num_list[0]*80 + num_list[1]*100
                     if total_cost <=400:
@@ -288,10 +291,16 @@ while True:
                         else:
                             screen.blit(dover,(350,490))
                         for enemy_name in enemy_list:
-                            enemy_sample = enemy()
+                            if enemy_name == "enemy_1":
+                                enemy_sample = enemy(enemy_1)
+                            else:
+                                enemy_sample = enemy(enemy_2)
+
                             for x_position in enemy_x_position:
-                                enemy_sample.rect.x = enemy_x_position
+                                enemy_sample.rect.x = x_position
                             enemy_sample.name = enemy_name
+                            enemy_sample_list.append(enemy_sample)
+
                                                  
                                 
                     else:
@@ -299,8 +308,8 @@ while True:
                         text = f.render("請輸入所需不超過1000金幣的兵種構成，火鴿子:$80,玄者:$100（規則在ui菜單中）",True,(0,0,50))
                         text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 1.5))
                         screen.blit(text,(0,height-60))
-                except:
-                    print(Exception)
+                # except:
+                #     print(Exception)
         # 通過點擊圖標進入【待完成】
         # if event.type == pygame.MOUSEBUTTONDOWN and start_button.collidepoint(event.pos) and choosing == False and main_page_exists == False:
         #     choosing_mode_entering()
@@ -382,8 +391,12 @@ while True:
                 screen.blit(text,(0,y_index))
                 screen.blit(mini_XUANer,(50,y_index))
                 screen.blit(HP,(100,y_index,50,100))
-            for enemy in enemy_list:
-                pass
+            for enemy_object in enemy_sample_list:
+                if enemy_object.name == "enemy_1":
+                    screen.blit(enemy_1,(enemy_object.rect.x,enemy_object.rect.y))
+                    print(enemy_object.rect.x,enemy_object.rect.y)
+                if enemy_object.name == "enemy_2":
+                    screen.blit(enemy_2,(enemy_object.rect.x,enemy_object.rect.y))
     pygame.display.flip() 
 
 
