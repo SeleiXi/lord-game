@@ -84,11 +84,15 @@ class Player(pygame.sprite.Sprite):
             main_page_rect.x -=3
             screen.blit(main_page,(main_page_rect.x,main_page_rect.y))
             all_sprites.draw(screen)
+            for enemy_sample in enemy_sample_list:
+                enemy_sample.rect.x -=3
+
         elif direction == "l":
             main_page_rect.x +=3
             screen.blit(main_page,(main_page_rect.x,main_page_rect.y))
             all_sprites.draw(screen)
-
+            for enemy_sample in enemy_sample_list:
+                enemy_sample.rect.x +=3
 class enemy(pygame.sprite.Sprite):
     def __init__(self,image):
         pygame.sprite.Sprite.__init__(self)
@@ -400,6 +404,8 @@ while True:
                     screen.blit(enemy_1,(enemy_object.rect.x,enemy_object.rect.y))
                 if enemy_object.name == "enemy_2":
                     screen.blit(enemy_2,(enemy_object.rect.x,enemy_object.rect.y))
+
+                # 想法：enemy也update，按照全圖坐標右鍵就-1，左鍵+1，
     pygame.display.flip() 
 
 
