@@ -24,9 +24,9 @@ class window():
     def __init__(self) -> None:
         self.ui = QUiLoader().load("menu2.ui")
         x = self.ui
-        self.ui.pushButtonOringinal.clicked.connect(self.oringinal_version)
+        # self.ui.pushButtonOringinal.clicked.connect(self.oringinal_version)
         self.ui.pushButtonChallengeMode.clicked.connect(self.challenge_mode)
-        self.ui.pushButtonSpeedMode.clicked.connect(self.speed_mode)
+        # self.ui.pushButtonSpeedMode.clicked.connect(self.speed_mode)
         signal_object.set_value.connect(self.set_value_func)
         # x.action123.triggered.connect(self.menuClick)
         i = "Normal"
@@ -36,15 +36,15 @@ class window():
         i +=1
         # self.ui.statusbar.showMessage(f'Status = {i}')
         print("Clicked!")        
-    def oringinal_version(self):
-        def func1():
-            import Oringinal_Version
-        signal_object.set_value.emit()
-        thread = Thread(target=func1)
+    # def oringinal_version(self):
+        # def func1():
+        #     import Oringinal_Version
+        # signal_object.set_value.emit()
+        # thread = Thread(target=func1)
         
-        thread.start()
+        # thread.start()
         
-        self.ui.progressBar.setValue(100)
+        # self.ui.progressBar.setValue(100)
         # self.ui.label.setEnabled(False)
         # self.ui.pushButton_2.setEnabled(False)
     def set_value_func(self):
@@ -57,12 +57,12 @@ class window():
         self.ui.progressBar.setValue(100)             
         # self.ui.label.setEnabled(False)
         # self.ui.pushButton_2.setEnabled(False)
-    def speed_mode(self):
-        def func1():
-            import Speed_mode
-        thread = Thread(target=func1)
-        thread.start()
-        self.ui.progressBar.setValue(100)
+    # def speed_mode(self):
+    #     def func1():
+    #         import Speed_mode
+    #     thread = Thread(target=func1)
+    #     thread.start()
+    #     self.ui.progressBar.setValue(100)
 app = QApplication([])
 stats = window()
 stats.ui.show()

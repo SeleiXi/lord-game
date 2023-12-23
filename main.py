@@ -155,11 +155,13 @@ class InputBox:
         pygame.draw.rect(screen, self.color, self.boxBody, 2)
 
 
-def fight():
-    if enemy_list[0] == "enemy_1" and 
-    enemy_x_position.pop(0)
-    enemy_list.pop(0)
-    enemy_sample_list.pop(0)
+# def fight():
+#     if enemy_list[0] == "enemy_1":
+#         if now == "XUANer":
+#         elif now == "dover":
+#     enemy_x_position.pop(0)
+#     enemy_list.pop(0)
+#     enemy_sample_list.pop(0)
 
 def watching_mode():
     # 需改 ， 之後改為遠程放大一下整個地圖
@@ -364,11 +366,14 @@ while True:
                 for key,value in character_dict.items():
                     if pykey[character_dict[key]["int_num"]] == event.key:
                         all_sprites = pygame.sprite.Group()
+                        now_num = pykey[character_dict[key]["int_num"]]
                         if key.startswith("A"):
                             player = Player(dover)
                             all_sprites.add(player)
                             all_sprites.update('r')
                             all_sprites.update('l')
+                            now = "dover"
+                            
 
                             break
                         elif key.startswith("B"):
@@ -376,6 +381,7 @@ while True:
                             all_sprites.add(player)
                             all_sprites.update('r')
                             all_sprites.update('l')
+                            now = "Xuaner"
                             break
                 
 
