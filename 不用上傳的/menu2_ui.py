@@ -26,8 +26,12 @@ class Ui_MainWindow(object):
 "QMainWindow{\n"
 "background-color:white\n"
 "}")
-        self.actionQQ1632845225 = QAction(MainWindow)
-        self.actionQQ1632845225.setObjectName(u"actionQQ1632845225")
+        self.actionQQ = QAction(MainWindow)
+        self.actionQQ.setObjectName(u"actionQQ")
+        self.actionDiscord = QAction(MainWindow)
+        self.actionDiscord.setObjectName(u"actionDiscord")
+        self.actionEmail = QAction(MainWindow)
+        self.actionEmail.setObjectName(u"actionEmail")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout = QVBoxLayout(self.centralwidget)
@@ -139,19 +143,23 @@ class Ui_MainWindow(object):
 
         self.menubar.addAction(self.menuMade_By_SeleiXI.menuAction())
         self.menuMade_By_SeleiXI.addAction(self.menu.menuAction())
-        self.menu.addAction(self.actionQQ1632845225)
+        self.menu.addAction(self.actionDiscord)
+        self.menu.addAction(self.actionEmail)
+        self.menu.addAction(self.actionQQ)
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"\u7075\u9053\u6e90\u5c0a", None))
-        self.actionQQ1632845225.setText(QCoreApplication.translate("MainWindow", u"QQ1632845225", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"\u9748\u9053\u6e90\u5c0a", None))
+        self.actionQQ.setText(QCoreApplication.translate("MainWindow", u"QQ:1632845225", None))
+        self.actionDiscord.setText(QCoreApplication.translate("MainWindow", u"Discord:SeleiXi", None))
+        self.actionEmail.setText(QCoreApplication.translate("MainWindow", u"Email:bzhanthresh@gmail.com", None))
         self.label.setText("")
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("MainWindow", u"Home Page", None))
         self.textBrowser.setDocumentTitle("")
@@ -166,7 +174,7 @@ class Ui_MainWindow(object):
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:400;\">\u4f46\u5728\u9748\u754c\u5929\u5730\u4e2d,\u4f60\u53ef\u4ee5\u81e8\u6642\u4ee580\u9748\u77f3\u5f9e\u6e90\u754c\u9818\u57df\u53ec\u559a\u4e00\u4f4d\u706b\u9d3f\u5b50(\u8840\u91cf\u70ba80)\u4ee5\u53ca\u4ee5100\u9748\u77f3\u96c7\u50ad\u4e00\u4f4d\u4f86\u81ea\u661f\u9748\u65cf\u7684\u7384\u8005(\u8840\u91cf\u70ba100)\u3002</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:400;"
                         "\">\u5728\u9b54\u708e\u68ee\u5de1\u908f\u5b88\u885b\u7684\u901a\u5e38\u53ea\u6709\u5996\u5f2d\u7334\u8207\u9583\u96fb\u7329,\u5996\u5f2d\u7334\u751f\u6027\u6015\u706b,\u800c\u661f\u9748\u65cf\u7684\u6230\u58eb\u5011\u64c1\u6709\u9748\u80fd\u8b77\u7532\u800c\u7121\u61fc\u9583\u96fb\u3002</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:400;\">\u6545\u6b64\u706b\u9d3f\u5b50\u53ea\u9700\u6d88\u801730\u8840\u4fbf\u53ef\u64ca\u6bba\u5996\u5f2d\u7334,\u4f46\u7384\u8005\u5247\u9700\u6d88\u801750\u8840\u3002\u7384\u8005\u6d88\u801730\u8840\u53ef\u64ca\u6bba\u9583\u96fb\u7329,\u800c\u706b\u9d3f\u5b50\u970050\u8840\u3002</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:400;\">\u6545\u6b64\u706b\u9d3f\u5b50\u53ea\u9700\u6d88\u801720\u8840\u4fbf\u53ef\u64ca\u6bba\u5996\u5f2d\u7334,\u4f46\u7384\u8005\u5247\u9700\u6d88\u801780\u8840\u3002\u7384\u8005\u6d88\u801720\u8840\u53ef\u64ca\u6bba\u9583\u96fb\u7329,\u800c\u706b\u9d3f\u5b50\u970080\u8840\u3002</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:400;\">\u5728\u5168\u5c40\u904a\u6232\u4e2d,\u4f60\u64c1\u6709\u4e00\u6b21\u6a5f\u6703\u4ee5\u5929"
                         "\u773c\u8996\u5bdf\u9b54\u708e\u68ee\u4e2d\u7684\u9748\u7378\u5206\u5e03\u3002</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:400;\">\u4ee5\u53ca\u4f60\u64c1\u6709\u7121\u6578\u6b21\u6a5f\u6703,\u4ee5\u9748\u77f3\u9060\u7a0b\u6cbb\u6108\u6230\u9b25\u5f8c\u7684\u706b\u9d3f\u5b50\u53ca\u7384\u8005\u3002\u9748\u77f3\u8207\u751f\u547d\u7684\u514c\u63db\u6bd4\u4f8b\u70ba1:1</span></p>\n"
@@ -182,7 +190,7 @@ class Ui_MainWindow(object):
         self.pushButtonOringinal.setText(QCoreApplication.translate("MainWindow", u"\u7121\u5716\u5f62\u754c\u9762\u7248\u672c", None))
         self.pushButtonChallengeMode.setText(QCoreApplication.translate("MainWindow", u"\u6709\u5716\u5f62\u754c\u9762\u7248\u672c", None))
         self.pushButtonSpeedMode.setText(QCoreApplication.translate("MainWindow", u"Speedrun Mode", None))
-        self.menuMade_By_SeleiXI.setTitle(QCoreApplication.translate("MainWindow", u"Made By SeleiXI", None))
-        self.menu.setTitle(QCoreApplication.translate("MainWindow", u"\u8054\u7cfb\u4f5c\u8005", None))
+        self.menuMade_By_SeleiXI.setTitle(QCoreApplication.translate("MainWindow", u"Made By SeleiXi", None))
+        self.menu.setTitle(QCoreApplication.translate("MainWindow", u"\u806f\u7e6b\u4f5c\u8005", None))
     # retranslateUi
 
