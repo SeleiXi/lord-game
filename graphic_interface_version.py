@@ -15,7 +15,7 @@ start_menu = pygame.image.load("icons/start_menu.png").convert()
 pygame.display.set_icon(icon)
 pygame.display.set_caption('灵道源尊')
 # f = pygame.font.SysFont("",30)
-f = pygame.font.Font('Fonts/MiSans-Heavy.ttf',30)
+f = pygame.font.Font('Fonts/MiSans-Heavy.ttf',40)
 f_small = pygame.font.Font('Fonts/MiSans-Heavy.ttf',20)
 screen.blit(start_menu,(0,0))
 import time
@@ -53,9 +53,9 @@ def cure_interface():
     stats = Stats()
     stats.ui.show()
     app.exec_()
-from threading import Thread
-thread = Thread(target=cure_interface)
-thread.start()
+# from threading import Thread
+# thread = Thread(target=cure_interface)
+# thread.start()
 
 
 
@@ -132,10 +132,11 @@ def watching_mode():
     # 需改 ， 之後改為遠程放大一下整個地圖
     global frequency,main_page_exists,all_sprites,num_list,choosing,choosing_start
     # text = f_small.render(str(enemy_list),True,(0,0,255))
-    text = f.render(str(enemy_list),True,(0,0,255))
+    text = f.render(str(enemy_list),True,(0,100,255))
+    text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 2))
     # 需改
-    screen.blit(text,(0,0))
-    if main_page_exists == True:
+    screen.blit(text,(0,height-30))
+    if main_page_exists == True:                                 
         pygame.display.flip()
         time.sleep(5)
         all_sprites.update('r')
@@ -182,6 +183,7 @@ for random_enemy_frequency in range(7):
         enemy_list.append("妖弭猴")
     else:
         enemy_list.append("閃電猩")
+
 Watching_chance = 1
 last_num = 0
 last_y_index = 0
@@ -199,9 +201,16 @@ while True:
             inputbox.dealEvent(event)
             inputbox.draw(screen)
             inputbox2.dealEvent(event)
-            inputbox2.draw(screen)
+            inputbox2.draw(screen) 
+            text = f.render("輸入兵種數目並輸入enter(注意需要從左到右執行),輸入S重置界面",True,(0,0,50))
+            text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // (1.5)))
+            screen.blit(text,(0,0))
+            text = f.render("輸入W進入觀察模式(檢查敵人構成),輸入F即可進入遊戲(以英文輸入法)",True,(0,0,50))
+            text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 1.5))
+            screen.blit(text,(0,25))
             # 进入选兵页面
         if event.type == pygame.KEYDOWN:
+            
             if event.key == pygame.K_w:
                 if Watching_chance == 1 and choosing_start == True:
                     watching_mode()
@@ -217,7 +226,7 @@ while True:
                 choosing = True
                 choosing_start = True
                 
-                print("在输入界面记得先enter左侧输入框,以及要开英文输入法")
+                print("在输入界面輸入兵種數目後，由左到右點擊輸入框然後輸入enter,以及要开英文输入法,輸入F即可進入遊戲")
             elif event.key == pygame.K_f:
                 try:
                     text = f.render("Text",True,(255,0,0),(0,0,0))
@@ -257,6 +266,9 @@ while True:
                         # tiaozhuan
                     else:
                         event.key = pygame.K_s
+                        text = f.render("請輸入所需不超過1000金幣的兵種構成，火鴿子:$80,玄者:$100（規則在ui菜單中）",True,(0,0,50))
+                        text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 1.5))
+                        screen.blit(text,(0,height-60))
                 except:
                     print(Exception)
         # 进入主程序
