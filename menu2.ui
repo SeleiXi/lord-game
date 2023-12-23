@@ -114,27 +114,6 @@ p, li { white-space: pre-wrap; }
        <number>30</number>
       </property>
       <item>
-       <widget class="QPushButton" name="pushButtonOringinal">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="font">
-         <font>
-          <family>MiSans Heavy</family>
-          <weight>75</weight>
-          <italic>false</italic>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>無圖形界面版本</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QPushButton" name="pushButtonChallengeMode">
         <property name="enabled">
          <bool>true</bool>
@@ -154,38 +133,11 @@ p, li { white-space: pre-wrap; }
          </font>
         </property>
         <property name="text">
-         <string>有圖形界面版本</string>
+         <string>遊戲啟動</string>
         </property>
         <property name="icon">
          <iconset>
           <normaloff>../../../封面/chigua.png</normaloff>../../../封面/chigua.png</iconset>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButtonSpeedMode">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="font">
-         <font>
-          <family>MiSans Heavy</family>
-          <weight>75</weight>
-          <italic>false</italic>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Speedrun Mode</string>
-        </property>
-        <property name="autoDefault">
-         <bool>false</bool>
-        </property>
-        <property name="flat">
-         <bool>false</bool>
         </property>
        </widget>
       </item>

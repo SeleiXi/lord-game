@@ -155,6 +155,11 @@ class InputBox:
         pygame.draw.rect(screen, self.color, self.boxBody, 2)
 
 
+def fight():
+    if enemy_list[0] == "enemy_1" and 
+    enemy_x_position.pop(0)
+    enemy_list.pop(0)
+    enemy_sample_list.pop(0)
 
 def watching_mode():
     # 需改 ， 之後改為遠程放大一下整個地圖
@@ -412,8 +417,10 @@ while True:
                     screen.blit(enemy_1,(enemy_object.rect.x,enemy_object.rect.y))
                 if enemy_object.name == "enemy_2":
                     screen.blit(enemy_2,(enemy_object.rect.x,enemy_object.rect.y))
-
-                # 想法：enemy也update，按照全圖坐標右鍵就-1，左鍵+1，
+        for enemy_position in enemy_x_position:
+            if abs(main_page_rect.x) >= enemy_position:
+                fight()
+                break
     pygame.display.flip() 
 
 
