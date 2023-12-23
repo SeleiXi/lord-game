@@ -1,4 +1,6 @@
 # 【待完成】 / # 需改
+# 不規範處：部分用駝峰命名法，部分變量如WHITE,XUANer不符合命名法，文件名如Menu不應該大寫，branch名字應該改為master，部分地方可以函數化，注釋加的不夠多，部分變量名意思模糊
+# 走前：加注釋
 
 import sys
 import pygame
@@ -155,13 +157,25 @@ class InputBox:
         pygame.draw.rect(screen, self.color, self.boxBody, 2)
 
 
-# def fight():
-#     if enemy_list[0] == "enemy_1":
-#         if now == "XUANer":
-#         elif now == "dover":
-#     enemy_x_position.pop(0)
-#     enemy_list.pop(0)
-#     enemy_sample_list.pop(0)
+def fight():
+    for key in character_dict:
+        if character_dict[key]["int_num"] == now_num:
+           object_num = key
+           break
+    # 在不同兵種遇到不同敵人時，HP減的程度（待做：把數額改為減去的圖標百分比）
+    if enemy_list[0] == "enemy_1":
+        if now == "XUANer":
+            character_dict[object_num]["HP"] = pygame.transform.scale(surface, (scaled_width-20%, scaled_height))
+        elif now == "dover":
+            character_dict[object_num]["HP"] -= 20
+    elif enemy_list[0] == "enemy_2":
+        if now == "XUANer":
+            character_dict[object_num]["HP"] -= 20
+        elif now == "dover":
+            character_dict[object_num]["HP"] -= 80
+    enemy_x_position.pop(0)
+    enemy_list.pop(0)
+    enemy_sample_list.pop(0)
 
 def watching_mode():
     # 需改 ， 之後改為遠程放大一下整個地圖
@@ -342,13 +356,16 @@ while True:
         if event.type == pygame.KEYDOWN and main_page_exists == True:
             if First_run == False:
                 all_sprites = pygame.sprite.Group()
+                now_num = 1
                 if dover_list == []:
                     player = Player(XUANer)
                     all_sprites.add(player)
+                    now = "XUANer"
                     # 此處需要Blit一個sprite
                 else:
                     player = Player(dover)
                     all_sprites.add(player)
+                    now = "dover"
                 First_run = True
             if event.key == pygame.K_F11:
                 if fullScreen == False:
@@ -381,7 +398,7 @@ while True:
                             all_sprites.add(player)
                             all_sprites.update('r')
                             all_sprites.update('l')
-                            now = "Xuaner"
+                            now = "XUANer"
                             break
                 
 
