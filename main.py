@@ -91,7 +91,7 @@ class enemy(pygame.sprite.Sprite):
         self.image = image
         self.rect = self.image.get_rect()
         self.rect.y = 490
-
+# 新增
 # 文本輸入框            
 class InputBox:
     def __init__(self, rect: pygame.Rect = pygame.Rect(100, 100, 140, 32)) -> None:
