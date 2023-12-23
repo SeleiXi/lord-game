@@ -10,8 +10,8 @@ i = 1
 shortcut = os.path.join(winshell.desktop(), "Lord_Game" + ".lnk") #设置lnk的目的路径
 now = os.getcwd()
 winshell.CreateShortcut(
-        Path=shortcut,   # lnk的路径
-        Target=f"{now}/run.exe", # 欲复制的目标文件路径
+        Path=shortcut,   # lnk的路徑
+        Target=f"{now}/run.exe", # 欲覆制的目標文件路徑
         Icon=(f"{now}/chigua.ico", 0), 
         Description="Lord_Game", #lnk的描述
         StartIn = now

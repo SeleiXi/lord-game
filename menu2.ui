@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>灵道源尊</string>
+   <string>靈道源尊</string>
   </property>
   <property name="windowIcon">
    <iconset>
@@ -29,7 +29,7 @@ background-color:white
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -83,7 +83,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:400;&quot;&gt;天元府遭到靈獸侵占後,府內四處狼藉,丫鬟與府主皆被拐去,囚禁在魔炎森深處。僅有靈王境界的你無力抵抗,&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:400;&quot;&gt;但在靈界天地中,你可以臨時以80靈石從源界領域召喚一位火鴿子(血量為80)以及以100靈石雇傭一位來自星靈族的玄者(血量為100)。&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:400;&quot;&gt;在魔炎森巡邏守衛的通常只有妖弭猴與閃電猩,妖弭猴生性怕火,而星靈族的戰士們擁有靈能護甲而無懼閃電。&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:400;&quot;&gt;故此火鴿子只需消耗30血便可擊殺妖弭猴,但玄者則需消耗50血。玄者消耗30血可擊殺閃電猩,而火鴿子需50血。&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:400;&quot;&gt;故此火鴿子只需消耗20血便可擊殺妖弭猴,但玄者則需消耗80血。玄者消耗20血可擊殺閃電猩,而火鴿子需80血。&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:400;&quot;&gt;在全局遊戲中,你擁有一次機會以天眼視察魔炎森中的靈獸分布。&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:400;&quot;&gt;以及你擁有無數次機會,以靈石遠程治愈戰鬥後的火鴿子及玄者。靈石與生命的兌換比例為1:1&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:400;&quot;&gt;你身上僅有400靈石,介於雇傭的友軍在戰鬥後皆會消失,試以最低的花銷擊敗魔炎森中的靈獸並拯救遭到俘虜的人們。&lt;/span&gt;&lt;/p&gt;
@@ -211,22 +211,34 @@ p, li { white-space: pre-wrap; }
    </property>
    <widget class="QMenu" name="menuMade_By_SeleiXI">
     <property name="title">
-     <string>Made By SeleiXI</string>
+     <string>Made By SeleiXi</string>
     </property>
     <widget class="QMenu" name="menu">
      <property name="title">
-      <string>联系作者</string>
+      <string>聯繫作者</string>
      </property>
-     <addaction name="actionQQ1632845225"/>
+     <addaction name="actionDiscord"/>
+     <addaction name="actionEmail"/>
+     <addaction name="actionQQ"/>
     </widget>
     <addaction name="menu"/>
    </widget>
    <addaction name="menuMade_By_SeleiXI"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionQQ1632845225">
+  <action name="actionQQ">
    <property name="text">
-    <string>QQ1632845225</string>
+    <string>QQ:1632845225</string>
+   </property>
+  </action>
+  <action name="actionDiscord">
+   <property name="text">
+    <string>Discord:SeleiXi</string>
+   </property>
+  </action>
+  <action name="actionEmail">
+   <property name="text">
+    <string>Email:bzhanthresh@gmail.com</string>
    </property>
   </action>
  </widget>

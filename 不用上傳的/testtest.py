@@ -2,7 +2,7 @@ from PySide2.QtWidgets import QApplication, QMessageBox
 from PySide2.QtUiTools import QUiLoader
 
 class Stats:
-    # 治疗面板
+    # 治療面板
     def __init__(self):
         self.ui = QUiLoader().load('cure.ui')
         self.ui.pushButton.clicked.connect(self.cure)

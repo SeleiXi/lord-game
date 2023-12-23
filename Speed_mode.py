@@ -25,7 +25,7 @@ class guard:
             cure_cost = Cho_guard[4:-1]+Cho_guard[-1]
             if self.fighting_ability ==0:
                 if int(cure_cost)<0:
-                    print("不可输入负数")
+                    print("不可輸入負數")
                 elif int(cure_cost) + self.HP <= 100:
                     self.HP += int(cure_cost)
                     return int(cure_cost)
@@ -33,7 +33,7 @@ class guard:
                     print("血量不可超出100")
             elif self.fighting_ability ==1:
                 if int(cure_cost)<0:
-                    print("不可输入负数")
+                    print("不可輸入負數")
                 elif int(cure_cost) + self.HP <= 120:
                     self.HP += int(cure_cost)
                     return int(cure_cost)
@@ -48,62 +48,62 @@ class guard:
         if self.fighting_ability == 0:
             guard_type = "弓箭手"
         else:
-            guard_type = "斧头兵"
+            guard_type = "斧頭兵"
         print(f'''
 士兵姓名：{self.name}
 士兵生命值：{self.HP}
-士兵类型：{guard_type}
+士兵類型：{guard_type}
 ''')
     def showname(self):
         return(self.name)
 import math
 def display_guard():
     if len(guard_dict) == 0:
-            print("士兵已耗尽，游戏失败！")
-            print(f"你完成的轮数为:{round}")
-            print(f"你的耗时为{math.ceil(time.time()-Start_time)}")
+            print("士兵已耗盡，遊戲失敗！")
+            print(f"你完成的輪數為:{round}")
+            print(f"你的耗時為{math.ceil(time.time()-Start_time)}")
             time.sleep(3)
             sys.exit()
     for GN,Guard in guard_dict.items():
         if Guard.fighting_ability == 0:
             guard_type = "弓箭手"
         else:
-            guard_type = "斧头兵"
-        print(f"你拥有的士兵有:{GN}({guard_type}) 血量尚存: {Guard.HP};")
+            guard_type = "斧頭兵"
+        print(f"你擁有的士兵有:{GN}({guard_type}) 血量尚存: {Guard.HP};")
         
-# 初始金额1000
+# 初始金額1000
 cost = 100000
 enemy_list = []
 
 
 eagle = 0
 wolf = 0
-def round_fight(FA,round_enemy): #FA=0 or 1 (弓箭手/斧头兵)
+def round_fight(FA,round_enemy): #FA=0 or 1 (弓箭手/斧頭兵)
     if FA == 0:
         eagle = 20
         wolf = 80
     elif FA ==1:
         eagle =80
         wolf=20
-    if round_enemy == "鹰妖":
+    if round_enemy == "鷹妖":
             fighting_army.change_FA(eagle)
-            print(f"{fighting_army.showname()}打赢了战斗！")
+            print(f"{fighting_army.showname()}打贏了戰鬥！")
             fighting_army.fight()
             fighting_army.ifdeath()
             fighting_army.change_FA(FA)
             display_guard()
 
-        # 弓箭手遇到鹰妖-80血
+        # 弓箭手遇到鷹妖-80血
     elif round_enemy == "狼妖":
         fighting_army.change_FA(wolf)
-        print(f"{fighting_army.showname()}打赢了战斗！")
+        print(f"{fighting_army.showname()}打贏了戰鬥！")
         fighting_army.fight()
         fighting_army.ifdeath()
         fighting_army.change_FA(FA)
         display_guard()
 AN = 0
 army_cost = 0
-# 自动列表名，士兵种类（0 or 1）,士兵数目
+# 自動列表名，士兵種類（0 or 1）,士兵數目
 def auto_name(auto_name_list,guard_type,army_num):
     global cost,guard_bow,guard_ax,guard_name,guard_list,guard_dict
     if guard_type == 0:
@@ -112,7 +112,7 @@ def auto_name(auto_name_list,guard_type,army_num):
         guard_bow += army_num
     elif guard_type ==1:
         army_cost =120
-        army_name = "斧头人"
+        army_name = "斧頭人"
         guard_ax += army_num
     for armys_name in auto_name_list[:army_num]:
         guard_list.append(f'{armys_name}({army_name})')
@@ -126,69 +126,69 @@ def round_time_calculate(now_round):
         if not now_round == round:
             break
     if time.time() - round_start > 5:
-        print(f"\n你完成的轮数为：{round}")
+        print(f"\n你完成的輪數為：{round}")
         time.sleep(20)
 
 # rules
 print("""
-欢迎来到领主游戏！
-你将会前往都城参选国王。但是路途上有7座森林，每座森林里面可能会碰到一个妖怪： 鹰妖 和 狼妖。
-所以你需要雇佣战士对付它们，可以雇佣 弓箭兵 或者 斧头兵
-弓箭兵、 斧头兵、 狼妖、鹰妖 具有如下特征
+歡迎來到領主遊戲！
+你將會前往都城參選國王。但是路途上有7座森林，每座森林里面可能會碰到一個妖怪： 鷹妖 和 狼妖。
+所以你需要雇傭戰士對付它們，可以雇傭 弓箭兵 或者 斧頭兵
+弓箭兵、 斧頭兵、 狼妖、鷹妖 具有如下特征
 
 弓箭兵：
 
-    雇佣价： 100 灵石
+    雇傭價： 100 靈石
     最大生命值： 100
-    杀伤力 
-        杀死鹰妖  ： 损耗生命值 20
-        杀死狼妖  :  损耗生命值 80
-斧头兵：
+    殺傷力 
+        殺死鷹妖  ： 損耗生命值 20
+        殺死狼妖  :  損耗生命值 80
+斧頭兵：
 
-    雇佣价： 120 灵石
+    雇傭價： 120 靈石
     最大生命值： 120
-    杀伤力 
-        杀死鹰妖  ： 损耗生命值 80
-        杀死狼妖  :  损耗生命值 20
+    殺傷力 
+        殺死鷹妖  ： 損耗生命值 80
+        殺死狼妖  :  損耗生命值 20
 
 
-你拥有 1000 灵石，你可以根据自己记忆的 妖怪种类和数量，选择 雇佣 多少个 弓箭兵 和 斧头兵。
+你擁有 1000 靈石，你可以根據自己記憶的 妖怪種類和數量，選擇 雇傭 多少個 弓箭兵 和 斧頭兵。
 
-每次通过森林后，玩家可以选择是否用灵石给 战士补养；
+每次通過森林後，玩家可以選擇是否用靈石給 戰士補養；
 
-如果选择补养，消耗1个灵石可以为生命值加1，但是不可能超过最大生命值
-
-
-这个游戏最后，一定要通过7座森林，才算通关，并且系统显示玩家剩余灵石。
-
-最后 剩余灵石 越多越好，越有机会当选国王。
+如果選擇補養，消耗1個靈石可以為生命值加1，但是不可能超過最大生命值
 
 
-若是所有己方士兵和所有敌人同时死亡，判定己方失败
+這個遊戲最後，一定要通過7座森林，才算通關，並且系統顯示玩家剩余靈石。
 
-通关评级分为【极其完美】 / 【完美】 / 【优秀】 / 【不错】 / 【一般】
+最後 剩余靈石 越多越好，越有機會當選國王。
 
-无限模式：你将只能选择一个兵来作战，每轮作战只有5秒时间进行。成绩将由在60秒内通过多少关为准则进行评分。
+
+若是所有己方士兵和所有敵人同時死亡，判定己方失敗
+
+通關評級分為【極其完美】 / 【完美】 / 【優秀】 / 【不錯】 / 【一般】
+
+無限模式：你將只能選擇一個兵來作戰，每輪作戰只有5秒時間進行。成績將由在60秒內通過多少關為準則進行評分。
 """)
 try:
-    input("\n\n\n阅读完成后请输入任意字符：")
+    input("\n\n\n閱讀完成後請輸入任意字符：")
 except:
     pass
-# 随机选择1-7关的敌人是什么类型的
+# 隨機選擇1-7關的敵人是什麽類型的
 for random_enemy_frequency in range(1000):
     x = random.randint(1,2)
     if x == 1:
-        enemy_list.append("鹰妖")
+        enemy_list.append("鷹妖")
     else:
         enemy_list.append("狼妖")
 frequency = 0
 
 
-# 测试用！！！
-# enemy_list = ["狼妖","狼妖","狼妖","狼妖","狼妖","狼妖","鹰妖"]
-# enemy_list = ["鹰妖","鹰妖","鹰妖","鹰妖","鹰妖","鹰妖","狼妖"]
+# 測試用！！！
+# enemy_list = ["狼妖","狼妖","狼妖","狼妖","狼妖","狼妖","鷹妖"]
+# enemy_list = ["鷹妖","鷹妖","鷹妖","鷹妖","鷹妖","鷹妖","狼妖"]
 # 3w 1b 2w 1b
-# 打印1-7关的敌人
+# 打印1-7關的敵人
 for i in range(40):
     print("\n")
 i = 0
@@ -199,9 +199,9 @@ guard_dict = {}
 auto_bow_name_list = ['A0','A1','A2','A3','A4','A5','A6','A7','A8','A9']
 auto_ax_name_list = ['B0','B1','B2','B3','B4','B5','B6','B7',]
 
-# 自动起名模式
+# 自動起名模式
 while True:
-    User_ID = input("请输入你的ID，而后输入一个空格输入你选择斧头兵(代号1)/弓箭手(代号2) e.g. SeleiXi 1)：")
+    User_ID = input("請輸入你的ID，而後輸入一個空格輸入你選擇斧頭兵(代號1)/弓箭手(代號2) e.g. SeleiXi 1)：")
     User_Choosing = User_ID.split()
     choose_name_model = 3
     import time
@@ -211,7 +211,7 @@ while True:
             guard_name = User_Choosing[0]
             if User_Choosing[1] == "1":
                 guard_name = guard(User_Choosing[0],100,1)
-                guard_list.append(f'{User_Choosing[0]}(斧头兵)')
+                guard_list.append(f'{User_Choosing[0]}(斧頭兵)')
                 guard_dict[User_Choosing[0]]  =  guard(User_Choosing[0],120,1)
                 guard_name = guard(User_Choosing[0],120,1)
                 break
@@ -222,39 +222,39 @@ while True:
                 guard_bow += 1
                 break
             else:
-                print("请输入正确的代号")
+                print("請輸入正確的代號")
                 continue
     except:
         continue
 
 
-# 死亡后加一个完成轮数及时间
-# 设定60秒后自动结束并统计轮数，设定评分。
+# 死亡後加一個完成輪數及時間
+# 設定60秒後自動結束並統計輪數，設定評分。
 
 if choose_name_model =="1":
     while True:
         try:
-            bow_num = int(input("请输入弓箭手数目："))
-            ax_num = int(input("请输入斧头人数目："))
+            bow_num = int(input("請輸入弓箭手數目："))
+            ax_num = int(input("請輸入斧頭人數目："))
             if bow_num*100 + ax_num*120 >1000:
-                print("弓箭手*100+斧头人*120不可大于金额1000","\n","请重新输入：")
+                print("弓箭手*100+斧頭人*120不可大於金額1000","\n","請重新輸入：")
                 continue
             if bow_num<0 or ax_num<0:
-                print("不可输入负数")
+                print("不可輸入負數")
                 continue
             break
         except:
-            print("输入的并非数字，请重新再试")
+            print("輸入的並非數字，請重新再試")
             continue
-    # 自动列表名，士兵种类（0 or 1）,士兵数目
+    # 自動列表名，士兵種類（0 or 1）,士兵數目
     auto_name(auto_bow_name_list,0,bow_num)
     auto_name(auto_ax_name_list,1,ax_num)
     display_guard()
 cho_guard_count = 0
 
-# 更改处
+# 更改處
 # if not choose_name_model =="1":
-#     cho_guard_count = int(input("请选择要雇佣士兵的数量（包括弓箭手和斧头兵）："))
+#     cho_guard_count = int(input("請選擇要雇傭士兵的數量（包括弓箭手和斧頭兵）："))
 
 # while guard_bow+guard_ax < cho_guard_count:
 #     if choose_name_model =="1":
@@ -262,12 +262,12 @@ cho_guard_count = 0
 #     print(f'你尚有${cost}')
 #     if cost<100:
 #         break
-#     guard_choose = input("请选择你想征用的士兵( 弓箭兵(1) | 斧头兵(2) )：")
+#     guard_choose = input("請選擇你想征用的士兵( 弓箭兵(1) | 斧頭兵(2) )：")
 #     if guard_choose == '1' :
-#         guard_name = input("请输入弓箭手名字:")
-# # 如果名字已经在列表中出现
-#         if guard_name+'(斧头兵)' in guard_list or guard_name+'(弓箭手)' in guard_list:
-#             print("不能重复起名")
+#         guard_name = input("請輸入弓箭手名字:")
+# # 如果名字已經在列表中出現
+#         if guard_name+'(斧頭兵)' in guard_list or guard_name+'(弓箭手)' in guard_list:
+#             print("不能重覆起名")
 #             continue
 #         guard_list.append(f'{guard_name}(弓箭手)')
 #         guard_dict[guard_name]  =  guard(guard_name,100,0)
@@ -278,38 +278,38 @@ cho_guard_count = 0
 #     elif guard_choose == '2' :  
 #         if cost <120:
 #             continue
-#         guard_name = input("请输入斧头兵名字:")
-#         if guard_name+'(斧头兵)' in guard_list or guard_name+'(弓箭手)' in guard_list:
-#             print("不能重复起名")
+#         guard_name = input("請輸入斧頭兵名字:")
+#         if guard_name+'(斧頭兵)' in guard_list or guard_name+'(弓箭手)' in guard_list:
+#             print("不能重覆起名")
 #             continue
-#         guard_list.append(f'{guard_name}(斧头兵)')
+#         guard_list.append(f'{guard_name}(斧頭兵)')
 #         guard_dict[guard_name]  =  guard(guard_name,120,1)
 #         guard_name = guard(guard_name,120,1)
 #         cost -=120
 #         guard_ax += 1
 #         continue
 #     else:
-#         print("请输入士兵的序号以选择士兵")
+#         print("請輸入士兵的序號以選擇士兵")
 #         continue
 round = 0
 for round_enemy in enemy_list:
     round +=1
     Cho_guard = None
-    # 改成while true不是不可以,总不会真有人这么闲吧
+    # 改成while true不是不可以,總不會真有人這麽閒吧
     while x<50:
         try:
             if time.time() - Start_time >60:
-                print(f"你完成的轮数为：{round}")
+                print(f"你完成的輪數為：{round}")
                 # 待完成
-                # print(f"你的评分为:{}")
+                # print(f"你的評分為:{}")
                 time.sleep(20)
                 sys.exit()
             cal = Thread(target=round_time_calculate,args =(round,))
             cal.start()
-            Cho_guard = input(f"\n请选择第{round}轮出战士兵 / 是否治愈士兵(输入cure以及对应的治疗值)：")
+            Cho_guard = input(f"\n請選擇第{round}輪出戰士兵 / 是否治愈士兵(輸入cure以及對應的治療值)：")
             if Cho_guard[:4] == 'cure':
-                Cho_guard_name = input("请输入要治愈的士兵:")
-                # cost减去return回来的cure花费，而cure函数在计算花费时已经将受伤士兵治愈
+                Cho_guard_name = input("請輸入要治愈的士兵:")
+                # cost減去return回來的cure花費，而cure函數在計算花費時已經將受傷士兵治愈
                 cost -= guard_dict[Cho_guard_name].cure(Cho_guard)
             fighting_army =  guard_dict[Cho_guard]
             break
@@ -317,61 +317,61 @@ for round_enemy in enemy_list:
             if Cho_guard[:4] == 'cure':
                 display_guard()
                 continue
-            print("士兵并不存在/已死亡(cure用法如：cure10)")
+            print("士兵並不存在/已死亡(cure用法如：cure10)")
             display_guard()
             x = x+1
             continue
     fighting_army.showdetails()
     print(Cho_guard ,"vs",round_enemy)
-    # FA为0，代表self是弓箭手
+    # FA為0，代表self是弓箭手
     round_fight(fighting_army.fighting_ability,round_enemy)
-print("恭喜通关！")
-print(f"你尚存的金币：${cost}")
+print("恭喜通關！")
+print(f"你尚存的金幣：${cost}")
 x=0
 
-# 1斧头兵打7狼，打死5狼时需要+21滴血。1000-（120+21）=859
-# 1弓箭手打7鹰，打死4鹰时需要+41滴血，1000-（100+41）=859
-# 欧皇评价前置条件是需要一定的运气，匹配到余钱上限高的敌军组合
+# 1斧頭兵打7狼，打死5狼時需要+21滴血。1000-（120+21）=859
+# 1弓箭手打7鷹，打死4鷹時需要+41滴血，1000-（100+41）=859
+# 歐皇評價前置條件是需要一定的運氣，匹配到余錢上限高的敵軍組合
 if cost >=859:
-    print("你的评级为极其完美!")
+    print("你的評級為極其完美!")
     x='完美'
-    print("额外评价：欧皇在世！")
-# 再其次为7鹰1狼，2弓箭手交替使用,最后余钱800,
+    print("額外評價：歐皇在世！")
+# 再其次為7鷹1狼，2弓箭手交替使用,最後余錢800,
 elif cost >=800:
-    print("你的评级为极其完美!")
+    print("你的評級為極其完美!")
     x='完美'
-    print("额外评价：二等欧皇！")
-# 再其次为7狼1鹰，1个斧头兵倒数第二轮cure81,最后余钱799 
+    print("額外評價：二等歐皇！")
+# 再其次為7狼1鷹，1個斧頭兵倒數第二輪cure81,最後余錢799 
 elif cost >=799:
-    print("你的评级为极其完美!")
+    print("你的評級為極其完美!")
     x='完美'
-    print("额外评价：三等欧皇！")
+    print("額外評價：三等歐皇！")
 
-# 除去欧皇情况，其他所有情况的完美上限都只能是779-780
+# 除去歐皇情況，其他所有情況的完美上限都只能是779-780
 elif cost>=779:
     x='完美'
-    print("你的评级为完美!")
+    print("你的評級為完美!")
 
-# 貌似上限是698，需多经测试（购买3个同类兵，轮换着用，前期到了血量斩杀线就加到81，到了后期介于溢出机制可以随便送）
+# 貌似上限是698，需多經測試（購買3個同類兵，輪換著用，前期到了血量斬殺線就加到81，到了後期介於溢出機制可以隨便送）
 elif cost>=679:
-    x='优秀'
-    print("你的评级为优秀")
+    x='優秀'
+    print("你的評級為優秀")
 
-# 一个兵一直cure到斩杀线以上（要先看狼多还是鹰多，选克的多的兵种）
+# 一個兵一直cure到斬殺線以上（要先看狼多還是鷹多，選克的多的兵種）
 elif cost >=619:
-    x='不错'
-    print("你的评级为不错")
+    x='不錯'
+    print("你的評級為不錯")
 else:
     x='一般'
-    print("你的评级为一般")
-if enemy_list == ["狼妖","狼妖","狼妖","狼妖","狼妖","狼妖","狼妖"] or enemy_list == ["鹰妖","鹰妖","鹰妖","鹰妖","鹰妖","鹰妖","鹰妖"]:
+    print("你的評級為一般")
+if enemy_list == ["狼妖","狼妖","狼妖","狼妖","狼妖","狼妖","狼妖"] or enemy_list == ["鷹妖","鷹妖","鷹妖","鷹妖","鷹妖","鷹妖","鷹妖"]:
     if x=='一般':
-        print("额外评价：给你机会你不中用啊")
+        print("額外評價：給你機會你不中用啊")
         
         time.sleep(3)
         sys.exit()
 
 time.sleep(10)
 
-# 死亡后加一个完成轮数及时间
-# 设定60秒后自动结束并统计轮数，设定评分。
+# 死亡後加一個完成輪數及時間
+# 設定60秒後自動結束並統計輪數，設定評分。

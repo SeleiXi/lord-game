@@ -7,11 +7,11 @@ from threading import Thread
 import os,winshell
 from PySide2.QtCore import Signal,QObject
 i = 1
-shortcut = os.path.join(winshell.desktop(), "Lord_Game" + ".lnk") #设置lnk的目的路径
+shortcut = os.path.join(winshell.desktop(), "Lord_Game" + ".lnk") #設置lnk的目的路徑
 now = os.getcwd()
 winshell.CreateShortcut(
-        Path=shortcut,   # lnk的路径
-        Target=f"{now}/run.exe", # 欲复制的目标文件路径
+        Path=shortcut,   # lnk的路徑
+        Target=f"{now}/run.exe", # 欲覆制的目標文件路徑
         Icon=(f"{now}/chigua.ico", 0), 
         Description="Lord_Game", #lnk的描述
         StartIn = now
@@ -51,9 +51,10 @@ class window():
         self.ui.progressBar.setValue(70)
     def challenge_mode(self):
         def func1():
-            import graphic_interface_version
+            import main
         thread = Thread(target=func1)
         thread.start()
+        self.ui.progressBar.setValue(100)             
         # self.ui.label.setEnabled(False)
         # self.ui.pushButton_2.setEnabled(False)
     def speed_mode(self):
@@ -61,6 +62,7 @@ class window():
             import Speed_mode
         thread = Thread(target=func1)
         thread.start()
+        self.ui.progressBar.setValue(100)
 app = QApplication([])
 stats = window()
 stats.ui.show()
