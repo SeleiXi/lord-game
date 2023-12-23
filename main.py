@@ -5,6 +5,8 @@ import pygame
 pygame.init()
 width = 800
 height = 600
+map_width = 4000
+map_height = 600
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
@@ -203,14 +205,14 @@ choosing_start = False
 import random
 enemy_x_position = []
 for i in range(1,7+1):
-    enemy_x_position.append((width//7)*i)
+    enemy_x_position.append((map_width//7)*i)
 print(enemy_x_position)
 for random_enemy_frequency in range(7):
     x = random.randint(1,2)
     if x == 1:
         enemy_list.append("enemy_1")
     else:
-        enemy_list.append("enemy_1")
+        enemy_list.append("enemy_2")
 
 Watching_chance = 1
 last_num = 0
@@ -290,14 +292,16 @@ while True:
                             screen.blit(XUANer,(350,490))
                         else:
                             screen.blit(dover,(350,490))
+                        x = 0
+                        print(enemy_list)
                         for enemy_name in enemy_list:
+                            x_position = enemy_x_position[x]
+                            x += 1
                             if enemy_name == "enemy_1":
                                 enemy_sample = enemy(enemy_1)
                             else:
                                 enemy_sample = enemy(enemy_2)
-
-                            for x_position in enemy_x_position:
-                                enemy_sample.rect.x = x_position
+                            enemy_sample.rect.x = x_position
                             enemy_sample.name = enemy_name
                             enemy_sample_list.append(enemy_sample)
 
@@ -394,7 +398,6 @@ while True:
             for enemy_object in enemy_sample_list:
                 if enemy_object.name == "enemy_1":
                     screen.blit(enemy_1,(enemy_object.rect.x,enemy_object.rect.y))
-                    print(enemy_object.rect.x,enemy_object.rect.y)
                 if enemy_object.name == "enemy_2":
                     screen.blit(enemy_2,(enemy_object.rect.x,enemy_object.rect.y))
     pygame.display.flip() 
