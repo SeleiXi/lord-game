@@ -167,17 +167,13 @@ def fight():
     if enemy_list[0] == "enemy_1":
         if now == "XUANer":
             character_dict[key]["HP_percentage"] -= 80
-            HP = pygame.transform.scale(enemy_1,(character_dict[key]["HP_percentage"],50))
         elif now == "dover":
             character_dict[key]["HP_percentage"] -= 20
-            HP = pygame.transform.scale(enemy_1,(character_dict[key]["HP_percentage"],50))
     elif enemy_list[0] == "enemy_2":
         if now == "XUANer":
             character_dict[key]["HP_percentage"] -= 20
-            HP = pygame.transform.scale(enemy_1,(character_dict[key]["HP_percentage"],50))
         elif now == "dover":
             character_dict[key]["HP_percentage"] -= 80
-            HP = pygame.transform.scale(enemy_1,(character_dict[key]["HP_percentage"],50))
     enemy_x_position.pop(0)
     enemy_list.pop(0)
     enemy_sample_list.pop(0)
@@ -433,14 +429,19 @@ while True:
             text = character_dict[key]["num"]
             HP = character_dict[key]["HP"]
             HP_percentage = character_dict[key]["HP_percentage"]
+            HP = pygame.transform.scale(HP, (HP_percentage, HP.get_height()))
             if key.startswith("A"):
                 screen.blit(text,(0,y_index))
                 screen.blit(mini_dover,(50,y_index))
                 screen.blit(HP,(100,y_index,character_dict[key]["HP_percentage"],50))
+                # 顯示HP percentage數值
+                # HP_percentage_icon = f.render(str(HP_percentage),True,(0,100,255))
+                # screen.blit(HP_percentage_icon,(100+50,y_index,character_dict[key]["HP_percentage"],50))
             else:
                 screen.blit(text,(0,y_index))
                 screen.blit(mini_XUANer,(50,y_index))
                 screen.blit(HP,(100,y_index,character_dict[key]["HP_percentage"],100))
+                # screen.blit(HP_percentage,(100+50,y_index,character_dict[key]["HP_percentage"],50))
             for enemy_object in enemy_sample_list:
                 if enemy_object.name == "enemy_1":
                     screen.blit(enemy_1,(enemy_object.rect.x,enemy_object.rect.y))
