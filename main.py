@@ -3,20 +3,22 @@
 # bug：player被刪除後，應該自動切換到下一個角色（重新draw一個？）
 
 # 重要
-# 增加函數和意思模糊的變量的注釋
-# 選兵不需要從左到右，選完下面會顯示已經選擇了什麼
-# 背景設定重新寫，但可以說借鑒曾經寫的小說+完整的背景增加到面試準備QS，文學化：生靈塗炭..
+# 增加函數和意思模糊的變量的注釋（添加所有必要注釋）
+# 選兵不需要從左到右，選完下面會顯示已經選擇了什麼（設置字在下面，進入遊戲：F (可啟動 / 不可啟動)，火鴿子數目： Killer數目：）
+# 選兵界面字體太粗，可能會睇唔清（考慮更換字體）
+# 最後輸出的評分是一個圖片（根據不同評分來顯示不同圖片）
+
 
 # 可增加處/改善處
 # 改為合適的音樂,通關和失敗也有對應不同的音樂
 # 第一個圖標後面有黑色背景
 # menu增加更多東西
-# 選兵界面字體太粗，可能會睇唔清（考慮更換字體）
 # 本地自動儲存通關記錄txt
 # 有可能5輪也有可能6輪
 # 增加不同的模式
-# 最後輸出的評分是一個圖片（根據不同評分來顯示不同圖片）
-
+# 背景設定重新寫，但可以說借鑒曾經寫的小說+完整的背景增加到面試準備QS，文學化：生靈塗炭..
+# “以鼠標點擊進入選兵界面”，以鼠標代替enter來選兵，
+# watching_mode可以創意化
 
 import sys
 import pygame
@@ -61,6 +63,7 @@ main_page_rect = main_page.get_rect()
 HP = pygame.image.load("icons/HP.png")
 HP = pygame.transform.scale(HP,(100,30))
 num_list = []
+# 自動分配character_dict（友軍的實例list）中object的名字（key）用
 auto_dover_list = ['A0','A1','A2','A3','A4']
 auto_Killer_list = ['B0','B1','B2','B3',]
 character_dict = {}
@@ -75,6 +78,7 @@ choosing = False
 First_run = False
 money = 300
 game_end = False
+win = False
 game_over_page = pygame.image.load("icons/game_over.png")
 winning_page = pygame.image.load("icons/winning_page.png")
 # 儲存7個enemy分別是enemy1還是enemy2的順序
@@ -298,13 +302,22 @@ def fight():
     enemy_sample_list.pop(0)
 
 def watching_mode():
-    # 需改 更有創意的方式
+    # 將enemy_list內容顯示
     global frequency,main_page_exists,all_sprites,num_list,choosing,choosing_start
-    # text = f_small.render(str(enemy_list),True,(0,0,255))
-    text = f.render(str(enemy_list),True,(0,100,255))
+    text = "敵人順序："
+    enemy_frequency = 0
+    for enemy in enemy_list:
+        enemy_frequency +=1
+        if enemy == "enemy_1":
+            added_text = f"{enemy_frequency}.妖弭猴 "
+        else:
+            added_text = f"{enemy_frequency}.閃電猩 "
+        text += added_text
+    text = f.render(text,True,(0,100,255))
     text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 2))
     screen.blit(text,(0,height-30))
-    if main_page_exists == True:                                 
+    if main_page_exists == True:  
+        # 在主頁時的顯示    
         pygame.display.flip()
         time.sleep(5)
         all_sprites.update('r')
@@ -332,37 +345,37 @@ def choosing_mode_entering():
     choosing_start = True
 
 def fail_ending():
+    # 失敗時觸發的function
     global main_page_exists,choosing,game_end
     screen.blit(game_over_page,(0,0))
     pygame.display.flip()
+    # 避開主程序運行時的條件
     main_page_exists = False
     choosing = False
     game_end = True
+    pygame.mixer.music.stop()
     
-    time.sleep(5)
-    sys.exit()
 
 def win_ending():
-    global main_page_exists,choosing,game_end
+    # 勝利時觸發的function
+    global main_page_exists,choosing,game_end,result,win
     main_page_exists = False
     choosing = False
     game_end = True
     screen.blit(winning_page,(0,0))
     used_money = 300-money
     if used_money <= 160:
-        result = "優秀"
+        result = pygame.image.load("icons/excellent.png")
     elif used_money <= 180:
-        result = "良好"
+        result = pygame.image.load("icons/good.png")
     elif used_money <= 200:
-        result = "不錯"
+        result = pygame.image.load("icons/not_bad.png")
     else:
-        result = "一般"
-    result = f.render(result,True,(255,0,0))
-    result = pygame.transform.scale(result,(300,200))
-    screen.blit(result,(230,350))
+        result = pygame.image.load("icons/pass.png")
+    screen.blit(result,(0,0))
+    win = True
+    pygame.mixer.music.stop()
     pygame.display.flip()
-    time.sleep(5)
-    sys.exit()
 
 while True: 
     frequency += 1
@@ -392,6 +405,7 @@ while True:
         if event.type == pygame.KEYDOWN and game_end == False:
             # 進入選兵頁面
             if event.key == pygame.K_w:
+                # 進入觀察模式
                 if Watching_chance == 1 and choosing_start == True:
                     watching_mode()
                     Watching_chance -=1
@@ -407,7 +421,7 @@ while True:
                 # 重新加載選兵界面
                 choosing_mode_entering()
 
-            elif event.key == pygame.K_f:
+            elif event.key == pygame.K_f and game_end == False:
                 # 進入遊戲時的初始化（角色，角色HP等等）
                     text = f.render("Text",True,(255,0,0),(0,0,0))
                     total_cost = num_list[0]*80 + num_list[1]*100
@@ -474,7 +488,7 @@ while True:
             
 
         # 進入主程序
-        if event.type == pygame.KEYDOWN and main_page_exists == True:
+        if event.type == pygame.KEYDOWN and main_page_exists == True and game_end == False:
             # 進入主程序後只會執行一次
             if First_run == False:
                 all_sprites = pygame.sprite.Group()
@@ -544,35 +558,41 @@ while True:
         if event.type ==  pygame.KEYUP:
             move_status = False
         # 每走一次，都會使得畫面刷新，因此所有的圖像需要根據他們的數值重新blit一次
-        for key,value in character_dict.items():
-            if now == "dover":
-                screen.blit(dover,(350,490))   
-            elif now == "Killer":
-                screen.blit(Killer,(350,490))
-            screen.blit(money_pic,(0,0))
-            screen.blit(f.render(str(money),True,(255,0,0)),(50,0))
-            y_index = int(character_dict[key]["y_index"])
-            text = character_dict[key]["num"]
-            HP = character_dict[key]["HP"]
-            HP_percentage = character_dict[key]["HP_percentage"]
-            HP = pygame.transform.scale(HP, (HP_percentage, HP.get_height()))
-            if key.startswith("A"):
-                screen.blit(text,(0,y_index))
-                screen.blit(mini_dover,(50,y_index))
-                screen.blit(HP,(100,y_index))
-                # 顯示HP percentage數值
-                # HP_percentage_icon = f.render(str(HP_percentage),True,(0,100,255))
-                # screen.blit(HP_percentage_icon,(100+50,y_index,character_dict[key]["HP_percentage"],50))
+        if game_end == False:
+            for key,value in character_dict.items():
+                if now == "dover":
+                    screen.blit(dover,(350,490))   
+                elif now == "Killer":
+                    screen.blit(Killer,(350,490))
+                screen.blit(money_pic,(0,0))
+                screen.blit(f.render(str(money),True,(255,0,0)),(50,0))
+                y_index = int(character_dict[key]["y_index"])
+                text = character_dict[key]["num"]
+                HP = character_dict[key]["HP"]
+                HP_percentage = character_dict[key]["HP_percentage"]
+                HP = pygame.transform.scale(HP, (HP_percentage, HP.get_height()))
+                if key.startswith("A"):
+                    screen.blit(text,(0,y_index))
+                    screen.blit(mini_dover,(50,y_index))
+                    screen.blit(HP,(100,y_index))
+                    # 顯示HP percentage數值
+                    # HP_percentage_icon = f.render(str(HP_percentage),True,(0,100,255))
+                    # screen.blit(HP_percentage_icon,(100+50,y_index,character_dict[key]["HP_percentage"],50))
+                else:
+                    screen.blit(text,(0,y_index))
+                    screen.blit(mini_Killer,(50,y_index))
+                    screen.blit(HP,(100,y_index))
+                    # screen.blit(HP_percentage,(100+50,y_index,character_dict[key]["HP_percentage"],50))
+                for enemy_object in enemy_sample_list:
+                    if enemy_object.name == "enemy_1":
+                        screen.blit(enemy_1,(enemy_object.rect.x,enemy_object.rect.y))
+                    if enemy_object.name == "enemy_2":
+                        screen.blit(enemy_2,(enemy_object.rect.x,enemy_object.rect.y))
+        else:
+            if win == True:
+                screen.blit(result,(0,0))
             else:
-                screen.blit(text,(0,y_index))
-                screen.blit(mini_Killer,(50,y_index))
-                screen.blit(HP,(100,y_index))
-                # screen.blit(HP_percentage,(100+50,y_index,character_dict[key]["HP_percentage"],50))
-            for enemy_object in enemy_sample_list:
-                if enemy_object.name == "enemy_1":
-                    screen.blit(enemy_1,(enemy_object.rect.x,enemy_object.rect.y))
-                if enemy_object.name == "enemy_2":
-                    screen.blit(enemy_2,(enemy_object.rect.x,enemy_object.rect.y))
+                screen.blit(game_over_page,(0,0))
         for enemy_position in enemy_x_position:
             # 如果角色走過了enemy_position的位置，就觸發攻擊function，通過main_page的x坐標來判定（因為角色移動就是main_page的x坐標移動）
             if abs(main_page_rect.x-400) >= enemy_position:
@@ -583,4 +603,5 @@ while True:
                 # except:
                 #     pass
                 break
+                
     pygame.display.flip() 
