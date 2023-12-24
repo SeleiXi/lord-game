@@ -146,7 +146,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -179,7 +179,9 @@ class Ui_MainWindow(object):
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:400;\"><br /></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:400;\">\u6ce8\u610f\uff1a</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0"
-                        "; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:400;\">\u901a\u95dc\u8a55\u7d1a\u5206\u70ba\u3010\u6975\u5176\u5b8c\u7f8e\u3011 / \u3010\u5b8c\u7f8e\u3011 / \u3010\u512a\u79c0\u3011 / \u3010\u4e0d\u932f\u3011 / \u3010\u4e00\u822c\u3011</span></p></body></html>", None))
+                        "; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:400;\">1.\u901a\u95dc\u8a55\u7d1a\u5206\u70ba\u3010\u6975\u5176\u5b8c\u7f8e\u3011 / \u3010\u5b8c\u7f8e\u3011 / \u3010\u512a\u79c0\u3011 / \u3010\u4e0d\u932f\u3011 / \u3010\u4e00\u822c\u3011</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:400;\">2.\u5728\u55ae\u4f4d\u79fb\u52d5\u6642,\u9f20\u6a19\u5728\u904a\u6232\u754c\u9762\u4e0d\u65b7\u6ed1\u52d5\u53ef\u4ee5\u52a0\u901f\u79fb\u52d5</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:400;\">3.\u9078\u5175\u7d50\u675f\u4e26\u9032\u5165\u904a\u6232\u5f8c\uff0c\u9ede\u64caF11\u53ef\u4ee5\u9032\u5165\u5168\u5c4f\u6a21\u5f0f</span></p></body></html>", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QCoreApplication.translate("MainWindow", u"Background_Introduction", None))
         self.pushButtonChallengeMode.setText(QCoreApplication.translate("MainWindow", u"\u904a\u6232\u555f\u52d5", None))
         self.menuMade_By_SeleiXI.setTitle(QCoreApplication.translate("MainWindow", u"Made By SeleiXi", None))

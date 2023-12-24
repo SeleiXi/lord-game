@@ -3,23 +3,25 @@
 
 
 # bug：173行fight函數，有時候會默認到最後一個num，導致判定是最後一個角色減血
-# bug：切換時
+# +切換時扣血的仍然是最後一個
 
 # bug：player被刪除後，應該自動切換到下一個角色（重新draw一個？）
-# bug：fight時的判定和敵軍位置判定不一
-# bug：第一個圖標後面有黑色背景
 
 
-# 重要func
-# 到地圖某個點的時候結算遊戲
+# 重要
+# 增加函數和意思模糊的變量的注釋
 
-# 可修改處
-# 修改背景介紹別這麼中二
+# 可增加處/改善處
+# 修改背景介紹減少中二化
 # 選兵不需要從左到右
 # 添加音樂
-# 增加函數和意思模糊的變量的注釋
+# 第一個圖標後面有黑色背景
 # menu增加更多東西
 # 選兵界面字體太粗，看不清
+# 本地自動儲存通關記錄txt
+# 有可能5轮也有可能六轮
+# 做BGM以及配音
+# 增加不同的模式
 
 import sys
 import pygame
@@ -105,7 +107,7 @@ class Player(pygame.sprite.Sprite):
     def update(self,direction):
         global move_status
         if direction == 'r':
-            if not main_page_rect.x<-3000:
+            if not main_page_rect.x<-3200:
                 main_page_rect.x -=3
                 screen.blit(main_page,(main_page_rect.x,main_page_rect.y))
                 all_sprites.draw(screen)
@@ -509,7 +511,7 @@ while True:
                     screen.blit(enemy_2,(enemy_object.rect.x,enemy_object.rect.y))
         for enemy_position in enemy_x_position:
             # 如果角色走過了enemy_position的位置，就觸發攻擊function，通過main_page的x坐標來判定（因為角色移動就是main_page的x坐標移動）
-            if abs(main_page_rect.x) >= enemy_position:
+            if abs(main_page_rect.x-400) >= enemy_position:
                 fight()
                 break
     pygame.display.flip() 
