@@ -1,9 +1,7 @@
 # 【待完成】 / # 需改
 # 不規範處：部分用駝峰命名法，部分變量不符合命名法，branch名字應該改為master，部分地方可以函數化
-# bug：player被刪除後，應該自動切換到下一個角色（重新draw一個？）
 
 # 重要
-# 增加函數和意思模糊的變量的注釋（添加所有必要注釋）
 # 選兵不需要從左到右，選完下面會顯示已經選擇了什麼（設置字在下面，進入遊戲：F (可啟動 / 不可啟動)，火鴿子數目： Killer數目：）
 # 選兵界面字體太粗，可能會睇唔清（考慮更換字體）
 # 最後輸出的評分是一個圖片（根據不同評分來顯示不同圖片）
@@ -19,6 +17,7 @@
 # 背景設定重新寫，但可以說借鑒曾經寫的小說+完整的背景增加到面試準備QS，文學化：生靈塗炭..
 # “以鼠標點擊進入選兵界面”，以鼠標代替enter來選兵，
 # watching_mode可以創意化
+# 未利用到sprite的碰撞等函數，在x y坐標都可以移動的遊戲裡這種算法不利
 
 import sys
 import pygame
@@ -153,24 +152,29 @@ class Player(pygame.sprite.Sprite):
         self.rect.x = 350
         self.rect.y = 490
 
-    # 根據移動的方向（通過鍵盤輸入a/d檢測）來移動地區的x坐標，從而實現移動
+    
     def update(self,direction):
+        # 根據移動的方向（通過鍵盤輸入a/d檢測）來移動地區的x坐標，從而實現移動
         global move_status
         if direction == 'r':
+            # 向右走的話，main_page的x坐標是一直在減少的（因為初始值為0,0）-3200是到達城堡的邊界
             if not main_page_rect.x<-3200:
+                # 如果沒有到達邊界，就一直讓主頁的x坐標減少，讓角色看起來在"移動"
                 main_page_rect.x -=3
                 screen.blit(main_page,(main_page_rect.x,main_page_rect.y))
-                all_sprites.draw(screen)
+                # all_sprites.draw(screen)  # Bug解決：這句導致角色死亡後仍然在刷新精靈（還有176行那句（下一個elif語句，向左走的情況））
                 for enemy_sample in enemy_sample_list:
                     enemy_sample.rect.x -=3
             else:
+                # 到達城堡後觸發成功function
                 win_ending()
 
         elif direction == "l":
             if not main_page_rect.x>150:
+                # 邊界是第一顆數，x坐標是150
                 main_page_rect.x +=3
                 screen.blit(main_page,(main_page_rect.x,main_page_rect.y))
-                all_sprites.draw(screen)
+                # all_sprites.draw(screen) # Bug解決：這句導致角色死亡後仍然在刷新精靈
                 for enemy_sample in enemy_sample_list:
                     enemy_sample.rect.x +=3
             # 設置最左邊邊界（main_page_rect.x>150），不需要設置右邊，因為到右邊的某個點自動會結算遊戲
@@ -219,7 +223,6 @@ class InputBox:
                             num_list.append(int(self.text))
                         except:
                             pass
-                        print(num_list)
                         self.finish = True
                         # self.text=''
                     elif(event.key == pygame.K_BACKSPACE):
@@ -261,8 +264,6 @@ def fight():
                 now = "dover"
             elif key.startswith("B"):
                 now = "Killer"
-        print(player)
-        print(all_sprites)
         # all_sprites.remove(player)
         # all_sprites.update("l")
         # all_sprites.draw(screen)
@@ -440,6 +441,7 @@ while True:
                             last_y_index = (i+1)*50
                             last_num = i+1
                         for i in range(num_list[1]):
+                            # Killer的處理（不能函數化，因為差別細節太多，不能以幾個參數完成）
                             Killer_list.append(auto_Killer_list[i])
                             HP = pygame.image.load("icons/HP.png")
                             HP = pygame.transform.scale(HP,(100,30))
@@ -459,7 +461,6 @@ while True:
                         else:
                             screen.blit(dover,(350,490))
                         x = 0
-                        print(enemy_list)
                         for enemy_name in enemy_list:
                             # 設置各個enemy為一個object並增加對應的屬性如x坐標，將其添加到enemy_sample_list中
                             x_position = enemy_x_position[x]
@@ -504,29 +505,31 @@ while True:
                     now = "dover"
                 First_run = True
             if event.key == pygame.K_F11:
+                # 全屏化處理
                 if fullScreen == False:
                     screen = pygame.display.set_mode((width,height),(pygame.FULLSCREEN))
                     fullScreen = True
                     screen.blit(main_page,(main_page_rect.x,main_page_rect.y))
                     all_sprites.draw(screen)
                 else:
+                    # 解鎖全屏
                     screen = pygame.display.set_mode((width,height),flags=0)
                     screen.blit(main_page,(main_page_rect.x,main_page_rect.y))
                     all_sprites.draw(screen)
                     fullScreen = False
             if event.key == pygame.K_1 or event.key == pygame.K_2 or event.key == pygame.K_3 or event.key == pygame.K_4 or event.key == pygame.K_5:
+                # 切換兵種
                 for key,value in character_dict.items():
                     if pykey[character_dict[key]["int_num"]] == event.key:
                         all_sprites = pygame.sprite.Group()
                         now_num = character_dict[key]["int_num"]
                         if key.startswith("A"):
+                            # 角色是dover時的處理
                             player = Player(dover)
                             all_sprites.add(player)
                             all_sprites.update('r')
                             all_sprites.update('l')
                             now = "dover"
-                            
-
                             break
                         elif key.startswith("B"):
                             player = Player(Killer)
@@ -559,7 +562,9 @@ while True:
             move_status = False
         # 每走一次，都會使得畫面刷新，因此所有的圖像需要根據他們的數值重新blit一次
         if game_end == False:
+            # 每個主程序處理都需要帶上game_end == False，以免遊戲結束後主程序干擾結束界面
             for key,value in character_dict.items():
+                # 所有object都blit一次
                 if now == "dover":
                     screen.blit(dover,(350,490))   
                 elif now == "Killer":
@@ -572,6 +577,7 @@ while True:
                 HP_percentage = character_dict[key]["HP_percentage"]
                 HP = pygame.transform.scale(HP, (HP_percentage, HP.get_height()))
                 if key.startswith("A"):
+                    # 前面幾行已經設置了變量
                     screen.blit(text,(0,y_index))
                     screen.blit(mini_dover,(50,y_index))
                     screen.blit(HP,(100,y_index))
@@ -579,16 +585,19 @@ while True:
                     # HP_percentage_icon = f.render(str(HP_percentage),True,(0,100,255))
                     # screen.blit(HP_percentage_icon,(100+50,y_index,character_dict[key]["HP_percentage"],50))
                 else:
+                    # Killer的處理
                     screen.blit(text,(0,y_index))
                     screen.blit(mini_Killer,(50,y_index))
                     screen.blit(HP,(100,y_index))
                     # screen.blit(HP_percentage,(100+50,y_index,character_dict[key]["HP_percentage"],50))
                 for enemy_object in enemy_sample_list:
+                    # 所有enemy都blit一次
                     if enemy_object.name == "enemy_1":
                         screen.blit(enemy_1,(enemy_object.rect.x,enemy_object.rect.y))
                     if enemy_object.name == "enemy_2":
                         screen.blit(enemy_2,(enemy_object.rect.x,enemy_object.rect.y))
         else:
+            # 結束界面時，不斷循環blit結束畫面
             if win == True:
                 screen.blit(result,(0,0))
             else:
@@ -603,5 +612,5 @@ while True:
                 # except:
                 #     pass
                 break
-                
+    # 每次循環後更新頁面
     pygame.display.flip() 
