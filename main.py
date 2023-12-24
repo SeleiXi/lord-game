@@ -316,10 +316,10 @@ def choosing_mode_entering():
 
 def fail_ending():
     print("fail")  
-    import main
+    sys.exit()
 def win_ending():
     print("win")
-    import main    
+    import menu   
 
 while True: 
     frequency += 1
@@ -533,6 +533,3 @@ while True:
                 #     pass
                 break
     pygame.display.flip() 
-
-
-
