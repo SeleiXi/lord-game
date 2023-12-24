@@ -2,18 +2,21 @@
 # 不規範處：部分用駝峰命名法，部分變量如XUANer不符合命名法，branch名字應該改為master，部分地方可以函數化
 
 
-# bug：173行fight函數，有時候會默認到最後一個num，導致判定是最後一個角色減血
-# +切換時扣血的仍然是最後一個
-
+# bug：173行fight函數，有時候會默認到最後一個num，導致判定是最後一個角色減血（猜測：1.扣血時扣錯了，2.顯示時顯示錯了 3.scale轉換時轉換到了另外一個key的值）
+# +切換時扣血的仍然是最後一個，
+# 有時候甚至會把玄者和鴿子搞混
 # bug：player被刪除後，應該自動切換到下一個角色（重新draw一個？）
 
 
 # 重要
+# 設置通關後的評分（輸出 恭喜通關！（這個用PS），你的評級是：）
+# （2鴿最少，其次是1鴿1玄（一下只扣20的話，只需要140血即可通關，因此通用），其次2玄，再低的話就是【不錯了】）
 # 增加函數和意思模糊的變量的注釋
+# 選兵不需要從左到右，選完下面會顯示已經選擇了什麼
 
 # 可增加處/改善處
 # 修改背景介紹減少中二化
-# 選兵不需要從左到右
+
 # 添加音樂
 # 第一個圖標後面有黑色背景
 # menu增加更多東西
@@ -193,7 +196,7 @@ def fight():
         if character_dict[key]["int_num"] == now_num:
            break
     # 在不同兵種遇到不同敵人時，HP減的程度（待做：把數額改為減去的圖標百分比（前面設置這個百分比為100，然後固定減，if判定檢測到減到0了就pop這個角色））
-    print(key)
+    print("扣血者：",key)
     if enemy_list[0] == "enemy_1":
         if now == "XUANer":
             character_dict[key]["HP_percentage"] -= 80
@@ -440,11 +443,10 @@ while True:
                     all_sprites.draw(screen)
                     fullScreen = False
             if event.key == pygame.K_1 or event.key == pygame.K_2 or event.key == pygame.K_3 or event.key == pygame.K_4 or event.key == pygame.K_5:
-                print(event.key)
                 for key,value in character_dict.items():
                     if pykey[character_dict[key]["int_num"]] == event.key:
                         all_sprites = pygame.sprite.Group()
-                        now_num = pykey[character_dict[key]["int_num"]]
+                        now_num = character_dict[key]["int_num"]
                         if key.startswith("A"):
                             player = Player(dover)
                             all_sprites.add(player)
@@ -495,14 +497,14 @@ while True:
             if key.startswith("A"):
                 screen.blit(text,(0,y_index))
                 screen.blit(mini_dover,(50,y_index))
-                screen.blit(HP,(100,y_index,character_dict[key]["HP_percentage"],50))
+                screen.blit(HP,(100,y_index))
                 # 顯示HP percentage數值
                 # HP_percentage_icon = f.render(str(HP_percentage),True,(0,100,255))
                 # screen.blit(HP_percentage_icon,(100+50,y_index,character_dict[key]["HP_percentage"],50))
             else:
                 screen.blit(text,(0,y_index))
                 screen.blit(mini_XUANer,(50,y_index))
-                screen.blit(HP,(100,y_index,character_dict[key]["HP_percentage"],100))
+                screen.blit(HP,(100,y_index))
                 # screen.blit(HP_percentage,(100+50,y_index,character_dict[key]["HP_percentage"],50))
             for enemy_object in enemy_sample_list:
                 if enemy_object.name == "enemy_1":
@@ -513,7 +515,12 @@ while True:
             # 如果角色走過了enemy_position的位置，就觸發攻擊function，通過main_page的x坐標來判定（因為角色移動就是main_page的x坐標移動）
             if abs(main_page_rect.x-400) >= enemy_position:
                 fight()
-                break
+                # try: # 測試是否顯示錯誤（不是，是扣血者錯誤）
+                #     print("A0的HP比例為：",character_dict["A0"]["HP_percentage"])
+                #     print("B0的HP比例為：",character_dict["B0"]["HP_percentage"])
+                # except:
+                #     pass
+                # break
     pygame.display.flip() 
 
 
