@@ -1,10 +1,9 @@
 # 【待完成】 / # 需改
-# 不規範處：部分用駝峰命名法，部分變量不符合命名法，branch名字應該改為master，部分地方可以函數化
+# 不規範處：小部分用駝峰命名法，部分變量不符合命名法，branch名字應該改為master，部分地方可以函數化
 
 # 重要
 # 選兵不需要從左到右，選完下面會顯示已經選擇了什麼（設置字在下面，進入遊戲：F (可啟動 / 不可啟動)，火鴿子數目： Killer數目：）
 # 選兵界面字體太粗，可能會睇唔清（考慮更換字體）
-# 最後輸出的評分是一個圖片（根據不同評分來顯示不同圖片）
 
 
 # 可增加處/改善處
@@ -62,6 +61,7 @@ main_page_rect = main_page.get_rect()
 HP = pygame.image.load("icons/HP.png")
 HP = pygame.transform.scale(HP,(100,30))
 num_list = []
+txt = ''
 # 自動分配character_dict（友軍的實例list）中object的名字（key）用
 auto_dover_list = ['A0','A1','A2','A3','A4']
 auto_Killer_list = ['B0','B1','B2','B3',]
@@ -205,8 +205,11 @@ class InputBox:
         self.done = False
         self.font = pygame.font.Font(None, 32)
         self.finish = False
-    # 當點擊框的時候進行的處理
+    
+   
     def dealEvent(self, event: pygame.event.Event):
+        # 當點擊框的時候進行的處理
+
         if(event.type == pygame.MOUSEBUTTONDOWN):
             if(self.boxBody.collidepoint(event.pos)):  
                 self.active = not self.active
@@ -218,9 +221,10 @@ class InputBox:
             if(self.active):
                 if self.finish == False:
                     if(event.key == pygame.K_RETURN):
-                        global num_list
+                        global num_list,txt
                         try:
                             num_list.append(int(self.text))
+                            txt = int(self.text)
                         except:
                             pass
                         self.finish = True
@@ -229,8 +233,10 @@ class InputBox:
                         self.text = self.text[:-1]
                     else:
                         self.text += event.unicode
+        return txt
 
     def draw(self, screen: pygame.surface.Surface):
+        # 文本輸入框的blit()函數
         txtSurface = self.font.render(
             self.text, True, self.color)  # 文字轉換為圖片
         width = max(200, txtSurface.get_width()+10)  # 當文字過長時，延長文本框
@@ -324,6 +330,7 @@ def watching_mode():
         all_sprites.update('r')
         all_sprites.update('l')
     else:
+        # 在選擇界面的顯示
         pygame.display.flip()
         time.sleep(5)
         inputbox = InputBox(pygame.Rect(150, 450, 10, 32)) 
@@ -333,9 +340,11 @@ def watching_mode():
         inputbox2.draw(screen)
         choosing = True
         choosing_start = True
+        #待添加 #blit：進入遊戲：F(以英文輸入法) (可啟動 / 不可啟動)，火鴿子數目： Killer數目： 
 
 def choosing_mode_entering():
-    global num_list,choosing,choosing_start,inputbox,inputbox2
+    # 點擊s時會重置頁面的函數，把所有數額重置
+    global num_list,choosing,choosing_start,inputbox,inputbox2,first_choosing
     num_list = []
     inputbox = InputBox(pygame.Rect(150, 450, 10, 32)) 
     inputbox2 = InputBox(pygame.Rect(450, 450, 10, 32)) 
@@ -344,6 +353,14 @@ def choosing_mode_entering():
     inputbox2.draw(screen)
     choosing = True
     choosing_start = True
+    text = f.render("輸入兵種數目並輸入enter(注意需要從左到右執行),輸入S重置界面",True,(0,0,50))
+    text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // (1.5)))
+    screen.blit(text,(0,0))
+    text = f.render("輸入W進入觀察模式(檢查敵人構成),輸入M關閉音樂",True,(0,0,50))
+    text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 1.5))
+    screen.blit(text,(0,25))
+    first_choosing == False
+    #待添加 #blit：進入遊戲：F(以英文輸入法) (可啟動 / 不可啟動)，火鴿子數目： Killer數目：
 
 def fail_ending():
     # 失敗時觸發的function
@@ -378,6 +395,9 @@ def win_ending():
     pygame.mixer.music.stop()
     pygame.display.flip()
 
+first_choosing = False
+music_muted = False
+
 while True: 
     frequency += 1
     clock.tick(60)
@@ -387,21 +407,29 @@ while True:
             pygame.quit()
             sys.exit()
         # 音樂結束時繼續播放音樂
-        elif event.type == pygame.USEREVENT:
+        elif event.type == pygame.USEREVENT and music_muted == False:
             pygame.mixer.music.play()
+
 
         if choosing == True and game_end == False:
             # 把選擇界面的各個圖像都blit/draw上去
-            inputbox.dealEvent(event)
+            input1 = inputbox.dealEvent(event)
+            # inputbox1_text = txt
+            # print(inputbox1_text)
             inputbox.draw(screen)
-            inputbox2.dealEvent(event)
+            input2 = inputbox2.dealEvent(event)
             inputbox2.draw(screen) 
-            text = f.render("輸入兵種數目並輸入enter(注意需要從左到右執行),輸入S重置界面",True,(0,0,50))
-            text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // (1.5)))
-            screen.blit(text,(0,0))
-            text = f.render("輸入W進入觀察模式(檢查敵人構成),輸入F即可進入遊戲(以英文輸入法)",True,(0,0,50))
-            text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 1.5))
-            screen.blit(text,(0,25))
+            # inputbox2_text = txt
+            # print(inputbox2_text)
+            while first_choosing == False:
+                text = f.render("輸入兵種數目並輸入enter(注意需要從左到右執行),輸入S重置界面",True,(0,0,50))
+                text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // (1.5)))
+                screen.blit(text,(0,0))
+                text = f.render("輸入W進入觀察模式(檢查敵人構成),輸入M關閉音樂",True,(0,0,50))
+                text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 1.5))
+                screen.blit(text,(0,25))
+                first_choosing = True
+            #待添加 # blit：進入遊戲(以英文輸入法輸入F)： (可啟動 / 不可啟動(請完成輸入))，火鴿子數目： Killer數目：
         
         if event.type == pygame.KEYDOWN and game_end == False:
             # 進入選兵頁面
@@ -414,8 +442,10 @@ while True:
                 elif Watching_chance == 0 and main_page_exists == False:
                     text = f.render("觀察機會已耗盡",True,(0,0,50))
                     text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 1.5))
-                    screen.blit(text,(0,height-80))
-
+                    screen.blit(text,(0,height-30))
+            if event.key == pygame.K_m:
+                pygame.mixer.music.stop()
+                music_muted = True
         if event.type == pygame.KEYDOWN and main_page_exists == False and game_end == False:
             # 要確認main_page不存在（未進入主程序）才進行以下操作（因為以下操作是進行選兵操作的）
             if event.key == pygame.K_s:
