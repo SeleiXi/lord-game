@@ -29,7 +29,7 @@ background-color:white
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -171,6 +171,7 @@ p, li { white-space: pre-wrap; }
      </property>
      <addaction name="actionDiscord"/>
      <addaction name="actionEmail"/>
+     <addaction name="actionGithub"/>
      <addaction name="actionQQ"/>
     </widget>
     <addaction name="menu"/>
@@ -191,6 +192,11 @@ p, li { white-space: pre-wrap; }
   <action name="actionEmail">
    <property name="text">
     <string>Email:bzhanthresh@gmail.com</string>
+   </property>
+  </action>
+  <action name="actionGithub">
+   <property name="text">
+    <string>Github:SeleiXi</string>
    </property>
   </action>
  </widget>

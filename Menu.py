@@ -47,6 +47,10 @@ class window():
         self.ui.menu.addAction(actionEmail)  
         actionEmail.triggered.connect(self.mailto_me)
 
+        actionGithub = self.ui.actionGithub
+        self.ui.menu.addAction(actionGithub)  
+        actionGithub.triggered.connect(self.github_link)
+
     def menuClick(self):
         global i 
         i +=1
@@ -71,7 +75,8 @@ class window():
         webbrowser.open("tencent://message/?uin=1632845225&Site=&Menu=yes")
     def mailto_me(self):
         webbrowser.open("mailto:SeleiXi<bzhanthresh@gmail.com>")
-
+    def github_link():
+        webbrowser.open("github.com/seleixi")
 
 
         

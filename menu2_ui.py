@@ -32,6 +32,8 @@ class Ui_MainWindow(object):
         self.actionDiscord.setObjectName(u"actionDiscord")
         self.actionEmail = QAction(MainWindow)
         self.actionEmail.setObjectName(u"actionEmail")
+        self.actionGithub = QAction(MainWindow)
+        self.actionGithub.setObjectName(u"actionGithub")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout = QVBoxLayout(self.centralwidget)
@@ -124,11 +126,12 @@ class Ui_MainWindow(object):
         self.menuMade_By_SeleiXI.addAction(self.menu.menuAction())
         self.menu.addAction(self.actionDiscord)
         self.menu.addAction(self.actionEmail)
+        self.menu.addAction(self.actionGithub)
         self.menu.addAction(self.actionQQ)
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -139,6 +142,7 @@ class Ui_MainWindow(object):
         self.actionQQ.setText(QCoreApplication.translate("MainWindow", u"QQ:1632845225", None))
         self.actionDiscord.setText(QCoreApplication.translate("MainWindow", u"Discord:SeleiXi", None))
         self.actionEmail.setText(QCoreApplication.translate("MainWindow", u"Email:bzhanthresh@gmail.com", None))
+        self.actionGithub.setText(QCoreApplication.translate("MainWindow", u"Github:SeleiXi", None))
         self.label.setText("")
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("MainWindow", u"Home Page", None))
         self.textBrowser.setDocumentTitle("")
