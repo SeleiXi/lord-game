@@ -2,17 +2,16 @@
 # 不規範處：部分用駝峰命名法，部分變量如XUANer不符合命名法，branch名字應該改為master，部分地方可以函數化
 
 
-# bug：173行fight函數，有時候會默認到最後一個num，導致判定是最後一個角色減血（猜測：1.扣血時扣錯了，2.顯示時顯示錯了 3.scale轉換時轉換到了另外一個key的值）
-# +切換時扣血的仍然是最後一個，
-# 有時候甚至會把玄者和鴿子搞混
-# bug：player被刪除後，應該自動切換到下一個角色（重新draw一個？）
 
+# bug：player被刪除後，應該自動切換到下一個角色（重新draw一個？）
 
 # 重要
 # 設置通關後的評分（輸出 恭喜通關！（這個用PS），你的評級是：）
 # （2鴿最少，其次是1鴿1玄（一下只扣20的話，只需要140血即可通關，因此通用），其次2玄，再低的話就是【不錯了】）
 # 增加函數和意思模糊的變量的注釋
 # 選兵不需要從左到右，選完下面會顯示已經選擇了什麼
+# 玄者改名（太中二+命名法）+ 取消鏈接起點（）
+# 背景設定重新寫，但可以說借鑒曾經寫的小說+完整的背景增加到面試準備QS，文學化：生靈塗炭..
 
 # 可增加處/改善處
 # 修改背景介紹減少中二化
@@ -20,7 +19,7 @@
 # 添加音樂
 # 第一個圖標後面有黑色背景
 # menu增加更多東西
-# 選兵界面字體太粗，看不清
+# 選兵界面字體太粗，看不清（考慮更換字體）
 # 本地自動儲存通關記錄txt
 # 有可能5轮也有可能六轮
 # 做BGM以及配音
@@ -46,7 +45,6 @@ icon = pygame.image.load("icons/chigua.png").convert() # 唔convert都得，conv
 start_menu = pygame.image.load("icons/start_menu.png").convert()
 pygame.display.set_icon(icon)
 pygame.display.set_caption('靈道源尊')
-# f = pygame.font.SysFont("",30)
 f = pygame.font.Font('fonts/MiSans-Heavy.ttf',40)
 f_small = pygame.font.Font('fonts/MiSans-Heavy.ttf',20)
 screen.blit(start_menu,(0,0))
@@ -69,6 +67,49 @@ mini_dover = pygame.transform.scale(dover,(50,50))
 main_page_rect = main_page.get_rect()
 HP = pygame.image.load("icons/HP.png")
 HP = pygame.transform.scale(HP,(100,30))
+num_list = []
+auto_dover_list = ['A0','A1','A2','A3','A4']
+auto_XUANer_list = ['B0','B1','B2','B3',]
+character_dict = {}
+dover_list = []
+XUANer_list = []
+right_move_status = False
+left_move_status = False
+fullScreen = False
+start_button = (pygame.Rect(280, 270, 234, 60))
+setting_finish = False
+choosing = False
+First_run = False
+money = 300
+# 儲存7個enemy分別是enemy1還是enemy2的順序
+enemy_list = []
+# 儲存各個enemy的實例（裡面有各個enemy的屬性如x坐標）
+enemy_sample_list = []
+# 因為event.key裡面的pygame.K_1到K5分別對應這5個數字，所以需要對應角色序號和當用戶點擊1-5時所得到的event.key來知道對應點擊的是什麼角色
+pykey = {
+    1:49,
+    2:50,
+    3:51,
+    4:52,
+    5:53,
+}
+frequency = 0
+choosing_start = False
+enemy_x_position = []
+# 記錄7個enemy的x坐標（平均分佈在地圖七個位置）
+for i in range(1,7+1):
+    enemy_x_position.append((map_width//7)*i)
+# 隨機一個enemy_list
+for random_enemy_frequency in range(7):
+    x = random.randint(1,2)
+    if x == 1:
+        enemy_list.append("enemy_1")
+    else:
+        enemy_list.append("enemy_2")
+
+Watching_chance = 1
+last_num = 0
+last_y_index = 0
 
 
 # class Stats:
@@ -196,7 +237,6 @@ def fight():
         if character_dict[key]["int_num"] == now_num:
            break
     # 在不同兵種遇到不同敵人時，HP減的程度（待做：把數額改為減去的圖標百分比（前面設置這個百分比為100，然後固定減，if判定檢測到減到0了就pop這個角色））
-    print("扣血者：",key)
     if enemy_list[0] == "enemy_1":
         if now == "XUANer":
             character_dict[key]["HP_percentage"] -= 80
@@ -210,19 +250,31 @@ def fight():
     if character_dict[key]["HP_percentage"] <= 0:
         del character_dict[key]
         now_num += 1
+        # all_sprites = pygame.sprite.Group()
+        # if dover_list == []:
+        #     player = Player(XUANer)
+        #     all_sprites.add(player)
+        #     now = "XUANer"
+        # if key.startswith("A"):
+        #     player = Player(dover)
+        #     now = dover
+        #     dover_list.pop(0)
+        # else:
+        #     player = Player(XUANer)
+        #     now = XUANer
+        #     XUANer_list.pop(0)
+        # all_sprites.add(player)
+        # all_sprites.update('r')
+        # all_sprites.update('l')
         if character_dict == {}:
             fail_ending()
             
-        else:
-            next_key = next(iter(character_dict.keys()))
-        if next_key.startswith("A"):
-            screen.blit(dover,(350,490))
-            now = "dover"
-        if next_key.startswith("B"):
-            screen.blit(XUANer,(350,490))
-            now = "XUANer"
-        # debug用，看看是否改變了
-        pygame.display.flip()
+        # else:
+        #     if now == "dover":
+        #         screen.blit(dover,(350,490))
+        #     else:
+        #         screen.blit(XUANer,(350,490))   
+        # print(dover_list)
         
     enemy_x_position.pop(0)
     enemy_list.pop(0)
@@ -264,52 +316,10 @@ def choosing_mode_entering():
 
 def fail_ending():
     print("fail")  
-    sys.exit()
+    import main
 def win_ending():
+    print("win")
     import main    
-num_list = []
-auto_dover_list = ['A0','A1','A2','A3','A4']
-auto_XUANer_list = ['B0','B1','B2','B3',]
-character_dict = {}
-dover_list = []
-XUANer_list = []
-right_move_status = False
-left_move_status = False
-fullScreen = False
-start_button = (pygame.Rect(280, 270, 234, 60))
-setting_finish = False
-choosing = False
-First_run = False
-money = 300
-# 儲存7個enemy分別是enemy1還是enemy2的順序
-enemy_list = []
-# 儲存各個enemy的實例（裡面有各個enemy的屬性如x坐標）
-enemy_sample_list = []
-# 因為event.key裡面的pygame.K_1到K5分別對應這5個數字，所以需要對應角色序號和當用戶點擊1-5時所得到的event.key來知道對應點擊的是什麼角色
-pykey = {
-    1:49,
-    2:50,
-    3:51,
-    4:52,
-    5:53,
-}
-frequency = 0
-choosing_start = False
-enemy_x_position = []
-# 記錄7個enemy的x坐標（平均分佈在地圖七個位置）
-for i in range(1,7+1):
-    enemy_x_position.append((map_width//7)*i)
-# 隨機一個enemy_list
-for random_enemy_frequency in range(7):
-    x = random.randint(1,2)
-    if x == 1:
-        enemy_list.append("enemy_1")
-    else:
-        enemy_list.append("enemy_2")
-
-Watching_chance = 1
-last_num = 0
-last_y_index = 0
 
 while True: 
     frequency += 1
@@ -418,6 +428,7 @@ while True:
 
         # 進入主程序
         if event.type == pygame.KEYDOWN and main_page_exists == True:
+            # 進入主程序後只會執行一次
             if First_run == False:
                 all_sprites = pygame.sprite.Group()
                 now_num = 1
@@ -520,7 +531,7 @@ while True:
                 #     print("B0的HP比例為：",character_dict["B0"]["HP_percentage"])
                 # except:
                 #     pass
-                # break
+                break
     pygame.display.flip() 
 
 
