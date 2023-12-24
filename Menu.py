@@ -14,7 +14,7 @@ now = os.getcwd()
 winshell.CreateShortcut(
         Path=shortcut,   # lnk的路徑
         Target=f"{now}/run.exe", # 欲覆制的目標文件路徑
-        Icon=(f"{now}/chigua.ico", 0), 
+        Icon=(f"{now}/icons/chigua.ico", 0), 
         Description="Lord_Game", #lnk的描述
         StartIn = now
         
