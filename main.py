@@ -413,14 +413,42 @@ while True:
 
         if choosing == True and game_end == False:
             # 把選擇界面的各個圖像都blit/draw上去
-            input1 = inputbox.dealEvent(event)
-            # inputbox1_text = txt
-            # print(inputbox1_text)
+            
+            # 將input_box draw上去，以及獲取inputbox的數字（默認賦值為0）然後將其draw上去
+            # input1 = 0
+            # input2 = 0
+
+            # 圖像化input1框裡面獲得的數字，隨後將其draw到對應位置
+
+  
+
+
+            
+                
             inputbox.draw(screen)
-            input2 = inputbox2.dealEvent(event)
+            if not str(inputbox.dealEvent(event)).isdigit():
+                input1_num = 0
+            else:
+                input1_num = inputbox.dealEvent(event)      
+                if not previous_input1_num == input1_num:
+                    previous_input1_num = input1_num
+                    choosing_mode_entering()
+            input1 = f.render(str(input1_num),True,(0,0,50))
+
             inputbox2.draw(screen) 
-            # inputbox2_text = txt
-            # print(inputbox2_text)
+            if not str(inputbox2.dealEvent(event)).isdigit():
+                input2_num = 0
+            else:
+                input2_num = inputbox.dealEvent(event)   
+                if not previous_input1_num == input1_num:
+                    previous_input1_num = input1_num
+                    choosing_mode_entering()
+            input2 = f.render(str(input2_num),True,(0,0,50))   
+            previous_input1_num = input1
+            previous_input2_num = input2
+            screen.blit(input1,(281,410))
+            screen.blit(input2,(564,410))
+
             while first_choosing == False:
                 text = f.render("輸入兵種數目並輸入enter(注意需要從左到右執行),輸入S重置界面",True,(0,0,50))
                 text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // (1.5)))
@@ -455,7 +483,12 @@ while True:
             elif event.key == pygame.K_f and game_end == False:
                 # 進入遊戲時的初始化（角色，角色HP等等）
                     text = f.render("Text",True,(255,0,0),(0,0,0))
-                    total_cost = num_list[0]*80 + num_list[1]*100
+                    try:
+                        total_cost = num_list[0]*80 + num_list[1]*100
+                    except:
+                        text = f.render("請完成所有輸入",True,(255,0,0),(0,0,0))
+                        screen.blit(text,(510,546))
+                        break
                     if total_cost <=300:
                         money -= total_cost
                         for i in range(num_list[0]):
