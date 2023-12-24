@@ -6,6 +6,8 @@ from PySide2.QtUiTools import *
 from threading import Thread
 import os,winshell
 from PySide2.QtCore import Signal,QObject
+import webbrowser
+
 i = 1
 shortcut = os.path.join(winshell.desktop(), "Lord_Game" + ".lnk") #設置lnk的目的路徑
 now = os.getcwd()
@@ -31,6 +33,20 @@ class window():
         # x.action123.triggered.connect(self.menuClick)
         i = "Normal"
         self.ui.statusbar.showMessage(f'Status = {i}')
+
+        # 鏈接【聯繫作者】中的各個項目
+        actionDiscord = self.ui.actionDiscord
+        self.ui.menu.addAction(actionDiscord)  
+        actionDiscord.triggered.connect(self.discord_link)
+
+        actionQQ = self.ui.actionQQ
+        self.ui.menu.addAction(actionQQ)  
+        actionQQ.triggered.connect(self.QQ_link)
+
+        actionEmail = self.ui.actionEmail
+        self.ui.menu.addAction(actionEmail)  
+        actionEmail.triggered.connect(self.mailto_me)
+
     def menuClick(self):
         global i 
         i +=1
@@ -49,6 +65,16 @@ class window():
         # self.ui.pushButton_2.setEnabled(False)
     def set_value_func(self):
         self.ui.progressBar.setValue(70)
+    def discord_link(self):
+        webbrowser.open("https://discord.com/users/700623146197450855")
+    def QQ_link(self):
+        webbrowser.open("tencent://message/?uin=1632845225&Site=&Menu=yes")
+    def mailto_me(self):
+        webbrowser.open("mailto:SeleiXi<bzhanthresh@gmail.com>")
+
+
+
+        
     def challenge_mode(self):
         def func1():
             import main
