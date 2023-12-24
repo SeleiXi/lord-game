@@ -17,6 +17,7 @@
 # “以鼠標點擊進入選兵界面”，以鼠標代替enter來選兵，
 # watching_mode可以創意化
 # 未利用到sprite的碰撞等函數，在x y坐標都可以移動的遊戲裡這種算法不利
+# func待加入：遊戲中按m靜音音樂（不只是選擇界面中）
 
 import sys
 import pygame
@@ -440,6 +441,10 @@ while True:
             text = f.render("輸入W進入觀察模式(檢查敵人構成),輸入M關閉音樂",True,(0,0,50))
             text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 1.5))
             screen.blit(text,(0,25))
+            if Watching_chance == 0:
+                text = f.render("觀察機會已耗盡",True,(0,0,50))
+                text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 1.5))
+                screen.blit(text,(0,height-30))
             # inputbox2_text = txt
             # print(inputbox2_text)
             while first_choosing == False:
