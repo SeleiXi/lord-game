@@ -1,5 +1,5 @@
 # 【待完成】 / # 需改
-# 不規範處：部分用駝峰命名法，部分變量如XUANer不符合命名法，branch名字應該改為master，部分地方可以函數化
+# 不規範處：部分用駝峰命名法，部分變量如Killer不符合命名法，branch名字應該改為master，部分地方可以函數化
 
 
 
@@ -55,24 +55,24 @@ money_pic = pygame.image.load("icons/money.png").convert()
 dover_original = pygame.image.load("icons/dover.png")
 selecting_page = pygame.image.load("icons/selecting_page.png")
 dover = pygame.transform.scale(dover_original,(80,70))
-XUANer = pygame.image.load("icons/XUANer.png")
-XUANer = pygame.transform.scale(XUANer,(80,70))
+Killer = pygame.image.load("icons/Killer.png")
+Killer = pygame.transform.scale(Killer,(80,70))
 enemy_1 = pygame.image.load("icons/enemy_1.jpg")
 enemy_1 = pygame.transform.scale(enemy_1,(50,50))
 enemy_2 = pygame.image.load("icons/enemy_2.jpg")
 enemy_2 = pygame.transform.scale(enemy_2,(50,50))
 # 用作上方的圖標顯示
-mini_XUANer = pygame.transform.scale(XUANer,(50,50))
+mini_Killer = pygame.transform.scale(Killer,(50,50))
 mini_dover = pygame.transform.scale(dover,(50,50))
 main_page_rect = main_page.get_rect()
 HP = pygame.image.load("icons/HP.png")
 HP = pygame.transform.scale(HP,(100,30))
 num_list = []
 auto_dover_list = ['A0','A1','A2','A3','A4']
-auto_XUANer_list = ['B0','B1','B2','B3',]
+auto_Killer_list = ['B0','B1','B2','B3',]
 character_dict = {}
 dover_list = []
-XUANer_list = []
+Killer_list = []
 right_move_status = False
 left_move_status = False
 fullScreen = False
@@ -238,42 +238,57 @@ def fight():
            break
     # 在不同兵種遇到不同敵人時，HP減的程度（待做：把數額改為減去的圖標百分比（前面設置這個百分比為100，然後固定減，if判定檢測到減到0了就pop這個角色））
     if enemy_list[0] == "enemy_1":
-        if now == "XUANer":
+        if now == "Killer":
             character_dict[key]["HP_percentage"] -= 80
         elif now == "dover":
             character_dict[key]["HP_percentage"] -= 20
     elif enemy_list[0] == "enemy_2":
-        if now == "XUANer":
+        if now == "Killer":
             character_dict[key]["HP_percentage"] -= 20
         elif now == "dover":
             character_dict[key]["HP_percentage"] -= 80
     if character_dict[key]["HP_percentage"] <= 0:
         del character_dict[key]
         now_num += 1
+        for key in character_dict:
+            if key.startswith("A"):
+                now = "dover"
+            elif key.startswith("B"):
+                now = "Killer"
+        print(player)
+        print(all_sprites)
+        # all_sprites.remove(player)
+        # all_sprites.update("l")
+        # all_sprites.draw(screen)
+        pygame.display.flip()
+        # player.remove()
+        # player.update("r")
+
+        # Test
         # all_sprites = pygame.sprite.Group()
-        # if dover_list == []:
-        #     player = Player(XUANer)
-        #     all_sprites.add(player)
-        #     now = "XUANer"
+        # # if dover_list == []:
+        # player = Player(Killer)
+        # now = "Killer"
         # if key.startswith("A"):
         #     player = Player(dover)
         #     now = dover
         #     dover_list.pop(0)
         # else:
-        #     player = Player(XUANer)
-        #     now = XUANer
-        #     XUANer_list.pop(0)
+        #     player = Player(Killer)
+        #     now = Killer
+        #     Killer_list.pop(0)
         # all_sprites.add(player)
         # all_sprites.update('r')
         # all_sprites.update('l')
+        
         if character_dict == {}:
             fail_ending()
             
         # else:
-        #     if now == "dover":
-        #         screen.blit(dover,(350,490))
-        #     else:
-        #         screen.blit(XUANer,(350,490))   
+            # if now == "dover":
+            #     screen.blit(dover,(350,490))
+            # else:
+                # screen.blit(now,(350,490))   
         # print(dover_list)
         
     enemy_x_position.pop(0)
@@ -319,7 +334,7 @@ def fail_ending():
     sys.exit()
 def win_ending():
     print("win")
-    import menu   
+    import main
 
 while True: 
     frequency += 1
@@ -379,22 +394,22 @@ while True:
                             last_y_index = (i+1)*50
                             last_num = i+1
                         for i in range(num_list[1]):
-                            XUANer_list.append(auto_XUANer_list[i])
+                            Killer_list.append(auto_Killer_list[i])
                             HP = pygame.image.load("icons/HP.png")
                             HP = pygame.transform.scale(HP,(100,30))
-                            character_dict[auto_XUANer_list[i]] = {}
-                            character_dict[auto_XUANer_list[i]]["HP"] = HP
-                            character_dict[auto_XUANer_list[i]]["num"] = f.render(str(i+last_num+1),True,(255,0,0))
-                            character_dict[auto_XUANer_list[i]]["int_num"] = i+last_num+1
-                            character_dict[auto_XUANer_list[i]]["y_index"] = i*50+last_y_index+50
-                            character_dict[auto_XUANer_list[i]]["HP_percentage"] = 100
+                            character_dict[auto_Killer_list[i]] = {}
+                            character_dict[auto_Killer_list[i]]["HP"] = HP
+                            character_dict[auto_Killer_list[i]]["num"] = f.render(str(i+last_num+1),True,(255,0,0))
+                            character_dict[auto_Killer_list[i]]["int_num"] = i+last_num+1
+                            character_dict[auto_Killer_list[i]]["y_index"] = i*50+last_y_index+50
+                            character_dict[auto_Killer_list[i]]["HP_percentage"] = 100
                         setting_finish = True
                         main_page_exists = True
                         choosing = False
                         screen.blit(main_page,(0,0))
                         screen.blit(money_pic,(0,0))
                         if dover_list == []:
-                            screen.blit(XUANer,(350,490))
+                            screen.blit(Killer,(350,490))
                         else:
                             screen.blit(dover,(350,490))
                         x = 0
@@ -433,9 +448,9 @@ while True:
                 all_sprites = pygame.sprite.Group()
                 now_num = 1
                 if dover_list == []:
-                    player = Player(XUANer)
+                    player = Player(Killer)
                     all_sprites.add(player)
-                    now = "XUANer"
+                    now = "Killer"
                     # 此處需要Blit一個sprite
                 else:
                     player = Player(dover)
@@ -468,11 +483,11 @@ while True:
 
                             break
                         elif key.startswith("B"):
-                            player = Player(XUANer)
+                            player = Player(Killer)
                             all_sprites.add(player)
                             all_sprites.update('r')
                             all_sprites.update('l')
-                            now = "XUANer"
+                            now = "Killer"
                             break
                 
             # 向右走
@@ -498,6 +513,10 @@ while True:
             move_status = False
         # 每走一次，都會使得畫面刷新，因此所有的圖像需要根據他們的數值重新blit一次
         for key,value in character_dict.items():
+            if now == "dover":
+                screen.blit(dover,(350,490))   
+            elif now == "Killer":
+                screen.blit(Killer,(350,490))
             screen.blit(money_pic,(0,0))
             screen.blit(f.render(str(money),True,(255,0,0)),(50,0))
             y_index = int(character_dict[key]["y_index"])
@@ -514,7 +533,7 @@ while True:
                 # screen.blit(HP_percentage_icon,(100+50,y_index,character_dict[key]["HP_percentage"],50))
             else:
                 screen.blit(text,(0,y_index))
-                screen.blit(mini_XUANer,(50,y_index))
+                screen.blit(mini_Killer,(50,y_index))
                 screen.blit(HP,(100,y_index))
                 # screen.blit(HP_percentage,(100+50,y_index,character_dict[key]["HP_percentage"],50))
             for enemy_object in enemy_sample_list:
