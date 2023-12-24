@@ -1,26 +1,20 @@
 # 【待完成】 / # 需改
 # 不規範處：部分用駝峰命名法，部分變量不符合命名法，branch名字應該改為master，部分地方可以函數化
-
-
-
 # bug：player被刪除後，應該自動切換到下一個角色（重新draw一個？）
 
 # 重要
-# 設置通關後的評分（輸出 恭喜通關！（用PS），你的評級是：）
-# （2鴿最少，其次是1鴿1玄（一下只扣20的話，只需要140血即可通關，因此通用），其次2玄，再低的話就是【不錯了】）
 # 增加函數和意思模糊的變量的注釋
 # 選兵不需要從左到右，選完下面會顯示已經選擇了什麼
 # 背景設定重新寫，但可以說借鑒曾經寫的小說+完整的背景增加到面試準備QS，文學化：生靈塗炭..
 
 # 可增加處/改善處
 
-# 添加音樂
+# 改為合適的音樂,通關和失敗也有對應不同的音樂
 # 第一個圖標後面有黑色背景
 # menu增加更多東西
 # 選兵界面字體太粗，看不清（考慮更換字體）
 # 本地自動儲存通關記錄txt
 # 有可能5轮也有可能六轮
-# 做BGM以及配音
 # 增加不同的模式
 
 import sys
@@ -111,6 +105,12 @@ for random_enemy_frequency in range(7):
 Watching_chance = 1
 last_num = 0
 last_y_index = 0
+
+# 加載音樂（最後一句是設置持續播放音樂時會觸發的函數）
+pygame.mixer.init()
+pygame.mixer.music.load("music/background_music.mp3")
+pygame.mixer.music.play()
+pygame.mixer.music.set_endevent(pygame.USEREVENT)
 
 
 # class Stats:
@@ -371,6 +371,10 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+        # 音樂結束時繼續播放音樂
+        elif event.type == pygame.USEREVENT:
+            pygame.mixer.music.play()
+
         if choosing == True and game_end == False:
             # 把選擇界面的各個圖像都blit/draw上去
             inputbox.dealEvent(event)
