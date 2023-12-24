@@ -75,7 +75,7 @@ class window():
         webbrowser.open("tencent://message/?uin=1632845225&Site=&Menu=yes")
     def mailto_me(self):
         webbrowser.open("mailto:SeleiXi<bzhanthresh@gmail.com>")
-    def github_link():
+    def github_link(self):
         webbrowser.open("github.com/seleixi")
 
 

@@ -1,7 +1,7 @@
 # 【待完成】 / # 需改
 # 不規範處：部分用駝峰命名法，部分變量如WHITE,XUANer不符合命名法，文件名如Menu不應該大寫，branch名字應該改為master，部分地方可以函數化，注釋加的不夠多，部分變量名意思模糊
-# 走前：加注釋
-
+# 走前：加注釋（免得以後想改的時候忘了是怎麼做的）,修改背景介紹別這麼中二,不需要從左到右
+# 處理HP<=0情況，應該刪除掉player，生命值未有隨減少而改變進度條
 import sys
 import pygame
 pygame.init()
@@ -41,6 +41,8 @@ enemy_2 = pygame.transform.scale(enemy_2,(50,50))
 mini_XUANer = pygame.transform.scale(XUANer,(50,50))
 mini_dover = pygame.transform.scale(dover,(50,50))
 main_page_rect = main_page.get_rect()
+HP = pygame.image.load("icons/HP.png")
+HP = pygame.transform.scale(HP,(100,30))
 
 
 from PySide2.QtWidgets import QApplication, QMessageBox
@@ -160,21 +162,22 @@ class InputBox:
 def fight():
     for key in character_dict:
         if character_dict[key]["int_num"] == now_num:
-           object_num = key
            break
     # 在不同兵種遇到不同敵人時，HP減的程度（待做：把數額改為減去的圖標百分比（前面設置這個百分比為100，然後固定減，if判定檢測到減到0了就pop這個角色））
     if enemy_list[0] == "enemy_1":
         if now == "XUANer":
-            # character_dict[object_num]["HP"] = pygame.transform.scale(surface, (scaled_width-20%, scaled_height))
-            pass
-    
+            character_dict[key]["HP_percentage"] -= 80
+            HP = pygame.transform.scale(enemy_1,(character_dict[key]["HP_percentage"],50))
         elif now == "dover":
-            character_dict[object_num]["HP"] -= 20
+            character_dict[key]["HP_percentage"] -= 20
+            HP = pygame.transform.scale(enemy_1,(character_dict[key]["HP_percentage"],50))
     elif enemy_list[0] == "enemy_2":
         if now == "XUANer":
-            character_dict[object_num]["HP"] -= 20
+            character_dict[key]["HP_percentage"] -= 20
+            HP = pygame.transform.scale(enemy_1,(character_dict[key]["HP_percentage"],50))
         elif now == "dover":
-            character_dict[object_num]["HP"] -= 80
+            character_dict[key]["HP_percentage"] -= 80
+            HP = pygame.transform.scale(enemy_1,(character_dict[key]["HP_percentage"],50))
     enemy_x_position.pop(0)
     enemy_list.pop(0)
     enemy_sample_list.pop(0)
@@ -225,7 +228,7 @@ start_button = (pygame.Rect(280, 270, 234, 60))
 setting_finish = False
 choosing = False
 First_run = False
-money = 1000
+money = 400
 enemy_list = []
 enemy_sample_list = []
 pykey = {
@@ -297,27 +300,27 @@ while True:
                     total_cost = num_list[0]*80 + num_list[1]*100
                     if total_cost <=400:
                         money -= total_cost
-                        for i in range(1,num_list[0]+1):
+                        for i in range(num_list[0]):
                             dover_list.append(auto_dover_list[i])
-                            HP = pygame.image.load("icons/HP.png")
-                            HP = pygame.transform.scale(HP,(100,30))
                             character_dict[auto_dover_list[i]] = {}
                             # 嵌套字典裝該角色的屬性
                             character_dict[auto_dover_list[i]]["HP"] = HP
-                            character_dict[auto_dover_list[i]]["num"] = f.render(str(i),True,(255,0,0),(0,0,0))
-                            character_dict[auto_dover_list[i]]["int_num"] = i
-                            character_dict[auto_dover_list[i]]["y_index"] = i*50
-                            last_y_index = i*50
-                            last_num = i
-                        for i in range(1,num_list[1]+1):
+                            character_dict[auto_dover_list[i]]["num"] = f.render(str(i+1),True,(255,0,0),(0,0,0))
+                            character_dict[auto_dover_list[i]]["int_num"] = i+1
+                            character_dict[auto_dover_list[i]]["y_index"] = (i+1)*50
+                            character_dict[auto_dover_list[i]]["HP_percentage"] = 100
+                            last_y_index = (i+1)*50
+                            last_num = i+1
+                        for i in range(num_list[1]):
                             XUANer_list.append(auto_XUANer_list[i])
                             HP = pygame.image.load("icons/HP.png")
                             HP = pygame.transform.scale(HP,(100,30))
                             character_dict[auto_XUANer_list[i]] = {}
                             character_dict[auto_XUANer_list[i]]["HP"] = HP
-                            character_dict[auto_XUANer_list[i]]["num"] = f.render(str(i+last_num),True,(255,0,0))
-                            character_dict[auto_XUANer_list[i]]["int_num"] = i+last_num
-                            character_dict[auto_XUANer_list[i]]["y_index"] = i*50+last_y_index
+                            character_dict[auto_XUANer_list[i]]["num"] = f.render(str(i+last_num+1),True,(255,0,0))
+                            character_dict[auto_XUANer_list[i]]["int_num"] = i+last_num+1
+                            character_dict[auto_XUANer_list[i]]["y_index"] = i*50+last_y_index+50
+                            character_dict[auto_XUANer_list[i]]["HP_percentage"] = 100
                         setting_finish = True
                         main_page_exists = True
                         choosing = False
@@ -344,7 +347,7 @@ while True:
                                 
                     else:
                         event.key = pygame.K_s
-                        text = f.render("請輸入所需不超過1000金幣的兵種構成，火鴿子:$80,玄者:$100（規則在ui菜單中）",True,(0,0,50))
+                        text = f.render("請輸入所需不超過400金幣的兵種構成，火鴿子:$80,玄者:$100（規則在ui菜單中）",True,(0,0,50))
                         text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 1.5))
                         screen.blit(text,(0,height-60))
                 # except:
@@ -429,14 +432,15 @@ while True:
             y_index = int(character_dict[key]["y_index"])
             text = character_dict[key]["num"]
             HP = character_dict[key]["HP"]
+            HP_percentage = character_dict[key]["HP_percentage"]
             if key.startswith("A"):
                 screen.blit(text,(0,y_index))
                 screen.blit(mini_dover,(50,y_index))
-                screen.blit(HP,(100,y_index,100,50))
+                screen.blit(HP,(100,y_index,character_dict[key]["HP_percentage"],50))
             else:
                 screen.blit(text,(0,y_index))
                 screen.blit(mini_XUANer,(50,y_index))
-                screen.blit(HP,(100,y_index,50,100))
+                screen.blit(HP,(100,y_index,character_dict[key]["HP_percentage"],100))
             for enemy_object in enemy_sample_list:
                 if enemy_object.name == "enemy_1":
                     screen.blit(enemy_1,(enemy_object.rect.x,enemy_object.rect.y))
