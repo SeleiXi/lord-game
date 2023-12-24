@@ -9,13 +9,15 @@ from PySide2.QtCore import Signal,QObject
 import webbrowser
 
 i = 1
-shortcut = os.path.join(winshell.desktop(), "Lord_Game" + ".lnk") #設置lnk的目的路徑
+
+# 自動在桌面設置快捷方式，並設置快捷方式的icon等
+shortcut = os.path.join(winshell.desktop(), "Lord_Game" + ".lnk") 
 now = os.getcwd()
 winshell.CreateShortcut(
-        Path=shortcut,   # lnk的路徑
-        Target=f"{now}/run.exe", # 欲覆制的目標文件路徑
+        Path=shortcut,  
+        Target=f"{now}/lord_game.exe", # 或run.exe
         Icon=(f"{now}/icons/chigua.ico", 0), 
-        Description="Lord_Game", #lnk的描述
+        Description="Lord_Game", 
         StartIn = now
         
     )
@@ -26,6 +28,7 @@ class window():
     def __init__(self) -> None:
         self.ui = QUiLoader().load("menu2.ui")
         x = self.ui
+        # origin_version/speedrun_mode是原本的非圖形界面版本，已經刪除，在main這個branch裡面有源文件
         # self.ui.pushButtonOringinal.clicked.connect(self.oringinal_version)
         self.ui.pushButtonChallengeMode.clicked.connect(self.challenge_mode)
         # self.ui.pushButtonSpeedMode.clicked.connect(self.speed_mode)

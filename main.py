@@ -1,19 +1,22 @@
 # 【待完成】 / # 需改
 # 不規範處：部分用駝峰命名法，部分變量如WHITE,XUANer不符合命名法，文件名如Menu不應該大寫，branch名字應該改為master，部分地方可以函數化，注釋加的不夠多，部分變量名意思模糊
-# 走前：加注釋（免得以後想改的時候忘了是怎麼做的）,修改背景介紹別這麼中二,不需要從左到右
+# 走前：修改背景介紹別這麼中二,選兵不需要從左到右，添加音樂
 # 處理HP<=0情況，應該刪除掉player，生命值未有隨減少而改變進度條
+# 到地圖某個點的時候結算遊戲
+
 import sys
 import pygame
+from PySide2.QtWidgets import QApplication, QMessageBox
+from PySide2.QtUiTools import QUiLoader
+import time
+import random
+# from threading import Thread
+
 pygame.init()
 width = 800
 height = 600
 map_width = 3200
 map_height = 600
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-BLUE = (0, 0, 255)
 screen = pygame.display.set_mode((width,height),flags=0)
 surface = screen
 icon = pygame.image.load("icons/chigua.png").convert()
@@ -24,7 +27,6 @@ pygame.display.set_caption('靈道源尊')
 f = pygame.font.Font('Fonts/MiSans-Heavy.ttf',40)
 f_small = pygame.font.Font('Fonts/MiSans-Heavy.ttf',20)
 screen.blit(start_menu,(0,0))
-import time
 clock = pygame.time.Clock()
 main_page_exists = False
 main_page = pygame.image.load("icons/main_page.png").convert()
@@ -45,27 +47,25 @@ HP = pygame.image.load("icons/HP.png")
 HP = pygame.transform.scale(HP,(100,30))
 
 
-from PySide2.QtWidgets import QApplication, QMessageBox
-from PySide2.QtUiTools import QUiLoader
-class Stats:
-    # 治療面板
-    def __init__(self):
-        self.ui = QUiLoader().load('cure.ui')
-        self.ui.pushButton.clicked.connect(self.cure)
+# class Stats:
+#     # 治療面板（已取消，呢個版本唔設置cure function）
+#     def __init__(self):
+#         self.ui = QUiLoader().load('cure.ui')
+#         self.ui.pushButton.clicked.connect(self.cure)
             
         
-    def cure(self):
-        global money,character_dict
-        number  = self.ui.spinBox.value()
-        if number<=money:
-            pass
+#     def cure(self):
+#         global money,character_dict
+#         number  = self.ui.spinBox.value()
+#         if number<=money:
+#             pass
 
-def cure_interface():
-    app = QApplication([])
-    stats = Stats()
-    stats.ui.show()
-    app.exec_()
-# from threading import Thread
+# def cure_interface():
+#     app = QApplication([])
+#     stats = Stats()
+#     stats.ui.show()
+#     app.exec_()
+
 # thread = Thread(target=cure_interface)
 # thread.start()
 
@@ -78,10 +78,11 @@ class Player(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image = image
         self.rect = self.image.get_rect()
+        # 友軍角色的xy坐標都需要始終處於地圖中央
         self.rect.x = 350
         self.rect.y = 490
 
-
+    # 根據移動的方向（通過鍵盤輸入a/d檢測）來移動地區的x坐標，從而實現移動
     def update(self,direction):
         global move_status
         if direction == 'r':
@@ -98,6 +99,7 @@ class Player(pygame.sprite.Sprite):
                 all_sprites.draw(screen)
                 for enemy_sample in enemy_sample_list:
                     enemy_sample.rect.x +=3
+            # 設置最左邊邊界，不需要設置右邊，因為到右邊的某個點自動會結算遊戲
             else:
                 main_page_rect.x = 150
                 x = 0
@@ -164,6 +166,7 @@ def fight():
         if character_dict[key]["int_num"] == now_num:
            break
     # 在不同兵種遇到不同敵人時，HP減的程度（待做：把數額改為減去的圖標百分比（前面設置這個百分比為100，然後固定減，if判定檢測到減到0了就pop這個角色））
+    print(key)
     if enemy_list[0] == "enemy_1":
         if now == "XUANer":
             character_dict[key]["HP_percentage"] -= 80
@@ -225,8 +228,11 @@ setting_finish = False
 choosing = False
 First_run = False
 money = 400
+# 儲存7個enemy分別是enemy1還是enemy2的順序
 enemy_list = []
+# 儲存各個enemy的實例（裡面有各個enemy的屬性如x坐標）
 enemy_sample_list = []
+# 因為event.key裡面的pygame.K_1到K5分別對應這5個數字，所以需要對應角色序號和當用戶點擊1-5時所得到的event.key來知道對應點擊的是什麼角色
 pykey = {
     1:49,
     2:50,
@@ -236,11 +242,11 @@ pykey = {
 }
 frequency = 0
 choosing_start = False
-import random
 enemy_x_position = []
+# 記錄7個enemy的x坐標（平均分佈在地圖七個位置）
 for i in range(1,7+1):
     enemy_x_position.append((map_width//7)*i)
-print(enemy_x_position)
+# 隨機一個enemy_list
 for random_enemy_frequency in range(7):
     x = random.randint(1,2)
     if x == 1:
@@ -256,12 +262,12 @@ while True:
     frequency += 1
     clock.tick(60)
     current_y_position = 30
-        # tiaozhuan
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
         if choosing == True:
+            # 把選擇界面的各個圖像都blit/draw上去
             inputbox.dealEvent(event)
             inputbox.draw(screen)
             inputbox2.dealEvent(event)
@@ -272,9 +278,9 @@ while True:
             text = f.render("輸入W進入觀察模式(檢查敵人構成),輸入F即可進入遊戲(以英文輸入法)",True,(0,0,50))
             text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 1.5))
             screen.blit(text,(0,25))
-            # 進入選兵頁面
+        
         if event.type == pygame.KEYDOWN:
-            
+            # 進入選兵頁面
             if event.key == pygame.K_w:
                 if Watching_chance == 1 and choosing_start == True:
                     watching_mode()
@@ -286,17 +292,19 @@ while True:
                     screen.blit(text,(0,height-80))
 
         if event.type == pygame.KEYDOWN and main_page_exists == False:
-            
+            # 要確認main_page不存在（未進入主程序）才進行以下操作（因為以下操作是進行選兵操作的）
             if event.key == pygame.K_s:
+                # 重新加載選兵界面
                 choosing_mode_entering()
 
             elif event.key == pygame.K_f:
-                # try:
+                # 進入遊戲時的初始化（角色，角色HP等等）
                     text = f.render("Text",True,(255,0,0),(0,0,0))
                     total_cost = num_list[0]*80 + num_list[1]*100
                     if total_cost <=400:
                         money -= total_cost
                         for i in range(num_list[0]):
+                            # 設置各個角色的屬性進入character_dict
                             dover_list.append(auto_dover_list[i])
                             character_dict[auto_dover_list[i]] = {}
                             # 嵌套字典裝該角色的屬性
@@ -329,6 +337,7 @@ while True:
                         x = 0
                         print(enemy_list)
                         for enemy_name in enemy_list:
+                            # 設置各個enemy為一個object並增加對應的屬性如x坐標，將其添加到enemy_sample_list中
                             x_position = enemy_x_position[x]
                             x += 1
                             if enemy_name == "enemy_1":
@@ -342,6 +351,7 @@ while True:
                                                  
                                 
                     else:
+                        # 輸入的數值不符合條件，如兵種所需的金錢大於400
                         event.key = pygame.K_s
                         text = f.render("請輸入所需不超過400金幣的兵種構成，火鴿子:$80,玄者:$100（規則在ui菜單中）",True,(0,0,50))
                         text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 1.5))
@@ -402,12 +412,13 @@ while True:
                             now = "XUANer"
                             break
                 
-
+            # 向右走
             if event.key == pygame.K_d:
                 move_status = True
                 right_move_status = True
                 left_move_status = False
                 all_sprites.update('r')
+            # 向左走
             if event.key == pygame.K_a:
                 move_status = True
                 left_move_status = True
@@ -416,12 +427,13 @@ while True:
 
         # 按住走路不放的奔跑功能實現
         if right_move_status == True and move_status == True:
-            # 模型轉變為向右（圖片改變）
+            # update這個function是讓地圖的index改變，從而實現角色移動
             all_sprites.update('r')
         if left_move_status == True and move_status == True:
             all_sprites.update('l')    
         if event.type ==  pygame.KEYUP:
             move_status = False
+        # 每走一次，都會使得畫面刷新，因此所有的圖像需要根據他們的數值重新blit一次
         for key,value in character_dict.items():
             screen.blit(money_pic,(0,0))
             screen.blit(f.render(str(money),True,(255,0,0)),(50,0))
@@ -448,6 +460,7 @@ while True:
                 if enemy_object.name == "enemy_2":
                     screen.blit(enemy_2,(enemy_object.rect.x,enemy_object.rect.y))
         for enemy_position in enemy_x_position:
+            # 如果角色走過了enemy_position的位置，就觸發攻擊function，通過main_page的x坐標來判定（因為角色移動就是main_page的x坐標移動）
             if abs(main_page_rect.x) >= enemy_position:
                 fight()
                 break
