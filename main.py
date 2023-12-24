@@ -79,6 +79,9 @@ setting_finish = False
 choosing = False
 First_run = False
 money = 300
+game_end = False
+game_over_page = pygame.image.load("icons/game_over.png")
+winning_page = pygame.image.load("icons/winning_page.png")
 # 儲存7個enemy分別是enemy1還是enemy2的順序
 enemy_list = []
 # 儲存各個enemy的實例（裡面有各個enemy的屬性如x坐標）
@@ -328,11 +331,37 @@ def choosing_mode_entering():
     choosing_start = True
 
 def fail_ending():
-    print("fail")  
+    global main_page_exists,choosing,game_end
+    screen.blit(game_over_page,(0,0))
+    pygame.display.flip()
+    main_page_exists = False
+    choosing = False
+    game_end = True
+    
+    time.sleep(5)
     sys.exit()
+
 def win_ending():
-    print("win")
-    import main
+    global main_page_exists,choosing,game_end
+    main_page_exists = False
+    choosing = False
+    game_end = True
+    screen.blit(winning_page,(0,0))
+    used_money = 300-money
+    if used_money <= 160:
+        result = "優秀"
+    elif used_money <= 180:
+        result = "良好"
+    elif used_money <= 200:
+        result = "不錯"
+    else:
+        result = "一般"
+    result = f.render(result,True,(255,0,0))
+    result = pygame.transform.scale(result,(300,200))
+    screen.blit(result,(230,350))
+    pygame.display.flip()
+    time.sleep(5)
+    sys.exit()
 
 while True: 
     frequency += 1
@@ -342,7 +371,7 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-        if choosing == True:
+        if choosing == True and game_end == False:
             # 把選擇界面的各個圖像都blit/draw上去
             inputbox.dealEvent(event)
             inputbox.draw(screen)
@@ -355,7 +384,7 @@ while True:
             text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 1.5))
             screen.blit(text,(0,25))
         
-        if event.type == pygame.KEYDOWN:
+        if event.type == pygame.KEYDOWN and game_end == False:
             # 進入選兵頁面
             if event.key == pygame.K_w:
                 if Watching_chance == 1 and choosing_start == True:
@@ -367,7 +396,7 @@ while True:
                     text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 1.5))
                     screen.blit(text,(0,height-80))
 
-        if event.type == pygame.KEYDOWN and main_page_exists == False:
+        if event.type == pygame.KEYDOWN and main_page_exists == False and game_end == False:
             # 要確認main_page不存在（未進入主程序）才進行以下操作（因為以下操作是進行選兵操作的）
             if event.key == pygame.K_s:
                 # 重新加載選兵界面
