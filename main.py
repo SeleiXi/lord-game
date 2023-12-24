@@ -3,8 +3,11 @@
 
 
 # bug：173行fight函數，有時候會默認到最後一個num，導致判定是最後一個角色減血
+# bug：切換時
+
 # bug：player被刪除後，應該自動切換到下一個角色（重新draw一個？）
-# bug:fight敵軍不應該再存在
+# bug：fight時的判定和敵軍位置判定不一
+# bug：第一個圖標後面有黑色背景
 
 
 # 重要func
@@ -16,7 +19,7 @@
 # 添加音樂
 # 增加函數和意思模糊的變量的注釋
 # menu增加更多東西
-
+# 選兵界面字體太粗，看不清
 
 import sys
 import pygame
@@ -39,8 +42,8 @@ start_menu = pygame.image.load("icons/start_menu.png").convert()
 pygame.display.set_icon(icon)
 pygame.display.set_caption('靈道源尊')
 # f = pygame.font.SysFont("",30)
-f = pygame.font.Font('Fonts/MiSans-Heavy.ttf',40)
-f_small = pygame.font.Font('Fonts/MiSans-Heavy.ttf',20)
+f = pygame.font.Font('fonts/MiSans-Heavy.ttf',40)
+f_small = pygame.font.Font('fonts/MiSans-Heavy.ttf',20)
 screen.blit(start_menu,(0,0))
 clock = pygame.time.Clock()
 main_page_exists = False
@@ -102,11 +105,14 @@ class Player(pygame.sprite.Sprite):
     def update(self,direction):
         global move_status
         if direction == 'r':
-            main_page_rect.x -=3
-            screen.blit(main_page,(main_page_rect.x,main_page_rect.y))
-            all_sprites.draw(screen)
-            for enemy_sample in enemy_sample_list:
-                enemy_sample.rect.x -=3
+            if not main_page_rect.x<-3000:
+                main_page_rect.x -=3
+                screen.blit(main_page,(main_page_rect.x,main_page_rect.y))
+                all_sprites.draw(screen)
+                for enemy_sample in enemy_sample_list:
+                    enemy_sample.rect.x -=3
+            else:
+                win_ending()
 
         elif direction == "l":
             if not main_page_rect.x>150:
@@ -115,7 +121,7 @@ class Player(pygame.sprite.Sprite):
                 all_sprites.draw(screen)
                 for enemy_sample in enemy_sample_list:
                     enemy_sample.rect.x +=3
-            # 設置最左邊邊界，不需要設置右邊，因為到右邊的某個點自動會結算遊戲
+            # 設置最左邊邊界（main_page_rect.x>150），不需要設置右邊，因為到右邊的某個點自動會結算遊戲
             else:
                 main_page_rect.x = 150
                 x = 0
@@ -254,6 +260,8 @@ def choosing_mode_entering():
 def fail_ending():
     print("fail")  
     sys.exit()
+def win_ending():
+    import main    
 num_list = []
 auto_dover_list = ['A0','A1','A2','A3','A4']
 auto_XUANer_list = ['B0','B1','B2','B3',]
@@ -267,7 +275,7 @@ start_button = (pygame.Rect(280, 270, 234, 60))
 setting_finish = False
 choosing = False
 First_run = False
-money = 400
+money = 300
 # 儲存7個enemy分別是enemy1還是enemy2的順序
 enemy_list = []
 # 儲存各個enemy的實例（裡面有各個enemy的屬性如x坐標）
@@ -341,7 +349,7 @@ while True:
                 # 進入遊戲時的初始化（角色，角色HP等等）
                     text = f.render("Text",True,(255,0,0),(0,0,0))
                     total_cost = num_list[0]*80 + num_list[1]*100
-                    if total_cost <=400:
+                    if total_cost <=300:
                         money -= total_cost
                         for i in range(num_list[0]):
                             # 設置各個角色的屬性進入character_dict
@@ -391,9 +399,9 @@ while True:
                                                  
                                 
                     else:
-                        # 輸入的數值不符合條件，如兵種所需的金錢大於400
+                        # 輸入的數值不符合條件，如兵種所需的金錢大於300
                         event.key = pygame.K_s
-                        text = f.render("請輸入所需不超過400金幣的兵種構成，火鴿子:$80,玄者:$100（規則在ui菜單中）",True,(0,0,50))
+                        text = f.render("請輸入所需不超過300金幣的兵種構成，火鴿子:$80,玄者:$100（規則在ui菜單中）",True,(0,0,50))
                         text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 1.5))
                         screen.blit(text,(0,height-60))
                 # except:
