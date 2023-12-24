@@ -1,8 +1,16 @@
 # 【待完成】 / # 需改
-# 不規範處：部分用駝峰命名法，部分變量如WHITE,XUANer不符合命名法，文件名如Menu不應該大寫，branch名字應該改為master，部分地方可以函數化，注釋加的不夠多，部分變量名意思模糊
-# 走前：修改背景介紹別這麼中二,選兵不需要從左到右，添加音樂
-# 處理HP<=0情況，應該刪除掉player，生命值未有隨減少而改變進度條
+# 不規範處：部分用駝峰命名法，部分變量如XUANer不符合命名法，branch名字應該改為master，部分地方可以函數化
+
+# 修改背景介紹別這麼中二
+# 選兵不需要從左到右
+# 添加音樂
+# 
 # 到地圖某個點的時候結算遊戲
+# 增加函數和意思模糊的變量的注釋
+# menu增加更多東西
+# 解決bug：173行fight函數，有時候會默認到最後一個num，導致判定是最後一個角色減血
+# 解決bug：fight後應該處理HP<=0情況，應該刪除掉player，以及blit一下敵軍不應該再存在
+
 
 import sys
 import pygame
@@ -12,6 +20,7 @@ import time
 import random
 # from threading import Thread
 
+# 初始化各個值以及加載圖片
 pygame.init()
 width = 800
 height = 600
@@ -19,7 +28,7 @@ map_width = 3200
 map_height = 600
 screen = pygame.display.set_mode((width,height),flags=0)
 surface = screen
-icon = pygame.image.load("icons/chigua.png").convert()
+icon = pygame.image.load("icons/chigua.png").convert() # 唔convert都得，convert後理論畫質更好
 start_menu = pygame.image.load("icons/start_menu.png").convert()
 pygame.display.set_icon(icon)
 pygame.display.set_caption('靈道源尊')
@@ -40,6 +49,7 @@ enemy_1 = pygame.image.load("icons/enemy_1.jpg")
 enemy_1 = pygame.transform.scale(enemy_1,(50,50))
 enemy_2 = pygame.image.load("icons/enemy_2.jpg")
 enemy_2 = pygame.transform.scale(enemy_2,(50,50))
+# 用作上方的圖標顯示
 mini_XUANer = pygame.transform.scale(XUANer,(50,50))
 mini_dover = pygame.transform.scale(dover,(50,50))
 main_page_rect = main_page.get_rect()
@@ -113,23 +123,24 @@ class enemy(pygame.sprite.Sprite):
         self.image = image
         self.rect = self.image.get_rect()
         self.rect.y = 490
-# 新增
-# 文本輸入框            
+        # 不添加x坐標,因為每個enemy的x坐標都不一樣
+
 class InputBox:
+    # 文本輸入框(選兵界面的)
     def __init__(self, rect: pygame.Rect = pygame.Rect(100, 100, 140, 32)) -> None:
         self.boxBody: pygame.Rect = rect
-        self.color_inactive = pygame.Color('lightskyblue3')  # 未被選中的顏色
-        self.color_active = pygame.Color('dodgerblue2')  # 被選中的顏色
-        self.color = self.color_inactive  # 當前顏色，初始為未激活顏色
+        self.color_inactive = pygame.Color('lightskyblue3')  
+        self.color_active = pygame.Color('dodgerblue2') 
+        self.color = self.color_inactive  
         self.active = False
         self.text = ''
         self.done = False
         self.font = pygame.font.Font(None, 32)
         self.finish = False
-
+    # 當點擊框的時候進行的處理
     def dealEvent(self, event: pygame.event.Event):
         if(event.type == pygame.MOUSEBUTTONDOWN):
-            if(self.boxBody.collidepoint(event.pos)):  # 若按下鼠標且位置在文本框
+            if(self.boxBody.collidepoint(event.pos)):  
                 self.active = not self.active
             else:
                 self.active = False
@@ -162,6 +173,7 @@ class InputBox:
 
 
 def fight():
+    # 判定角色遇到敵人時
     for key in character_dict:
         if character_dict[key]["int_num"] == now_num:
            break
@@ -177,17 +189,28 @@ def fight():
             character_dict[key]["HP_percentage"] -= 20
         elif now == "dover":
             character_dict[key]["HP_percentage"] -= 80
+    if character_dict[key]["HP_percentage"] >= 0:
+        del character_dict[key]
+        if character_dict == {}:
+            fail_ending()
+            
+        else:
+            next_key = next(iter(character_dict.keys()))
+        if next_key.startswith("A"):
+            screen.blit(dover,(350,490))
+        if next_key.startswith("B"):
+            screen.blit(XUANer,(350,490))
+        
     enemy_x_position.pop(0)
     enemy_list.pop(0)
     enemy_sample_list.pop(0)
 
 def watching_mode():
-    # 需改 ， 之後改為遠程放大一下整個地圖
+    # 需改 更有創意的方式
     global frequency,main_page_exists,all_sprites,num_list,choosing,choosing_start
     # text = f_small.render(str(enemy_list),True,(0,0,255))
     text = f.render(str(enemy_list),True,(0,100,255))
     text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 2))
-    # 需改
     screen.blit(text,(0,height-30))
     if main_page_exists == True:                                 
         pygame.display.flip()
@@ -204,6 +227,7 @@ def watching_mode():
         inputbox2.draw(screen)
         choosing = True
         choosing_start = True
+
 def choosing_mode_entering():
     global num_list,choosing,choosing_start,inputbox,inputbox2
     num_list = []
@@ -214,6 +238,9 @@ def choosing_mode_entering():
     inputbox2.draw(screen)
     choosing = True
     choosing_start = True
+
+def fail_ending():
+    print("fail")  
 num_list = []
 auto_dover_list = ['A0','A1','A2','A3','A4']
 auto_XUANer_list = ['B0','B1','B2','B3',]

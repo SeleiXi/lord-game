@@ -32,7 +32,7 @@ background-color:white
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -87,7 +87,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:400;&quot;&gt;但在靈界天地中,你可以臨時以80靈石從源界領域召喚一位火鴿子(血量為80)以及以100靈石雇傭一位來自星靈族的玄者(HP為100)。&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:400;&quot;&gt;在魔炎森巡邏守衛的通常只有妖弭猴與閃電猩,妖弭猴生性怕火,而星靈族的戰士們擁有靈能護甲而無懼閃電。&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:400;&quot;&gt;故此火鴿子只需消耗20HP便可擊殺妖弭猴,但玄者則需消耗80HP。玄者消耗20HP可擊殺閃電猩,而火鴿子需80HP。&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:400;&quot;&gt;在遊戲開始前,你擁有一次機會以天眼視察魔炎森中的靈獸分布。&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:400;&quot;&gt;在遊戲中，你擁有一次機會以視察魔炎森中的靈獸分布。&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:400;&quot;&gt;你身上僅有400靈石,介於雇傭的友軍在戰鬥後皆會消失,試以最低的花銷擊敗魔炎森中的靈獸並拯救遭到俘虜的人們。&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:400;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:400;&quot;&gt;注意：&lt;/span&gt;&lt;/p&gt;
@@ -114,6 +114,13 @@ p, li { white-space: pre-wrap; }
        <number>30</number>
       </property>
       <item>
+       <widget class="Line" name="line">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="pushButtonChallengeMode">
         <property name="enabled">
          <bool>true</bool>
@@ -138,6 +145,13 @@ p, li { white-space: pre-wrap; }
         <property name="icon">
          <iconset>
           <normaloff>../../../封面/chigua.png</normaloff>../../../封面/chigua.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Line" name="line_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
         </property>
        </widget>
       </item>
@@ -196,7 +210,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionGithub">
    <property name="text">
-    <string>Github:SeleiXi</string>
+    <string>Github:SeleiXi (本項目已發佈於Github)</string>
    </property>
   </action>
  </widget>

@@ -81,6 +81,13 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setSizeConstraint(QLayout.SetDefaultConstraint)
         self.horizontalLayout.setContentsMargins(0, 30, -1, 30)
+        self.line = QFrame(self.centralwidget)
+        self.line.setObjectName(u"line")
+        self.line.setFrameShape(QFrame.HLine)
+        self.line.setFrameShadow(QFrame.Sunken)
+
+        self.horizontalLayout.addWidget(self.line)
+
         self.pushButtonChallengeMode = QPushButton(self.centralwidget)
         self.pushButtonChallengeMode.setObjectName(u"pushButtonChallengeMode")
         self.pushButtonChallengeMode.setEnabled(True)
@@ -100,6 +107,13 @@ class Ui_MainWindow(object):
         self.pushButtonChallengeMode.setIcon(icon1)
 
         self.horizontalLayout.addWidget(self.pushButtonChallengeMode)
+
+        self.line_2 = QFrame(self.centralwidget)
+        self.line_2.setObjectName(u"line_2")
+        self.line_2.setFrameShape(QFrame.HLine)
+        self.line_2.setFrameShadow(QFrame.Sunken)
+
+        self.horizontalLayout.addWidget(self.line_2)
 
 
         self.verticalLayout.addLayout(self.horizontalLayout)
@@ -132,7 +146,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -143,7 +157,7 @@ class Ui_MainWindow(object):
         self.actionQQ.setText(QCoreApplication.translate("MainWindow", u"QQ:1632845225", None))
         self.actionDiscord.setText(QCoreApplication.translate("MainWindow", u"Discord:SeleiXi", None))
         self.actionEmail.setText(QCoreApplication.translate("MainWindow", u"Email:bzhanthresh@gmail.com", None))
-        self.actionGithub.setText(QCoreApplication.translate("MainWindow", u"Github:SeleiXi", None))
+        self.actionGithub.setText(QCoreApplication.translate("MainWindow", u"Github:SeleiXi (\u672c\u9805\u76ee\u5df2\u767c\u4f48\u65bcGithub)", None))
         self.label.setText("")
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("MainWindow", u"Home Page", None))
         self.textBrowser.setDocumentTitle("")
@@ -159,13 +173,13 @@ class Ui_MainWindow(object):
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:400;\">\u5728\u9b54"
                         "\u708e\u68ee\u5de1\u908f\u5b88\u885b\u7684\u901a\u5e38\u53ea\u6709\u5996\u5f2d\u7334\u8207\u9583\u96fb\u7329,\u5996\u5f2d\u7334\u751f\u6027\u6015\u706b,\u800c\u661f\u9748\u65cf\u7684\u6230\u58eb\u5011\u64c1\u6709\u9748\u80fd\u8b77\u7532\u800c\u7121\u61fc\u9583\u96fb\u3002</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:400;\">\u6545\u6b64\u706b\u9d3f\u5b50\u53ea\u9700\u6d88\u801720HP\u4fbf\u53ef\u64ca\u6bba\u5996\u5f2d\u7334,\u4f46\u7384\u8005\u5247\u9700\u6d88\u801780HP\u3002\u7384\u8005\u6d88\u801720HP\u53ef\u64ca\u6bba\u9583\u96fb\u7329,\u800c\u706b\u9d3f\u5b50\u970080HP\u3002</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:400;\">\u5728\u904a\u6232\u958b\u59cb\u524d,\u4f60\u64c1\u6709\u4e00\u6b21\u6a5f\u6703\u4ee5\u5929\u773c\u8996\u5bdf\u9b54\u708e"
-                        "\u68ee\u4e2d\u7684\u9748\u7378\u5206\u5e03\u3002</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:400;\">\u5728\u904a\u6232\u4e2d\uff0c\u4f60\u64c1\u6709\u4e00\u6b21\u6a5f\u6703\u4ee5\u8996\u5bdf\u9b54\u708e\u68ee\u4e2d\u7684\u9748"
+                        "\u7378\u5206\u5e03\u3002</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:400;\">\u4f60\u8eab\u4e0a\u50c5\u6709400\u9748\u77f3,\u4ecb\u65bc\u96c7\u50ad\u7684\u53cb\u8ecd\u5728\u6230\u9b25\u5f8c\u7686\u6703\u6d88\u5931,\u8a66\u4ee5\u6700\u4f4e\u7684\u82b1\u92b7\u64ca\u6557\u9b54\u708e\u68ee\u4e2d\u7684\u9748\u7378\u4e26\u62ef\u6551\u906d\u5230\u4fd8\u865c\u7684\u4eba\u5011\u3002</span></p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:400;\"><br /></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:400;\">\u6ce8\u610f\uff1a</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right"
-                        ":0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:400;\">\u901a\u95dc\u8a55\u7d1a\u5206\u70ba\u3010\u6975\u5176\u5b8c\u7f8e\u3011 / \u3010\u5b8c\u7f8e\u3011 / \u3010\u512a\u79c0\u3011 / \u3010\u4e0d\u932f\u3011 / \u3010\u4e00\u822c\u3011</span></p></body></html>", None))
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0"
+                        "; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:400;\">\u901a\u95dc\u8a55\u7d1a\u5206\u70ba\u3010\u6975\u5176\u5b8c\u7f8e\u3011 / \u3010\u5b8c\u7f8e\u3011 / \u3010\u512a\u79c0\u3011 / \u3010\u4e0d\u932f\u3011 / \u3010\u4e00\u822c\u3011</span></p></body></html>", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QCoreApplication.translate("MainWindow", u"Background_Introduction", None))
         self.pushButtonChallengeMode.setText(QCoreApplication.translate("MainWindow", u"\u904a\u6232\u555f\u52d5", None))
         self.menuMade_By_SeleiXI.setTitle(QCoreApplication.translate("MainWindow", u"Made By SeleiXi", None))
