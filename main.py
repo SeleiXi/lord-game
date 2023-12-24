@@ -1,20 +1,18 @@
 # 【待完成】 / # 需改
-# 不規範處：部分用駝峰命名法，部分變量如Killer不符合命名法，branch名字應該改為master，部分地方可以函數化
+# 不規範處：部分用駝峰命名法，部分變量不符合命名法，branch名字應該改為master，部分地方可以函數化
 
 
 
 # bug：player被刪除後，應該自動切換到下一個角色（重新draw一個？）
 
 # 重要
-# 設置通關後的評分（輸出 恭喜通關！（這個用PS），你的評級是：）
+# 設置通關後的評分（輸出 恭喜通關！（用PS），你的評級是：）
 # （2鴿最少，其次是1鴿1玄（一下只扣20的話，只需要140血即可通關，因此通用），其次2玄，再低的話就是【不錯了】）
 # 增加函數和意思模糊的變量的注釋
 # 選兵不需要從左到右，選完下面會顯示已經選擇了什麼
-# 玄者改名（太中二+命名法）+ 取消鏈接起點（）
 # 背景設定重新寫，但可以說借鑒曾經寫的小說+完整的背景增加到面試準備QS，文學化：生靈塗炭..
 
 # 可增加處/改善處
-# 修改背景介紹減少中二化
 
 # 添加音樂
 # 第一個圖標後面有黑色背景
@@ -31,7 +29,7 @@ from PySide2.QtWidgets import QApplication, QMessageBox
 from PySide2.QtUiTools import QUiLoader
 import time
 import random
-# from threading import Thread
+from threading import Thread
 
 # 初始化各個值以及加載圖片
 pygame.init()
