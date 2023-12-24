@@ -1,4 +1,23 @@
-# bug：player被刪除後，應該自動切換到下一個角色
+# 【待完成】 / # 需改
+# 不規範處：部分用駝峰命名法，部分變量不符合命名法，branch名字應該改為master，部分地方可以函數化
+# bug：player被刪除後，應該自動切換到下一個角色（重新draw一個？）
+
+# 重要
+# 增加函數和意思模糊的變量的注釋
+# 選兵不需要從左到右，選完下面會顯示已經選擇了什麼
+# 背景設定重新寫，但可以說借鑒曾經寫的小說+完整的背景增加到面試準備QS，文學化：生靈塗炭..
+
+# 可增加處/改善處
+
+# 改為合適的音樂,通關和失敗也有對應不同的音樂
+# 第一個圖標後面有黑色背景
+# menu增加更多東西
+# 選兵界面字體太粗，看不清（考慮更換字體）
+# 本地自動儲存通關記錄txt
+# 有可能5輪也有可能6輪
+# 增加不同的模式
+# 最後輸出的評分是一個圖片（根據不同評分來顯示不同圖片）
+
 
 import sys
 import pygame
@@ -16,7 +35,7 @@ map_width = 3200
 map_height = 600
 screen = pygame.display.set_mode((width,height),flags=0)
 surface = screen
-icon = pygame.image.load("icons/chigua.png").convert() # 唔convert都得，convert後理論畫質更好
+icon = pygame.image.load("icons/seleixi.png").convert() # 唔convert都得，convert後理論畫質更好
 start_menu = pygame.image.load("icons/start_menu.png").convert()
 pygame.display.set_icon(icon)
 pygame.display.set_caption('靈道源尊')

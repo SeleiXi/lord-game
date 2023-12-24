@@ -19,7 +19,7 @@ class Ui_MainWindow(object):
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(561, 683)
         icon = QIcon()
-        icon.addFile(u"icons/chigua.ico", QSize(), QIcon.Normal, QIcon.Off)
+        icon.addFile(u"icons/seleixi.ico", QSize(), QIcon.Normal, QIcon.Off)
         MainWindow.setWindowIcon(icon)
         MainWindow.setWindowOpacity(1.000000000000000)
         MainWindow.setStyleSheet(u"QPushButton{\n"
@@ -49,7 +49,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.label = QLabel(self.tab)
         self.label.setObjectName(u"label")
-        self.label.setPixmap(QPixmap(u"icons/chigua.png"))
+        self.label.setPixmap(QPixmap(u"icons/seleixi.png"))
 
         self.verticalLayout_2.addWidget(self.label)
 
@@ -103,7 +103,7 @@ class Ui_MainWindow(object):
         font1.setWeight(75)
         self.pushButtonChallengeMode.setFont(font1)
         icon1 = QIcon()
-        icon1.addFile(u"../../../\u5c01\u9762/chigua.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon1.addFile(u"../../../\u5c01\u9762/seleixi.png", QSize(), QIcon.Normal, QIcon.Off)
         self.pushButtonChallengeMode.setIcon(icon1)
 
         self.horizontalLayout.addWidget(self.pushButtonChallengeMode)

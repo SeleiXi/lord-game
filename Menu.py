@@ -16,7 +16,7 @@ now = os.getcwd()
 winshell.CreateShortcut(
         Path=shortcut,  
         Target=f"{now}/lord_game.exe", # 或run.exe
-        Icon=(f"{now}/icons/chigua.ico", 0), 
+        Icon=(f"{now}/icons/seleixi.ico", 0), 
         Description="Lord_Game", 
         StartIn = now
         

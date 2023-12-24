@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>icons/chigua.ico</normaloff>icons/chigua.ico</iconset>
+    <normaloff>icons/seleixi.ico</normaloff>icons/seleixi.ico</iconset>
   </property>
   <property name="windowOpacity">
    <double>1.000000000000000</double>
@@ -47,7 +47,7 @@ background-color:white
              <string/>
             </property>
             <property name="pixmap">
-             <pixmap>icons/chigua.png</pixmap>
+             <pixmap>icons/seleixi.png</pixmap>
             </property>
            </widget>
           </item>
@@ -144,7 +144,7 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>../../../封面/chigua.png</normaloff>../../../封面/chigua.png</iconset>
+          <normaloff>../../../封面/seleixi.png</normaloff>../../../封面/seleixi.png</iconset>
         </property>
        </widget>
       </item>
