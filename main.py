@@ -165,7 +165,8 @@ def fight():
     # 在不同兵種遇到不同敵人時，HP減的程度（待做：把數額改為減去的圖標百分比（前面設置這個百分比為100，然後固定減，if判定檢測到減到0了就pop這個角色））
     if enemy_list[0] == "enemy_1":
         if now == "XUANer":
-            character_dict[object_num]["HP"] = pygame.transform.scale(surface, (scaled_width-20%, scaled_height))
+            # character_dict[object_num]["HP"] = pygame.transform.scale(surface, (scaled_width-20%, scaled_height))
+            pass
     
         elif now == "dover":
             character_dict[object_num]["HP"] -= 20
