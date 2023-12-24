@@ -209,6 +209,7 @@ class InputBox:
    
     def dealEvent(self, event: pygame.event.Event):
         # 當點擊框的時候進行的處理
+        global selection
 
         if(event.type == pygame.MOUSEBUTTONDOWN):
             if(self.boxBody.collidepoint(event.pos)):  
@@ -233,7 +234,7 @@ class InputBox:
                         self.text = self.text[:-1]
                     else:
                         self.text += event.unicode
-        return txt
+        
 
     def draw(self, screen: pygame.surface.Surface):
         # 文本輸入框的blit()函數
@@ -338,17 +339,17 @@ def watching_mode():
         screen.blit(selecting_page,(0,0))
         inputbox.draw(screen)
         inputbox2.draw(screen)
+        num_list = []
         choosing = True
         choosing_start = True
         #待添加 #blit：進入遊戲：F(以英文輸入法) (可啟動 / 不可啟動)，火鴿子數目： Killer數目： 
 
 def choosing_mode_entering():
     # 點擊s時會重置頁面的函數，把所有數額重置
-    global num_list,choosing,choosing_start,inputbox,inputbox2,first_choosing
+    global num_list,choosing,choosing_start,inputbox,inputbox2,first_choosing,selecting_page
     num_list = []
     inputbox = InputBox(pygame.Rect(150, 450, 10, 32)) 
     inputbox2 = InputBox(pygame.Rect(450, 450, 10, 32)) 
-    screen.blit(selecting_page,(0,0))
     inputbox.draw(screen)
     inputbox2.draw(screen)
     choosing = True
@@ -360,23 +361,26 @@ def choosing_mode_entering():
     text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 1.5))
     screen.blit(text,(0,25))
     first_choosing == False
+    selecting_page = pygame.image.load("icons/selecting_page.png")
+    screen.blit(selecting_page,(0,0))
     #待添加 #blit：進入遊戲：F(以英文輸入法) (可啟動 / 不可啟動)，火鴿子數目： Killer數目：
 
 def fail_ending():
     # 失敗時觸發的function
-    global main_page_exists,choosing,game_end
+    global main_page_exists,choosing,game_end,music_muted
     screen.blit(game_over_page,(0,0))
     pygame.display.flip()
     # 避開主程序運行時的條件
     main_page_exists = False
     choosing = False
     game_end = True
+    music_muted = True
     pygame.mixer.music.stop()
     
 
 def win_ending():
     # 勝利時觸發的function
-    global main_page_exists,choosing,game_end,result,win
+    global main_page_exists,choosing,game_end,result,win,music_muted
     main_page_exists = False
     choosing = False
     game_end = True
@@ -392,11 +396,13 @@ def win_ending():
         result = pygame.image.load("icons/pass.png")
     screen.blit(result,(0,0))
     win = True
+    music_muted = True
     pygame.mixer.music.stop()
     pygame.display.flip()
 
 first_choosing = False
 music_muted = False
+selection = 0
 
 while True: 
     frequency += 1
@@ -413,42 +419,29 @@ while True:
 
         if choosing == True and game_end == False:
             # 把選擇界面的各個圖像都blit/draw上去
-            
-            # 將input_box draw上去，以及獲取inputbox的數字（默認賦值為0）然後將其draw上去
-            # input1 = 0
-            # input2 = 0
-
-            # 圖像化input1框裡面獲得的數字，隨後將其draw到對應位置
-
-  
-
-
-            
-                
+            if len(num_list)== 1:
+                selecting_page = pygame.image.load("icons/nf_1.png")
+                screen.blit(selecting_page,(0,0))
+                selection = 3
+            if len(num_list)== 2:
+                selecting_page = pygame.image.load("icons/f_2.png")
+                screen.blit(selecting_page,(0,0))
+                selection = 3
+            input1 = inputbox.dealEvent(event)
+            # inputbox1_text = txt
+            # print(inputbox1_text)
+            screen.blit(selecting_page,(0,0))
             inputbox.draw(screen)
-            if not str(inputbox.dealEvent(event)).isdigit():
-                input1_num = 0
-            else:
-                input1_num = inputbox.dealEvent(event)      
-                if not previous_input1_num == input1_num:
-                    previous_input1_num = input1_num
-                    choosing_mode_entering()
-            input1 = f.render(str(input1_num),True,(0,0,50))
-
+            input2 = inputbox2.dealEvent(event)
             inputbox2.draw(screen) 
-            if not str(inputbox2.dealEvent(event)).isdigit():
-                input2_num = 0
-            else:
-                input2_num = inputbox.dealEvent(event)   
-                if not previous_input1_num == input1_num:
-                    previous_input1_num = input1_num
-                    choosing_mode_entering()
-            input2 = f.render(str(input2_num),True,(0,0,50))   
-            previous_input1_num = input1
-            previous_input2_num = input2
-            screen.blit(input1,(281,410))
-            screen.blit(input2,(564,410))
-
+            text = f.render("輸入兵種數目並輸入enter(注意需要從左到右執行),輸入S重置界面",True,(0,0,50))
+            text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // (1.5)))
+            screen.blit(text,(0,0))
+            text = f.render("輸入W進入觀察模式(檢查敵人構成),輸入M關閉音樂",True,(0,0,50))
+            text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 1.5))
+            screen.blit(text,(0,25))
+            # inputbox2_text = txt
+            # print(inputbox2_text)
             while first_choosing == False:
                 text = f.render("輸入兵種數目並輸入enter(注意需要從左到右執行),輸入S重置界面",True,(0,0,50))
                 text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // (1.5)))
@@ -544,6 +537,7 @@ while True:
                         text = f.render("請輸入所需不超過300金幣的兵種構成，火鴿子:$80,玄者:$100（規則在ui菜單中）",True,(0,0,50))
                         text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 1.5))
                         screen.blit(text,(0,height-60))
+                        break
                 # except:
                 #     print(Exception)
         # 通過點擊圖標進入【待完成】
