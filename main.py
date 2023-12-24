@@ -1,15 +1,21 @@
 # 【待完成】 / # 需改
 # 不規範處：部分用駝峰命名法，部分變量如XUANer不符合命名法，branch名字應該改為master，部分地方可以函數化
 
+
+# bug：173行fight函數，有時候會默認到最後一個num，導致判定是最後一個角色減血
+# bug：player被刪除後，應該自動切換到下一個角色（重新draw一個？）
+# bug:fight敵軍不應該再存在
+
+
+# 重要func
+# 到地圖某個點的時候結算遊戲
+
+# 可修改處
 # 修改背景介紹別這麼中二
 # 選兵不需要從左到右
 # 添加音樂
-# 
-# 到地圖某個點的時候結算遊戲
 # 增加函數和意思模糊的變量的注釋
 # menu增加更多東西
-# 解決bug：173行fight函數，有時候會默認到最後一個num，導致判定是最後一個角色減血
-# 解決bug：fight後應該處理HP<=0情況，應該刪除掉player，以及blit一下敵軍不應該再存在
 
 
 import sys
@@ -174,6 +180,7 @@ class InputBox:
 
 def fight():
     # 判定角色遇到敵人時
+    global now_num,now
     for key in character_dict:
         if character_dict[key]["int_num"] == now_num:
            break
@@ -189,8 +196,9 @@ def fight():
             character_dict[key]["HP_percentage"] -= 20
         elif now == "dover":
             character_dict[key]["HP_percentage"] -= 80
-    if character_dict[key]["HP_percentage"] >= 0:
+    if character_dict[key]["HP_percentage"] <= 0:
         del character_dict[key]
+        now_num += 1
         if character_dict == {}:
             fail_ending()
             
@@ -198,8 +206,12 @@ def fight():
             next_key = next(iter(character_dict.keys()))
         if next_key.startswith("A"):
             screen.blit(dover,(350,490))
+            now = "dover"
         if next_key.startswith("B"):
             screen.blit(XUANer,(350,490))
+            now = "XUANer"
+        # debug用，看看是否改變了
+        pygame.display.flip()
         
     enemy_x_position.pop(0)
     enemy_list.pop(0)
@@ -241,6 +253,7 @@ def choosing_mode_entering():
 
 def fail_ending():
     print("fail")  
+    sys.exit()
 num_list = []
 auto_dover_list = ['A0','A1','A2','A3','A4']
 auto_XUANer_list = ['B0','B1','B2','B3',]
