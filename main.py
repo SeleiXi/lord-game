@@ -2,9 +2,9 @@
 # 唔規範嘅地方：小部分用駝峰式，部分變量不符合命名法，branch名字應該改為master，部分地方可以函數化
 
 # 可增加處/改善處
+# 角色圖片/背景的優化
 # 改為合適的音樂,通關和失敗也有對應不同的音樂
-# 第一個圖標後面有黑色背景
-# menu增加更多東西
+# menu增加更多東西（完成<設定>）
 # 本地自動儲存通關記錄txt
 # 有可能5輪也有可能6輪
 # 增加不同的模式
@@ -471,11 +471,15 @@ while True:
                 elif music_muted == True:
                     pygame.mixer.music.play()
                     music_muted = False
+        # 通過鼠標進入選兵頁面【test】
+        if event.type == pygame.MOUSEBUTTONDOWN and start_button.collidepoint(event.pos) and choosing == False and main_page_exists == False:
+            choosing_mode_entering()
         if event.type == pygame.KEYDOWN and main_page_exists == False and game_end == False:
             # 要確認main_page不存在（未進入主程序）才進行以下操作（因為以下操作是進行選兵操作的）
             if event.key == pygame.K_s:
                 # 重新加載選兵界面
                 choosing_mode_entering()
+
 
             elif event.key == pygame.K_f and game_end == False:
                 # 進入遊戲時的初始化（角色，角色HP等等）
@@ -544,9 +548,7 @@ while True:
                         break
                 # except:
                 #     print(Exception)
-        # 通過點擊圖標進入【待完成】
-        # if event.type == pygame.MOUSEBUTTONDOWN and start_button.collidepoint(event.pos) and choosing == False and main_page_exists == False:
-        #     choosing_mode_entering()
+
             
 
         # 進入主程序
