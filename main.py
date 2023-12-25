@@ -474,7 +474,7 @@ while True:
         # 通過鼠標進入選兵頁面【test】
         if event.type == pygame.MOUSEBUTTONDOWN and start_button.collidepoint(event.pos) and choosing == False and main_page_exists == False:
             choosing_mode_entering()
-        if event.type == pygame.KEYDOWN and main_page_exists == False and game_end == False:
+        elif event.type == pygame.KEYDOWN and main_page_exists == False and game_end == False:
             # 要確認main_page不存在（未進入主程序）才進行以下操作（因為以下操作是進行選兵操作的）
             if event.key == pygame.K_s:
                 # 重新加載選兵界面
