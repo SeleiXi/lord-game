@@ -1,10 +1,5 @@
 # 【待完成】 / # 需改
-# 不規範處：小部分用駝峰命名法，部分變量不符合命名法，branch名字應該改為master，部分地方可以函數化
-
-# 重要
-# 選兵不需要從左到右，選完下面會顯示已經選擇了什麼（設置字在下面，進入遊戲：F (可啟動 / 不可啟動)，火鴿子數目： Killer數目：）
-# 選兵界面字體太粗，可能會睇唔清（考慮更換字體）
-
+# 唔規範嘅地方：小部分用駝峰命名法，部分變量不符合命名法，branch名字應該改為master，部分地方可以函數化
 
 # 可增加處/改善處
 # 改為合適的音樂,通關和失敗也有對應不同的音樂
@@ -13,7 +8,7 @@
 # 本地自動儲存通關記錄txt
 # 有可能5輪也有可能6輪
 # 增加不同的模式
-# 背景設定重新寫，但可以說借鑒曾經寫的小說+完整的背景增加到面試準備QS，文學化：生靈塗炭..
+# 背景設定重新寫，但可以說借鑒曾經寫的小說，文學化：生靈塗炭..
 # “以鼠標點擊進入選兵界面”，以鼠標代替enter來選兵，
 # watching_mode可以創意化
 # 未利用到sprite的碰撞等函數，在x y坐標都可以移動的遊戲裡這種算法不利
@@ -107,7 +102,7 @@ for random_enemy_frequency in range(7):
     else:
         enemy_list.append("enemy_2")
 
-Watching_chance = 1
+watching_chance = 1
 last_num = 0
 last_y_index = 0
 
@@ -435,20 +430,20 @@ while True:
             inputbox.draw(screen)
             input2 = inputbox2.dealEvent(event)
             inputbox2.draw(screen) 
-            text = f.render("輸入兵種數目並輸入enter(注意需要從左到右執行),輸入S重置界面",True,(0,0,50))
+            text = f.render("輸入兵種數目並輸入enter(注意需要從左到右執行),輸入S重置界面",True,(255,0,0))
             text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // (1.5)))
             screen.blit(text,(0,0))
             text = f.render("輸入W進入觀察模式(檢查敵人構成),輸入M關閉音樂",True,(0,0,50))
             text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 1.5))
             screen.blit(text,(0,25))
-            if Watching_chance == 0:
+            if watching_chance == 0:
                 text = f.render("觀察機會已耗盡",True,(0,0,50))
                 text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 1.5))
                 screen.blit(text,(0,height-30))
             # inputbox2_text = txt
             # print(inputbox2_text)
             while first_choosing == False:
-                text = f.render("輸入兵種數目並輸入enter(注意需要從左到右執行),輸入S重置界面",True,(0,0,50))
+                text = f.render("輸入兵種數目並輸入enter(注意需要從左到右執行),輸入S重置界面",True,(255,0,0))
                 text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // (1.5)))
                 screen.blit(text,(0,0))
                 text = f.render("輸入W進入觀察模式(檢查敵人構成),輸入M關閉音樂",True,(0,0,50))
@@ -461,11 +456,11 @@ while True:
             # 進入選兵頁面
             if event.key == pygame.K_w:
                 # 進入觀察模式
-                if Watching_chance == 1 and choosing_start == True:
+                if watching_chance == 1 and choosing_start == True:
                     watching_mode()
-                    Watching_chance -=1
+                    watching_chance -=1
                     event.key = pygame.K_s
-                elif Watching_chance == 0 and main_page_exists == False:
+                elif watching_chance == 0 and main_page_exists == False:
                     text = f.render("觀察機會已耗盡",True,(0,0,50))
                     text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 1.5))
                     screen.blit(text,(0,height-30))
