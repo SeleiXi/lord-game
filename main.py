@@ -465,8 +465,12 @@ while True:
                     text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 1.5))
                     screen.blit(text,(0,height-30))
             if event.key == pygame.K_m:
-                pygame.mixer.music.stop()
-                music_muted = True
+                if music_muted == False:
+                    pygame.mixer.music.stop()
+                    music_muted = True
+                elif music_muted == True:
+                    pygame.mixer.music.play()
+                    music_muted = False
         if event.type == pygame.KEYDOWN and main_page_exists == False and game_end == False:
             # 要確認main_page不存在（未進入主程序）才進行以下操作（因為以下操作是進行選兵操作的）
             if event.key == pygame.K_s:
