@@ -5,14 +5,13 @@
 # 角色圖片/背景的優化
 # 改為合適的音樂,通關和失敗也有對應不同的音樂
 # menu增加更多東西（完成<設定>）
-# 本地自動儲存通關記錄txt
 # 有可能5輪也有可能6輪
 # 增加不同的模式
 # 背景設定重新寫，但可以說借鑒曾經寫的小說，文學化：生靈塗炭..
 # “以鼠標點擊進入選兵界面”，以鼠標代替enter來選兵，
 # watching_mode可以創意化
 # 未利用到sprite的碰撞等函數，在x y坐標都可以移動的遊戲裡這種算法不利
-# func待加入：遊戲中按m靜音音樂（不只是選擇界面中），按一下音樂重新播放
+# 結算界面增加【所用時間】，本地自動儲存該時間，在主頁新增一個歷史記錄按鈕
 
 import sys
 import pygame
@@ -68,6 +67,7 @@ right_move_status = False
 left_move_status = False
 fullScreen = False
 start_button = (pygame.Rect(280, 270, 234, 60))
+entering_button = (pygame.Rect(155,500,500 , 60))
 setting_finish = False
 choosing = False
 First_run = False
@@ -105,6 +105,7 @@ for random_enemy_frequency in range(7):
 watching_chance = 1
 last_num = 0
 last_y_index = 0
+now = ""
 
 # 加載音樂（最後一句是設置持續播放音樂時會觸發的函數）
 pygame.mixer.init()
@@ -399,6 +400,7 @@ def win_ending():
 first_choosing = False
 music_muted = False
 selection = 0
+entering = False
 
 while True: 
     frequency += 1
@@ -453,7 +455,7 @@ while True:
             #待添加 # blit：進入遊戲(以英文輸入法輸入F)： (可啟動 / 不可啟動(請完成輸入))，火鴿子數目： Killer數目：
         
         if event.type == pygame.KEYDOWN and game_end == False:
-            # 進入選兵頁面
+            # 當遊戲進行時所有可調用的快捷鍵
             if event.key == pygame.K_w:
                 # 進入觀察模式
                 if watching_chance == 1 and choosing_start == True:
@@ -474,78 +476,87 @@ while True:
         # 通過鼠標進入選兵頁面【test】
         if event.type == pygame.MOUSEBUTTONDOWN and start_button.collidepoint(event.pos) and choosing == False and main_page_exists == False:
             choosing_mode_entering()
+        if event.type == pygame.MOUSEBUTTONDOWN and entering_button.collidepoint(event.pos) and len(num_list)== 2 and main_page_exists == False and game_end == False:
+            entering = True
         elif event.type == pygame.KEYDOWN and main_page_exists == False and game_end == False:
             # 要確認main_page不存在（未進入主程序）才進行以下操作（因為以下操作是進行選兵操作的）
             if event.key == pygame.K_s:
                 # 重新加載選兵界面
                 choosing_mode_entering()
+            if (event.key == pygame.K_f and game_end == False):# or (event.type == pygame.MOUSEBUTTONDOWN and entering_button.collidepoint(event.pos) and len(num_list)== 2 and main_page_exists == False and game_end == False):
+                entering = True
+        if entering == True:
+            # 進入遊戲時的初始化（角色，角色HP等等）
+            text = f.render("Text",True,(255,0,0),(0,0,0))
+            try:
+                total_cost = num_list[0]*80 + num_list[1]*100
+            except:
+                text = f.render("請完成所有輸入",True,(255,0,0),(0,0,0))
+                screen.blit(text,(510,546))
+                entering = False
+                break
+            if total_cost <=300:
+                entering = False
+                money -= total_cost
+                for i in range(num_list[0]):
+                    # 設置各個角色的屬性進入character_dict
+                    dover_list.append(auto_dover_list[i])
+                    character_dict[auto_dover_list[i]] = {}
+                    # 嵌套字典裝該角色的屬性
+                    character_dict[auto_dover_list[i]]["HP"] = HP
+                    character_dict[auto_dover_list[i]]["num"] = f.render(str(i+1),True,(255,0,0))
+                    character_dict[auto_dover_list[i]]["int_num"] = i+1
+                    character_dict[auto_dover_list[i]]["y_index"] = (i+1)*50
+                    character_dict[auto_dover_list[i]]["HP_percentage"] = 100
+                    last_y_index = (i+1)*50
+                    last_num = i+1
+                for i in range(num_list[1]):
+                    # Killer的處理（不能函數化，因為差別細節太多，不能以幾個參數完成）
+                    Killer_list.append(auto_Killer_list[i])
+                    HP = pygame.image.load("icons/HP.png")
+                    HP = pygame.transform.scale(HP,(100,30))
+                    character_dict[auto_Killer_list[i]] = {}
+                    character_dict[auto_Killer_list[i]]["HP"] = HP
+                    character_dict[auto_Killer_list[i]]["num"] = f.render(str(i+last_num+1),True,(255,0,0))
+                    character_dict[auto_Killer_list[i]]["int_num"] = i+last_num+1
+                    character_dict[auto_Killer_list[i]]["y_index"] = i*50+last_y_index+50
+                    character_dict[auto_Killer_list[i]]["HP_percentage"] = 100
+                setting_finish = True
+                main_page_exists = True
+                choosing = False
+                screen.blit(main_page,(0,0))
+                screen.blit(money_pic,(0,0))
+                if dover_list == []:
+                    screen.blit(Killer,(350,490))
+                else:
+                    screen.blit(dover,(350,490))
+                x = 0
+                for enemy_name in enemy_list:
+                    # 設置各個enemy為一個object並增加對應的屬性如x坐標，將其添加到enemy_sample_list中
+                    x_position = enemy_x_position[x]
+                    x += 1
+                    if enemy_name == "enemy_1":
+                        enemy_sample = enemy(enemy_1)
+                    else:
+                        enemy_sample = enemy(enemy_2)
+                    enemy_sample.rect.x = x_position
+                    enemy_sample.name = enemy_name
+                    enemy_sample_list.append(enemy_sample)
+            else:
+        # 輸入的數值不符合條件，如兵種所需的金錢大於300
+                event.key = pygame.K_s
+                text = f.render("請輸入所需不超過300金幣的兵種構成，火鴿子:$80,玄者:$100（規則在ui菜單中）",True,(0,0,50))
+                text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 1.5))
+                screen.blit(text,(0,height-60))
+                entering = False
+                break
+                
 
 
-            elif event.key == pygame.K_f and game_end == False:
-                # 進入遊戲時的初始化（角色，角色HP等等）
-                    text = f.render("Text",True,(255,0,0),(0,0,0))
-                    try:
-                        total_cost = num_list[0]*80 + num_list[1]*100
-                    except:
-                        text = f.render("請完成所有輸入",True,(255,0,0),(0,0,0))
-                        screen.blit(text,(510,546))
-                        break
-                    if total_cost <=300:
-                        money -= total_cost
-                        for i in range(num_list[0]):
-                            # 設置各個角色的屬性進入character_dict
-                            dover_list.append(auto_dover_list[i])
-                            character_dict[auto_dover_list[i]] = {}
-                            # 嵌套字典裝該角色的屬性
-                            character_dict[auto_dover_list[i]]["HP"] = HP
-                            character_dict[auto_dover_list[i]]["num"] = f.render(str(i+1),True,(255,0,0))
-                            character_dict[auto_dover_list[i]]["int_num"] = i+1
-                            character_dict[auto_dover_list[i]]["y_index"] = (i+1)*50
-                            character_dict[auto_dover_list[i]]["HP_percentage"] = 100
-                            last_y_index = (i+1)*50
-                            last_num = i+1
-                        for i in range(num_list[1]):
-                            # Killer的處理（不能函數化，因為差別細節太多，不能以幾個參數完成）
-                            Killer_list.append(auto_Killer_list[i])
-                            HP = pygame.image.load("icons/HP.png")
-                            HP = pygame.transform.scale(HP,(100,30))
-                            character_dict[auto_Killer_list[i]] = {}
-                            character_dict[auto_Killer_list[i]]["HP"] = HP
-                            character_dict[auto_Killer_list[i]]["num"] = f.render(str(i+last_num+1),True,(255,0,0))
-                            character_dict[auto_Killer_list[i]]["int_num"] = i+last_num+1
-                            character_dict[auto_Killer_list[i]]["y_index"] = i*50+last_y_index+50
-                            character_dict[auto_Killer_list[i]]["HP_percentage"] = 100
-                        setting_finish = True
-                        main_page_exists = True
-                        choosing = False
-                        screen.blit(main_page,(0,0))
-                        screen.blit(money_pic,(0,0))
-                        if dover_list == []:
-                            screen.blit(Killer,(350,490))
-                        else:
-                            screen.blit(dover,(350,490))
-                        x = 0
-                        for enemy_name in enemy_list:
-                            # 設置各個enemy為一個object並增加對應的屬性如x坐標，將其添加到enemy_sample_list中
-                            x_position = enemy_x_position[x]
-                            x += 1
-                            if enemy_name == "enemy_1":
-                                enemy_sample = enemy(enemy_1)
-                            else:
-                                enemy_sample = enemy(enemy_2)
-                            enemy_sample.rect.x = x_position
-                            enemy_sample.name = enemy_name
-                            enemy_sample_list.append(enemy_sample)
-
+                
                                                  
                                 
-                    else:
-                        # 輸入的數值不符合條件，如兵種所需的金錢大於300
-                        event.key = pygame.K_s
-                        text = f.render("請輸入所需不超過300金幣的兵種構成，火鴿子:$80,玄者:$100（規則在ui菜單中）",True,(0,0,50))
-                        text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 1.5))
-                        screen.blit(text,(0,height-60))
-                        break
+
                 # except:
                 #     print(Exception)
 
