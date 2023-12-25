@@ -1,5 +1,5 @@
 # 【待完成】 / # 需改
-# 唔規範嘅地方：小部分用駝峰命名法，部分變量不符合命名法，branch名字應該改為master，部分地方可以函數化
+# 唔規範嘅地方：小部分用駝峰式，部分變量不符合命名法，branch名字應該改為master，部分地方可以函數化
 
 # 可增加處/改善處
 # 改為合適的音樂,通關和失敗也有對應不同的音樂
@@ -12,7 +12,7 @@
 # “以鼠標點擊進入選兵界面”，以鼠標代替enter來選兵，
 # watching_mode可以創意化
 # 未利用到sprite的碰撞等函數，在x y坐標都可以移動的遊戲裡這種算法不利
-# func待加入：遊戲中按m靜音音樂（不只是選擇界面中）
+# func待加入：遊戲中按m靜音音樂（不只是選擇界面中），按一下音樂重新播放
 
 import sys
 import pygame
@@ -490,7 +490,7 @@ while True:
                             character_dict[auto_dover_list[i]] = {}
                             # 嵌套字典裝該角色的屬性
                             character_dict[auto_dover_list[i]]["HP"] = HP
-                            character_dict[auto_dover_list[i]]["num"] = f.render(str(i+1),True,(255,0,0),(0,0,0))
+                            character_dict[auto_dover_list[i]]["num"] = f.render(str(i+1),True,(255,0,0))
                             character_dict[auto_dover_list[i]]["int_num"] = i+1
                             character_dict[auto_dover_list[i]]["y_index"] = (i+1)*50
                             character_dict[auto_dover_list[i]]["HP_percentage"] = 100
@@ -632,6 +632,7 @@ while True:
                 text = character_dict[key]["num"]
                 HP = character_dict[key]["HP"]
                 HP_percentage = character_dict[key]["HP_percentage"]
+                
                 HP = pygame.transform.scale(HP, (HP_percentage, HP.get_height()))
                 if key.startswith("A"):
                     # 前面幾行已經設置了變量
