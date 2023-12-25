@@ -438,7 +438,7 @@ while True:
             text = f.render("輸入兵種數目並輸入enter(注意需要從左到右執行),輸入S重置界面",True,(255,0,0))
             text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // (1.5)))
             screen.blit(text,(0,0))
-            text = f.render("輸入W進入觀察模式(檢查敵人構成),輸入M關閉音樂",True,(0,0,50))
+            text = f.render("輸入W進入觀察模式(檢查敵人構成),輸入M關閉音樂(上述操作皆需以英文輸入法輸入)",True,(0,0,50))
             text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 1.5))
             screen.blit(text,(0,25))
             if watching_chance == 0:
@@ -548,22 +548,12 @@ while True:
             else:
         # 輸入的數值不符合條件，如兵種所需的金錢大於300
                 event.key = pygame.K_s
-                text = f.render("請輸入所需不超過300金幣的兵種構成，火鴿子:$80,玄者:$100（規則在ui菜單中）",True,(0,0,50))
+                text = f.render("請輸入所需不超過300金幣的兵種構成，火鴿子:$80,Killer:$100（規則在ui菜單中）",True,(0,0,50))
                 text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 1.5))
                 screen.blit(text,(0,height-60))
                 entering = False
                 break
-                
-
-
-                
-                                                 
-                                
-
-                # except:
-                #     print(Exception)
-
-            
+                        
 
         # 進入主程序
         if event.type == pygame.KEYDOWN and main_page_exists == True and game_end == False:
