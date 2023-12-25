@@ -319,7 +319,7 @@ def watching_mode():
         if enemy == "enemy_1":
             added_text = f"{enemy_frequency}.妖弭猴 "
         else:
-            added_text = f"{enemy_frequency}.閃電猩 "
+            added_text = f"{enemy_frequency}.紅猩 "
         text += added_text
     text = f.render(text,True,(0,100,255))
     text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 2))
