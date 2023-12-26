@@ -9,6 +9,7 @@
 # 結算界面增加【所用時間】，本地自動儲存該時間，在主頁新增一個歷史記錄按鈕
 # 觀察後，輸入框的內容保留(txt = self.text已完成，剩下調用watching_mode後self.txt = previous_txt)
 
+# BUG：輸入ENTER後，文本框無法再輸入數字
 # 次要
 # 改為合適的音樂,通關和失敗也有對應不同的音樂
 # menu增加更多東西，創意化+美觀化
@@ -220,15 +221,18 @@ class InputBox:
                 self.active) else self.color_inactive
         if(event.type == pygame.KEYDOWN):  # 鍵盤輸入響應
             if(self.active):
+                text = f.render("請輸入正常數字",True,(0,100,255))
                 if self.finish == False:
                     if(event.key == pygame.K_RETURN):
                         global num_list,txt
                         try:
                             num_list.append(int(self.text))
                             txt = int(self.text)
+                            self.finish = True
                         except:
-                            pass
-                        self.finish = True
+                            screen.blit(text,(160,384))
+                        # if 
+                        
                         # self.text=''
                     elif(event.key == pygame.K_BACKSPACE):
                         self.text = self.text[:-1]
@@ -431,7 +435,7 @@ while True:
             input1 = inputbox.dealEvent(event)
             # inputbox1_text = txt
             # print(inputbox1_text)
-            screen.blit(selecting_page,(0,0))
+            # screen.blit(selecting_page,(0,0))
             inputbox.draw(screen)
             input2 = inputbox2.dealEvent(event)
             inputbox2.draw(screen) 
