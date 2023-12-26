@@ -225,9 +225,13 @@ class InputBox:
                     if(event.key == pygame.K_RETURN):
                         global num_list,txt
                         try:
-                            num_list.append(int(self.text))
-                            txt = int(self.text)
-                            self.finish = True
+                            if int(self.text)>0:
+                                num_list.append(int(self.text))
+                                txt = int(self.text)
+                                self.finish = True
+                            else:
+                                text = f.render("請輸入合理範圍的數值",True,(0,100,255))
+                                screen.blit(text,(160,384))
                         except:
                             screen.blit(text,(160,384))
                         # if 
