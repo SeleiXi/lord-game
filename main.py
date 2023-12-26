@@ -205,11 +205,15 @@ class Player(pygame.sprite.Sprite):
                 for i in range(5):
                     main_page_rect.x -= 1
                     screen.blit(main_page,(main_page_rect.x,main_page_rect.y))
-                    
+                    # screen.blit(money_pic,(0,0))
+                    # screen.blit(f.render(str(money),True,(255,0,0)),(50,0))
                     # all_sprites.draw(screen)  # Bug解決：這句導致角色死亡後仍然在刷新精靈（還有176行那句（下一個elif語句，向左走的情況））
                     for enemy_sample in enemy_sample_list:
                         enemy_sample.rect.x -= 1
-                    
+
+                    main_page_bliting()
+                    pygame.display.flip()
+                
             else:
                 # 到達城堡後觸發成功function
                 win_ending()
@@ -223,6 +227,8 @@ class Player(pygame.sprite.Sprite):
                     # all_sprites.draw(screen) # Bug解決：這句導致角色死亡後仍然在刷新精靈
                     for enemy_sample in enemy_sample_list:
                         enemy_sample.rect.x += 1
+                    main_page_bliting()
+                    pygame.display.flip()
             # 設置最左邊邊界（main_page_rect.x>150），不需要設置右邊，因為到右邊的某個點自動會結算遊戲
             else:
                 main_page_rect.x = 150
@@ -307,7 +313,45 @@ class InputBox:
         screen.blit(txtSurface, (self.boxBody.x+5, self.boxBody.y+5))
         pygame.draw.rect(screen, self.color, self.boxBody, 2)
 
-
+def main_page_bliting():
+    screen.blit(main_page,(main_page_rect.x,main_page_rect.y))
+    for key,value in character_dict.items():
+        
+    # 所有object都blit一次
+        
+        if now == "dover":
+            screen.blit(dover,(350,490))   
+        elif now == "Killer":
+            screen.blit(Killer,(350,490))
+        screen.blit(money_pic,(0,0))
+        screen.blit(f.render(str(money),True,(255,0,0)),(50,0))
+        y_index = int(character_dict[key]["y_index"])
+        text = character_dict[key]["num"]
+        HP = character_dict[key]["HP"]
+        HP_percentage = character_dict[key]["HP_percentage"]
+        
+        HP = pygame.transform.scale(HP, (HP_percentage, HP.get_height()))
+        if key.startswith("A"):
+            # 前面幾行已經設置了變量
+            screen.blit(text,(0,y_index))
+            screen.blit(mini_dover,(50,y_index))
+            screen.blit(HP,(100,y_index))
+            # 顯示HP percentage數值
+            # HP_percentage_icon = f.render(str(HP_percentage),True,(0,100,255))
+            # screen.blit(HP_percentage_icon,(100+50,y_index,character_dict[key]["HP_percentage"],50))
+        else:
+            # Killer的處理
+            screen.blit(text,(0,y_index))
+            screen.blit(mini_Killer,(50,y_index))
+            screen.blit(HP,(100,y_index))
+            # screen.blit(HP_percentage,(100+50,y_index,character_dict[key]["HP_percentage"],50))
+        for enemy_object in enemy_sample_list:
+            # 所有enemy都blit一次
+            if enemy_object.name == "enemy_1":
+                screen.blit(enemy_1,(enemy_object.rect.x,enemy_object.rect.y))
+            if enemy_object.name == "enemy_2":
+                screen.blit(enemy_2,(enemy_object.rect.x,enemy_object.rect.y))
+    pygame.display.flip()
 def fight():
     # 判定角色遇到敵人時
     global now_num,now
@@ -391,8 +435,8 @@ def watching_mode():
         # 在主頁時的顯示    
         pygame.display.flip()
         time.sleep(5)
-        all_sprites.update('r')
-        all_sprites.update('l')
+        # all_sprites.update('r')
+        # all_sprites.update('l')
     else:
         # 在選擇界面的顯示
         pygame.display.flip()
@@ -688,16 +732,16 @@ while True:
                             # 角色是dover時的處理
                             player = Player(dover)
                             all_sprites.add(player)
-                            all_sprites.update('r')
-                            all_sprites.update('l')
                             now = "dover"
+                            main_page_bliting()
+                            
+                            
                             break
                         elif key.startswith("B"):
                             player = Player(Killer)
                             all_sprites.add(player)
-                            all_sprites.update('r')
-                            all_sprites.update('l')
                             now = "Killer"
+                            main_page_bliting()
                             break
                 
             # 向右走
@@ -726,44 +770,12 @@ while True:
         if event.type ==  pygame.KEYUP:
             move_status = False
         # 每走一次，都會使得畫面刷新，因此所有的圖像需要根據他們的數值重新blit一次
-        if game_end == False:
+        if game_end == False and main_page_exists == True:
             # 每個主程序處理都需要帶上game_end == False，以免遊戲結束後主程序干擾結束界面
-            for key,value in character_dict.items():
-                # 所有object都blit一次
-                if now == "dover":
-                    screen.blit(dover,(350,490))   
-                elif now == "Killer":
-                    screen.blit(Killer,(350,490))
-                screen.blit(money_pic,(0,0))
-                screen.blit(f.render(str(money),True,(255,0,0)),(50,0))
-                y_index = int(character_dict[key]["y_index"])
-                text = character_dict[key]["num"]
-                HP = character_dict[key]["HP"]
-                HP_percentage = character_dict[key]["HP_percentage"]
-                
-                HP = pygame.transform.scale(HP, (HP_percentage, HP.get_height()))
-                if key.startswith("A"):
-                    # 前面幾行已經設置了變量
-                    screen.blit(text,(0,y_index))
-                    screen.blit(mini_dover,(50,y_index))
-                    screen.blit(HP,(100,y_index))
-                    # 顯示HP percentage數值
-                    # HP_percentage_icon = f.render(str(HP_percentage),True,(0,100,255))
-                    # screen.blit(HP_percentage_icon,(100+50,y_index,character_dict[key]["HP_percentage"],50))
-                else:
-                    # Killer的處理
-                    screen.blit(text,(0,y_index))
-                    screen.blit(mini_Killer,(50,y_index))
-                    screen.blit(HP,(100,y_index))
-                    # screen.blit(HP_percentage,(100+50,y_index,character_dict[key]["HP_percentage"],50))
-                for enemy_object in enemy_sample_list:
-                    # 所有enemy都blit一次
-                    if enemy_object.name == "enemy_1":
-                        screen.blit(enemy_1,(enemy_object.rect.x,enemy_object.rect.y))
-                    if enemy_object.name == "enemy_2":
-                        screen.blit(enemy_2,(enemy_object.rect.x,enemy_object.rect.y))
-        else:
+
+            main_page_bliting()
             # 結束界面時，不斷循環blit結束畫面
+        elif game_end == True:
             if win == True:
                 screen.blit(result,(0,0))
             else:
