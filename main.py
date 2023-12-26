@@ -7,7 +7,7 @@
 # 結算界面增加【所用時間】，本地自動儲存該時間，在主頁新增一個歷史記錄按鈕
 # 觀察後，輸入框的內容保留(txt = self.text已完成，剩下調用watching_mode後self.txt = previous_txt)
 # 每局隨機金錢（200-500）+敵人數目+友軍購買所需金錢
-# 靜音按鈕（任何時候都有）+提交兵種數目按鈕 + 重置輸入按鈕（重置按鈕可以在文本框旁邊/和提交按鈕放在一起，表示重置輸入）
+# 靜音按鈕（任何時候都有，在右上角）+提交兵種數目按鈕 + 重置輸入按鈕（重置按鈕可以在文本框旁邊/和提交按鈕放在一起，表示重置輸入）
 # 重置時改為不是重置界面，而是重置指定的輸入，
 # 可以從左到右執行框的輸入（其實不難，因為已經劃分inputbox1和2）
 # 選兵界面input時就進行檢查，而不是在按f時檢查
@@ -204,7 +204,7 @@ class Player(pygame.sprite.Sprite):
             # 向右走的話，main_page的x坐標是一直在減少的（因為初始值為0,0）-3200是到達城堡的邊界
             if not main_page_rect.x<-3200:
                 # 如果沒有到達邊界，就一直讓主頁的x坐標減少，讓角色看起來在"移動"
-                for i in range(5):
+                for i in range(20):
                     main_page_rect.x -= 1
                     screen.blit(main_page,(main_page_rect.x,main_page_rect.y))
                     # screen.blit(money_pic,(0,0))
@@ -223,7 +223,7 @@ class Player(pygame.sprite.Sprite):
         elif direction == "l":
             if not main_page_rect.x>150:
                 # 邊界是第一顆數，x坐標是150
-                for i in range(5):
+                for i in range(20):
                     main_page_rect.x += 1
                     screen.blit(main_page,(main_page_rect.x,main_page_rect.y))
                     # all_sprites.draw(screen) # Bug解決：這句導致角色死亡後仍然在刷新精靈
