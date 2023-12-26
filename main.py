@@ -15,6 +15,8 @@
 # 增加不同的模式
 # 背景設定重新寫，但可以說借鑒曾經寫的小說，文學化：生靈塗炭..
 # watching_mode可以創意化
+# 觀察mode倒計時
+# 每局隨機金錢（200-500）+敵人數目+友軍購買所需金錢
 
 import sys
 import pygame
@@ -113,6 +115,7 @@ now = ""
 # 加載音樂（最後一句是設置持續播放音樂時會觸發的函數）
 pygame.mixer.init()
 pygame.mixer.music.load("music/background_music.mp3")
+pygame.mixer.music.set_volume(0.5)
 pygame.mixer.music.play()
 pygame.mixer.music.set_endevent(pygame.USEREVENT)
 
