@@ -4,22 +4,14 @@
 # 可增加處/改善處（Lord_Game V2時改善）
 # 角色圖片/背景的優化
 # 【待完成】 / # 需改
+# 有可能5輪也有可能7輪
 # 結算界面增加【所用時間】，本地自動儲存該時間，在主頁新增一個歷史記錄按鈕
 # 觀察後，輸入框的內容保留(txt = self.text已完成，剩下調用watching_mode後self.txt = previous_txt)
 # 每局隨機金錢（200-500）+敵人數目+友軍購買所需金錢
-# 靜音按鈕（任何時候都有，在右上角）+提交兵種數目按鈕 + 重置輸入按鈕（重置按鈕可以在文本框旁邊/和提交按鈕放在一起，表示重置輸入）
-# 重置時改為不是重置界面，而是重置指定的輸入，
+# 靜音按鈕（任何時候都有）+提交兵種數目按鈕 + 以滑鼠重置界面（重置按鈕可以在文本框旁邊）
+# 把func和初始值變量放到獨立的文件裡,init.py + func_lib.py + class.py等等
 # 可以從左到右執行框的輸入（其實不難，因為已經劃分inputbox1和2）
 # 選兵界面input時就進行檢查，而不是在按f時檢查
-# 避免任何情況的time.sleep()，（以免無法退出遊戲）而是無限進行pygame的循環，直到x秒 
-# 試試文本輸入框避免try,except，而是用isdigit()
-# 設置快捷方式只設置一次，而不是每次打開程序都設置（ipc）
-# 第一個框輸入-100不顯示問題（和輸入a等無效字符的解決方法一樣）
-# 如果watching_chance == 1 自動在左下角顯示"輸入W進入觀察模式"
-# 因為enemy長度過長而導致"剩餘時間"字樣無法顯示的問題
-
-# 把func和初始值變量放到獨立的文件裡,init.py + func_lib.py + class.py等等
-# func需要的變量在func文件夾，在debug的時候也方便了解變量是幹什麼的
 
 # 次要
 # 改為合適的音樂,通關和失敗也有對應不同的音樂
@@ -37,7 +29,6 @@ from PySide2.QtUiTools import QUiLoader
 import time
 import random
 from threading import Thread
-from pynput.keyboard import KeyCode,Listener
 
 # 初始化各個值以及加載圖片
 pygame.init()
@@ -87,7 +78,6 @@ fullScreen = False
 start_button = (pygame.Rect(280, 270, 234, 60))
 entering_button = (pygame.Rect(105,500,600 , 60))
 setting_finish = False
-pressing = False
 choosing = False
 First_run = False
 money = 300
@@ -134,33 +124,6 @@ pygame.mixer.music.play()
 pygame.mixer.music.set_endevent(pygame.USEREVENT)
 
 
-keyboard_input = ""
-pressing_content = ""
-# pressing = False
-def on_press(key):
-    global keyboard_input,pressing,pressing_content
-    
-    if not pygame.mouse.get_focused():
-        return 
-    if isinstance(key, KeyCode):
-        pressing_content = key.char
-        if key.char == 'w':
-            keyboard_input = pygame.K_w
-        elif key.char == 's':
-            keyboard_input = pygame.K_s
-        elif key.char == 'a':
-            keyboard_input = pygame.K_a
-        elif key.char == 'd':
-            keyboard_input = pygame.K_d
-        elif key.char == 'm':
-            keyboard_input = pygame.K_m
-        elif key.char == 'f':
-            keyboard_input = pygame.K_f
-        pressing = True
-listener = Listener(on_press=on_press)
-listener.start()
-
-
 # class Stats:
 #     # 治療面板（已取消，呢個版本唔設置cure function）
 #     def __init__(self):
@@ -204,18 +167,11 @@ class Player(pygame.sprite.Sprite):
             # 向右走的話，main_page的x坐標是一直在減少的（因為初始值為0,0）-3200是到達城堡的邊界
             if not main_page_rect.x<-3200:
                 # 如果沒有到達邊界，就一直讓主頁的x坐標減少，讓角色看起來在"移動"
-                for i in range(20):
-                    main_page_rect.x -= 1
-                    screen.blit(main_page,(main_page_rect.x,main_page_rect.y))
-                    # screen.blit(money_pic,(0,0))
-                    # screen.blit(f.render(str(money),True,(255,0,0)),(50,0))
-                    # all_sprites.draw(screen)  # Bug解決：這句導致角色死亡後仍然在刷新精靈（還有176行那句（下一個elif語句，向左走的情況））
-                    for enemy_sample in enemy_sample_list:
-                        enemy_sample.rect.x -= 1
-
-                    main_page_bliting()
-                    pygame.display.flip()
-                
+                main_page_rect.x -=3
+                screen.blit(main_page,(main_page_rect.x,main_page_rect.y))
+                # all_sprites.draw(screen)  # Bug解決：這句導致角色死亡後仍然在刷新精靈（還有176行那句（下一個elif語句，向左走的情況））
+                for enemy_sample in enemy_sample_list:
+                    enemy_sample.rect.x -=3
             else:
                 # 到達城堡後觸發成功function
                 win_ending()
@@ -223,14 +179,11 @@ class Player(pygame.sprite.Sprite):
         elif direction == "l":
             if not main_page_rect.x>150:
                 # 邊界是第一顆數，x坐標是150
-                for i in range(20):
-                    main_page_rect.x += 1
-                    screen.blit(main_page,(main_page_rect.x,main_page_rect.y))
-                    # all_sprites.draw(screen) # Bug解決：這句導致角色死亡後仍然在刷新精靈
-                    for enemy_sample in enemy_sample_list:
-                        enemy_sample.rect.x += 1
-                    main_page_bliting()
-                    pygame.display.flip()
+                main_page_rect.x +=3
+                screen.blit(main_page,(main_page_rect.x,main_page_rect.y))
+                # all_sprites.draw(screen) # Bug解決：這句導致角色死亡後仍然在刷新精靈
+                for enemy_sample in enemy_sample_list:
+                    enemy_sample.rect.x +=3
             # 設置最左邊邊界（main_page_rect.x>150），不需要設置右邊，因為到右邊的某個點自動會結算遊戲
             else:
                 main_page_rect.x = 150
@@ -247,8 +200,6 @@ class enemy(pygame.sprite.Sprite):
         self.rect.y = 490
         # 不添加x坐標,因為每個enemy的x坐標都不一樣
 
-num_legal = True
-text_content = ""
 class InputBox:
     # 文本輸入框(選兵界面的)
     def __init__(self, rect: pygame.Rect = pygame.Rect(100, 100, 140, 32)) -> None:
@@ -262,10 +213,10 @@ class InputBox:
         self.font = pygame.font.Font(None, 32)
         self.finish = False
     
-    
+   
     def dealEvent(self, event: pygame.event.Event):
         # 當點擊框的時候進行的處理
-        global selection,text
+        global selection
 
         if(event.type == pygame.MOUSEBUTTONDOWN):
             if(self.boxBody.collidepoint(event.pos)):  
@@ -276,8 +227,7 @@ class InputBox:
                 self.active) else self.color_inactive
         if(event.type == pygame.KEYDOWN):  # 鍵盤輸入響應
             if(self.active):
-                global num_legal,text_content
-             
+                text = f.render("請輸入正常數字",True,(0,100,255))
                 if self.finish == False:
                     if(event.key == pygame.K_RETURN):
                         global num_list,txt
@@ -286,17 +236,11 @@ class InputBox:
                                 num_list.append(int(self.text))
                                 txt = int(self.text)
                                 self.finish = True
-                                num_legal = True
                             else:
                                 text = f.render("請輸入合理範圍的數值",True,(0,100,255))
-                                text_content = "請輸入合理範圍的數值"
                                 screen.blit(text,(160,384))
-                                num_legal = False
                         except:
-                            text = f.render("請輸入正常數字",True,(0,100,255))
-                            num_legal = False
                             screen.blit(text,(160,384))
-                            text_content = "請輸入正常數字"
                         # if 
                         
                         # self.text=''
@@ -315,45 +259,7 @@ class InputBox:
         screen.blit(txtSurface, (self.boxBody.x+5, self.boxBody.y+5))
         pygame.draw.rect(screen, self.color, self.boxBody, 2)
 
-def main_page_bliting():
-    screen.blit(main_page,(main_page_rect.x,main_page_rect.y))
-    for key,value in character_dict.items():
-        
-    # 所有object都blit一次
-        
-        if now == "dover":
-            screen.blit(dover,(350,490))   
-        elif now == "Killer":
-            screen.blit(Killer,(350,490))
-        screen.blit(money_pic,(0,0))
-        screen.blit(f.render(str(money),True,(255,0,0)),(50,0))
-        y_index = int(character_dict[key]["y_index"])
-        text = character_dict[key]["num"]
-        HP = character_dict[key]["HP"]
-        HP_percentage = character_dict[key]["HP_percentage"]
-        
-        HP = pygame.transform.scale(HP, (HP_percentage, HP.get_height()))
-        if key.startswith("A"):
-            # 前面幾行已經設置了變量
-            screen.blit(text,(0,y_index))
-            screen.blit(mini_dover,(50,y_index))
-            screen.blit(HP,(100,y_index))
-            # 顯示HP percentage數值
-            # HP_percentage_icon = f.render(str(HP_percentage),True,(0,100,255))
-            # screen.blit(HP_percentage_icon,(100+50,y_index,character_dict[key]["HP_percentage"],50))
-        else:
-            # Killer的處理
-            screen.blit(text,(0,y_index))
-            screen.blit(mini_Killer,(50,y_index))
-            screen.blit(HP,(100,y_index))
-            # screen.blit(HP_percentage,(100+50,y_index,character_dict[key]["HP_percentage"],50))
-        for enemy_object in enemy_sample_list:
-            # 所有enemy都blit一次
-            if enemy_object.name == "enemy_1":
-                screen.blit(enemy_1,(enemy_object.rect.x,enemy_object.rect.y))
-            if enemy_object.name == "enemy_2":
-                screen.blit(enemy_2,(enemy_object.rect.x,enemy_object.rect.y))
-    pygame.display.flip()
+
 def fight():
     # 判定角色遇到敵人時
     global now_num,now
@@ -437,8 +343,8 @@ def watching_mode():
         # 在主頁時的顯示    
         pygame.display.flip()
         time.sleep(5)
-        # all_sprites.update('r')
-        # all_sprites.update('l')
+        all_sprites.update('r')
+        all_sprites.update('l')
     else:
         # 在選擇界面的顯示
         pygame.display.flip()
@@ -475,9 +381,7 @@ def watching_mode():
 
 def choosing_mode_entering():
     # 點擊s時會重置頁面的函數，把所有數額重置
-    global num_list,choosing,choosing_start,inputbox,inputbox2,first_choosing,selecting_page,num_legal
-    selecting_page = pygame.image.load("icons/selecting_page.png")
-    screen.blit(selecting_page,(0,0))
+    global num_list,choosing,choosing_start,inputbox,inputbox2,first_choosing,selecting_page
     num_list = []
     inputbox = InputBox(pygame.Rect(150, 450, 10, 32)) 
     inputbox2 = InputBox(pygame.Rect(450, 450, 10, 32)) 
@@ -492,9 +396,9 @@ def choosing_mode_entering():
     text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 1.5))
     screen.blit(text,(0,25))
     first_choosing == False
-
+    selecting_page = pygame.image.load("icons/selecting_page.png")
+    screen.blit(selecting_page,(0,0))
     #待添加 #blit：進入遊戲：F(以英文輸入法) (可啟動 / 不可啟動)，火鴿子數目： Killer數目：
-    num_legal = True
 
 def fail_ending():
     # 失敗時觸發的function
@@ -562,17 +466,14 @@ while True:
             input1 = inputbox.dealEvent(event)
             # inputbox1_text = txt
             # print(inputbox1_text)
-            screen.blit(selecting_page,(0,0)) # 是否導致【請輸入正常數字】出現的關鍵
-            if num_legal == False:
-                text = f.render(text_content,True,(0,100,255))
-                screen.blit(text,(160,384))
+            # screen.blit(selecting_page,(0,0))
             inputbox.draw(screen)
             input2 = inputbox2.dealEvent(event)
             inputbox2.draw(screen) 
             text = f.render("輸入兵種數目並輸入enter(注意需要從左到右執行),輸入S重置界面",True,(255,0,0))
             text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // (1.5)))
             screen.blit(text,(0,0))
-            text = f.render("輸入W進入觀察模式(檢查敵人構成),輸入M關閉音樂",True,(0,0,50))
+            text = f.render("輸入W進入觀察模式(檢查敵人構成),輸入M關閉音樂(上述操作皆需以英文輸入法輸入)",True,(0,0,50))
             text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 1.5))
             screen.blit(text,(0,25))
             if watching_chance == 0:
@@ -590,11 +491,9 @@ while True:
                 screen.blit(text,(0,25))
                 first_choosing = True
             #待添加 # blit：進入遊戲(以英文輸入法輸入F)： (可啟動 / 不可啟動(請完成輸入))，火鴿子數目： Killer數目：
-        if pressing == True and game_end == False:
-            # listener = Listener(on_press=on_press)
+        if event.type == pygame.KEYDOWN and game_end == False:
             # 當遊戲進行時所有可調用的快捷鍵
-            # pressing = False
-            if keyboard_input == pygame.K_w:
+            if event.key == pygame.K_w:
                 # 進入觀察模式
                 if watching_chance == 1 and choosing_start == True:
                     watching_mode()
@@ -604,8 +503,7 @@ while True:
                     text = f.render("觀察機會已耗盡",True,(0,0,50))
                     text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 1.5))
                     screen.blit(text,(0,height-30))
-            if keyboard_input == pygame.K_m:
-                keyboard_input = ""
+            if event.key == pygame.K_m:
                 if music_muted == False:
                     pygame.mixer.music.stop()
                     music_muted = True
@@ -617,15 +515,12 @@ while True:
             choosing_mode_entering()
         if event.type == pygame.MOUSEBUTTONDOWN and entering_button.collidepoint(event.pos) and len(num_list)== 2 and main_page_exists == False and game_end == False:
             entering = True
-        elif pressing == True and main_page_exists == False and game_end == False:
-            # event.type == pygame.KEYDOWN
-            # pressing = False
+        elif event.type == pygame.KEYDOWN and main_page_exists == False and game_end == False:
             # 要確認main_page不存在（未進入主程序）才進行以下操作（因為以下操作是進行選兵操作的）
-            if keyboard_input == pygame.K_s:
+            if event.key == pygame.K_s:
                 # 重新加載選兵界面
-                keyboard_input = ""
                 choosing_mode_entering()
-            if (keyboard_input == pygame.K_f) and game_end == False:# or (event.type == pygame.MOUSEBUTTONDOWN and entering_button.collidepoint(event.pos) and len(num_list)== 2 and main_page_exists == False and game_end == False):
+            if (event.key == pygame.K_f and game_end == False):# or (event.type == pygame.MOUSEBUTTONDOWN and entering_button.collidepoint(event.pos) and len(num_list)== 2 and main_page_exists == False and game_end == False):
                 entering = True
         if entering == True:
             # 進入遊戲時的初始化（角色，角色HP等等）
@@ -695,8 +590,7 @@ while True:
                         
 
         # 進入主程序
-        if pressing == True and main_page_exists == True and game_end == False:
-            # pressing = False
+        if event.type == pygame.KEYDOWN and main_page_exists == True and game_end == False:
             # 進入主程序後只會執行一次
             if First_run == False:
                 all_sprites = pygame.sprite.Group()
@@ -711,74 +605,101 @@ while True:
                     all_sprites.add(player)
                     now = "dover"
                 First_run = True
-            if pressing == True and pressing_content:
+            if event.key == pygame.K_F11:
                 # 全屏化處理
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
-                    if fullScreen == False:
-                        screen = pygame.display.set_mode((width,height),(pygame.FULLSCREEN))
-                        fullScreen = True
-                        screen.blit(main_page,(main_page_rect.x,main_page_rect.y))
-                        all_sprites.draw(screen)
-                    else:
-                        # 解鎖全屏
-                        screen = pygame.display.set_mode((width,height),flags=0)
-                        screen.blit(main_page,(main_page_rect.x,main_page_rect.y))
-                        all_sprites.draw(screen)
-                        fullScreen = False
-            if pressing_content == "1" or pressing_content == "2" or pressing_content == "3" or pressing_content == "4":
+                if fullScreen == False:
+                    screen = pygame.display.set_mode((width,height),(pygame.FULLSCREEN))
+                    fullScreen = True
+                    screen.blit(main_page,(main_page_rect.x,main_page_rect.y))
+                    all_sprites.draw(screen)
+                else:
+                    # 解鎖全屏
+                    screen = pygame.display.set_mode((width,height),flags=0)
+                    screen.blit(main_page,(main_page_rect.x,main_page_rect.y))
+                    all_sprites.draw(screen)
+                    fullScreen = False
+            if event.key == pygame.K_1 or event.key == pygame.K_2 or event.key == pygame.K_3 or event.key == pygame.K_4 or event.key == pygame.K_5:
                 # 切換兵種
                 for key,value in character_dict.items():
-                    if pykey[character_dict[key]["int_num"]] == pykey[int(pressing_content)]:
+                    if pykey[character_dict[key]["int_num"]] == event.key:
                         all_sprites = pygame.sprite.Group()
                         now_num = character_dict[key]["int_num"]
                         if key.startswith("A"):
                             # 角色是dover時的處理
                             player = Player(dover)
                             all_sprites.add(player)
+                            all_sprites.update('r')
+                            all_sprites.update('l')
                             now = "dover"
-                            main_page_bliting()
-                            
-                            
                             break
                         elif key.startswith("B"):
                             player = Player(Killer)
                             all_sprites.add(player)
+                            all_sprites.update('r')
+                            all_sprites.update('l')
                             now = "Killer"
-                            main_page_bliting()
                             break
                 
             # 向右走
-            if keyboard_input == pygame.K_d:
+            if event.key == pygame.K_d:
                 move_status = True
                 right_move_status = True
                 left_move_status = False
                 all_sprites.update('r')
-                keyboard_input = ""
             # 向左走
-            if keyboard_input == pygame.K_a:
+            if event.key == pygame.K_a:
                 move_status = True
                 left_move_status = True
                 right_move_status = False
                 all_sprites.update('l')
-                keyboard_input = ""
 
         # 按住走路不放的奔跑功能實現
         if right_move_status == True and move_status == True:
             # update這個function是讓地圖的index改變，從而實現角色移動
             all_sprites.update('r')
-            move_status = False
         if left_move_status == True and move_status == True:
-            all_sprites.update('l')  
-            move_status = False
+            all_sprites.update('l')    
         if event.type ==  pygame.KEYUP:
             move_status = False
         # 每走一次，都會使得畫面刷新，因此所有的圖像需要根據他們的數值重新blit一次
-        if game_end == False and main_page_exists == True:
+        if game_end == False:
             # 每個主程序處理都需要帶上game_end == False，以免遊戲結束後主程序干擾結束界面
-
-            main_page_bliting()
+            for key,value in character_dict.items():
+                # 所有object都blit一次
+                if now == "dover":
+                    screen.blit(dover,(350,490))   
+                elif now == "Killer":
+                    screen.blit(Killer,(350,490))
+                screen.blit(money_pic,(0,0))
+                screen.blit(f.render(str(money),True,(255,0,0)),(50,0))
+                y_index = int(character_dict[key]["y_index"])
+                text = character_dict[key]["num"]
+                HP = character_dict[key]["HP"]
+                HP_percentage = character_dict[key]["HP_percentage"]
+                
+                HP = pygame.transform.scale(HP, (HP_percentage, HP.get_height()))
+                if key.startswith("A"):
+                    # 前面幾行已經設置了變量
+                    screen.blit(text,(0,y_index))
+                    screen.blit(mini_dover,(50,y_index))
+                    screen.blit(HP,(100,y_index))
+                    # 顯示HP percentage數值
+                    # HP_percentage_icon = f.render(str(HP_percentage),True,(0,100,255))
+                    # screen.blit(HP_percentage_icon,(100+50,y_index,character_dict[key]["HP_percentage"],50))
+                else:
+                    # Killer的處理
+                    screen.blit(text,(0,y_index))
+                    screen.blit(mini_Killer,(50,y_index))
+                    screen.blit(HP,(100,y_index))
+                    # screen.blit(HP_percentage,(100+50,y_index,character_dict[key]["HP_percentage"],50))
+                for enemy_object in enemy_sample_list:
+                    # 所有enemy都blit一次
+                    if enemy_object.name == "enemy_1":
+                        screen.blit(enemy_1,(enemy_object.rect.x,enemy_object.rect.y))
+                    if enemy_object.name == "enemy_2":
+                        screen.blit(enemy_2,(enemy_object.rect.x,enemy_object.rect.y))
+        else:
             # 結束界面時，不斷循環blit結束畫面
-        elif game_end == True:
             if win == True:
                 screen.blit(result,(0,0))
             else:
