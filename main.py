@@ -1,13 +1,17 @@
 # 唔規範嘅地方：小部分用駝峰式，部分變量不符合命名法，branch名字應該改為master，部分地方可以函數化
 # 未利用到sprite的碰撞等函數，在x y坐標都可以移動的遊戲裡這種算法不利
 
-# 可增加處/改善處
+# 可增加處/改善處（Lord_Game V2時改善）
 # 角色圖片/背景的優化
 # 【待完成】 / # 需改
 # 有可能5輪也有可能7輪
-# 以滑鼠重置界面（重置按鈕可以在文本框旁邊）
 # 結算界面增加【所用時間】，本地自動儲存該時間，在主頁新增一個歷史記錄按鈕
 # 觀察後，輸入框的內容保留(txt = self.text已完成，剩下調用watching_mode後self.txt = previous_txt)
+# 每局隨機金錢（200-500）+敵人數目+友軍購買所需金錢
+# 靜音按鈕（任何時候都有）+提交兵種數目按鈕 + 以滑鼠重置界面（重置按鈕可以在文本框旁邊）
+# 把func和初始值變量放到獨立的文件裡,init.py + func_lib.py + class.py等等
+# 可以從左到右執行框的輸入（其實不難，因為已經劃分inputbox1和2）
+# 選兵界面input時就進行檢查，而不是在按f時檢查
 
 # 次要
 # 改為合適的音樂,通關和失敗也有對應不同的音樂
@@ -16,7 +20,7 @@
 # 背景設定重新寫，但可以說借鑒曾經寫的小說，文學化：生靈塗炭..
 # watching_mode可以創意化
 # 觀察mode倒計時
-# 每局隨機金錢（200-500）+敵人數目+友軍購買所需金錢
+
 
 import sys
 import pygame
@@ -331,7 +335,8 @@ def watching_mode():
         else:
             added_text = f"{enemy_frequency}.紅猩 "
         text += added_text
-    text = f.render(text,True,(0,100,255))
+    enemy_final_list = text
+    text = f.render(text+"觀察時間僅有五秒",True,(0,100,255))
     text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 2))
     screen.blit(text,(0,height-30))
     if main_page_exists == True:  
@@ -344,6 +349,26 @@ def watching_mode():
         # 在選擇界面的顯示
         pygame.display.flip()
         time.sleep(5)
+        # text = f.render((enemy_final_list+"所剩時間:5秒"),True,(0,100,255))
+        # screen.blit(text,(0,height-30))
+        # pygame.display.flip()
+        # time.sleep(1)
+        # text = f.render((enemy_final_list+"所剩時間:4秒"),True,(0,100,255))
+        # screen.blit(text,(0,height-30))
+        # pygame.display.flip()
+        # time.sleep(1)
+        # text = f.render((enemy_final_list+"所剩時間:3秒"),True,(0,100,255))
+        # screen.blit(text,(0,height-30))
+        # pygame.display.flip()
+        # time.sleep(1)
+        # text = f.render((enemy_final_list+"所剩時間:2秒"),True,(0,100,255))
+        # screen.blit(text,(0,height-30))
+        # pygame.display.flip()
+        # time.sleep(1)
+        # text = f.render((enemy_final_list+"所剩時間:1秒"),True,(0,100,255))
+        # screen.blit(text,(0,height-30))
+        # time.sleep(1)
+        # pygame.display.flip()
         inputbox = InputBox(pygame.Rect(150, 450, 10, 32)) 
         inputbox2 = InputBox(pygame.Rect(450, 450, 10, 32)) 
         screen.blit(selecting_page,(0,0))
