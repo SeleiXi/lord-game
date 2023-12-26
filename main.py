@@ -460,7 +460,6 @@ while True:
                 screen.blit(text,(0,25))
                 first_choosing = True
             #待添加 # blit：進入遊戲(以英文輸入法輸入F)： (可啟動 / 不可啟動(請完成輸入))，火鴿子數目： Killer數目：
-        
         if event.type == pygame.KEYDOWN and game_end == False:
             # 當遊戲進行時所有可調用的快捷鍵
             if event.key == pygame.K_w:
