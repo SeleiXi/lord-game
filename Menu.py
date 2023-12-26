@@ -4,23 +4,27 @@ import time
 from PySide2.QtWidgets import *
 from PySide2.QtUiTools import *
 from threading import Thread
-import os,winshell
 from PySide2.QtCore import Signal,QObject
 import webbrowser
 
 i = 1
 
-# 自動在桌面設置快捷方式，並設置快捷方式的icon等
-shortcut = os.path.join(winshell.desktop(), "Lord_Game" + ".lnk") 
-now = os.getcwd()
-winshell.CreateShortcut(
-        Path=shortcut,  
-        Target=f"{now}/lord_game.exe", # 或run.exe
-        Icon=(f"{now}/icons/seleixi.ico", 0), 
-        Description="Lord_Game", 
-        StartIn = now
-        
-    )
+try:
+    import os,winshell
+    # 自動在桌面設置快捷方式，並設置快捷方式的icon等
+    shortcut = os.path.join(winshell.desktop(), "Lord_Game" + ".lnk") 
+    now = os.getcwd()
+    winshell.CreateShortcut(
+            Path=shortcut,  
+            Target=f"{now}/lord_game.exe", # 或run.exe
+            Icon=(f"{now}/icons/seleixi.ico", 0), 
+            Description="Lord_Game", 
+            StartIn = now
+            
+        )
+except:
+    print("用戶不兼容快捷方式")
+    
 class signals(QObject):
     set_value = Signal()    
 signal_object = signals()    
