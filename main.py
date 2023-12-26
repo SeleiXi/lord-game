@@ -4,14 +4,20 @@
 # 可增加處/改善處（Lord_Game V2時改善）
 # 角色圖片/背景的優化
 # 【待完成】 / # 需改
-# 有可能5輪也有可能7輪
 # 結算界面增加【所用時間】，本地自動儲存該時間，在主頁新增一個歷史記錄按鈕
 # 觀察後，輸入框的內容保留(txt = self.text已完成，剩下調用watching_mode後self.txt = previous_txt)
 # 每局隨機金錢（200-500）+敵人數目+友軍購買所需金錢
-# 靜音按鈕（任何時候都有）+提交兵種數目按鈕 + 以滑鼠重置界面（重置按鈕可以在文本框旁邊）
-# 把func和初始值變量放到獨立的文件裡,init.py + func_lib.py + class.py等等
+# 靜音按鈕（任何時候都有）+提交兵種數目按鈕 + 重置輸入按鈕（重置按鈕可以在文本框旁邊/和提交按鈕放在一起，表示重置輸入）
+# 重置時改為不是重置界面，而是重置指定的輸入，
 # 可以從左到右執行框的輸入（其實不難，因為已經劃分inputbox1和2）
 # 選兵界面input時就進行檢查，而不是在按f時檢查
+# 避免任何情況的time.sleep()，（以免無法退出遊戲）而是無限進行pygame的循環，直到x秒 
+# 試試文本輸入框避免try,except，而是用isdigit()
+# 設置快捷方式只設置一次，而不是每次打開程序都設置（ipc）
+# 第一個框輸入-100不顯示問題（和輸入a等無效字符的解決方法一樣）
+
+# 把func和初始值變量放到獨立的文件裡,init.py + func_lib.py + class.py等等
+# func需要的變量在func文件夾，在debug的時候也方便了解變量是幹什麼的
 
 # 次要
 # 改為合適的音樂,通關和失敗也有對應不同的音樂
@@ -200,6 +206,8 @@ class enemy(pygame.sprite.Sprite):
         self.rect.y = 490
         # 不添加x坐標,因為每個enemy的x坐標都不一樣
 
+num_legal = True
+text_content = ""
 class InputBox:
     # 文本輸入框(選兵界面的)
     def __init__(self, rect: pygame.Rect = pygame.Rect(100, 100, 140, 32)) -> None:
@@ -213,10 +221,10 @@ class InputBox:
         self.font = pygame.font.Font(None, 32)
         self.finish = False
     
-   
+    
     def dealEvent(self, event: pygame.event.Event):
         # 當點擊框的時候進行的處理
-        global selection
+        global selection,text
 
         if(event.type == pygame.MOUSEBUTTONDOWN):
             if(self.boxBody.collidepoint(event.pos)):  
@@ -227,7 +235,8 @@ class InputBox:
                 self.active) else self.color_inactive
         if(event.type == pygame.KEYDOWN):  # 鍵盤輸入響應
             if(self.active):
-                text = f.render("請輸入正常數字",True,(0,100,255))
+                global num_legal,text_content
+             
                 if self.finish == False:
                     if(event.key == pygame.K_RETURN):
                         global num_list,txt
@@ -236,11 +245,17 @@ class InputBox:
                                 num_list.append(int(self.text))
                                 txt = int(self.text)
                                 self.finish = True
+                                num_legal = True
                             else:
                                 text = f.render("請輸入合理範圍的數值",True,(0,100,255))
+                                text_content = "請輸入合理範圍的數值"
                                 screen.blit(text,(160,384))
+                                num_legal = False
                         except:
+                            text = f.render("請輸入正常數字",True,(0,100,255))
+                            num_legal = False
                             screen.blit(text,(160,384))
+                            text_content = "請輸入正常數字"
                         # if 
                         
                         # self.text=''
@@ -381,7 +396,7 @@ def watching_mode():
 
 def choosing_mode_entering():
     # 點擊s時會重置頁面的函數，把所有數額重置
-    global num_list,choosing,choosing_start,inputbox,inputbox2,first_choosing,selecting_page
+    global num_list,choosing,choosing_start,inputbox,inputbox2,first_choosing,selecting_page,num_legal
     num_list = []
     inputbox = InputBox(pygame.Rect(150, 450, 10, 32)) 
     inputbox2 = InputBox(pygame.Rect(450, 450, 10, 32)) 
@@ -399,6 +414,7 @@ def choosing_mode_entering():
     selecting_page = pygame.image.load("icons/selecting_page.png")
     screen.blit(selecting_page,(0,0))
     #待添加 #blit：進入遊戲：F(以英文輸入法) (可啟動 / 不可啟動)，火鴿子數目： Killer數目：
+    num_legal = True
 
 def fail_ending():
     # 失敗時觸發的function
@@ -466,7 +482,10 @@ while True:
             input1 = inputbox.dealEvent(event)
             # inputbox1_text = txt
             # print(inputbox1_text)
-            # screen.blit(selecting_page,(0,0))
+            screen.blit(selecting_page,(0,0)) # 是否導致【請輸入正常數字】出現的關鍵
+            if num_legal == False:
+                text = f.render(text_content,True,(0,100,255))
+                screen.blit(text,(160,384))
             inputbox.draw(screen)
             input2 = inputbox2.dealEvent(event)
             inputbox2.draw(screen) 
