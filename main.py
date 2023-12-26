@@ -15,6 +15,8 @@
 # 試試文本輸入框避免try,except，而是用isdigit()
 # 設置快捷方式只設置一次，而不是每次打開程序都設置（ipc）
 # 第一個框輸入-100不顯示問題（和輸入a等無效字符的解決方法一樣）
+# 如果watching_chance == 1 自動在左下角顯示"輸入W進入觀察模式"
+# 因為enemy長度過長而導致"剩餘時間"字樣無法顯示的問題
 
 # 把func和初始值變量放到獨立的文件裡,init.py + func_lib.py + class.py等等
 # func需要的變量在func文件夾，在debug的時候也方便了解變量是幹什麼的
@@ -603,6 +605,7 @@ while True:
                     text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // 1.5))
                     screen.blit(text,(0,height-30))
             if keyboard_input == pygame.K_m:
+                keyboard_input = ""
                 if music_muted == False:
                     pygame.mixer.music.stop()
                     music_muted = True
