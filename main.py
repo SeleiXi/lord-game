@@ -453,7 +453,7 @@ def watching_mode():
     else:
         # 在選擇界面的顯示
         pygame.display.flip()
-        time.sleep(5)
+        time.sleep(1)
         # text = f.render((enemy_final_list+"所剩時間:5秒"),True,(0,100,255))
         # screen.blit(text,(0,height-30))
         # pygame.display.flip()
@@ -474,11 +474,12 @@ def watching_mode():
         # screen.blit(text,(0,height-30))
         # time.sleep(1)
         # pygame.display.flip()
-        inputbox = InputBox(pygame.Rect(150, 450, 10, 32)) 
-        inputbox2 = InputBox(pygame.Rect(450, 450, 10, 32)) 
         screen.blit(selecting_page,(0,0))
-        inputbox.draw(screen)
-        inputbox2.draw(screen)
+        choosing_mode_entering()
+        # inputbox = InputBox(pygame.Rect(150, 450, 10, 32)) 
+        # inputbox2 = InputBox(pygame.Rect(450, 450, 10, 32)) 
+        # inputbox.draw(screen)
+        # inputbox2.draw(screen)
         num_list = []
         choosing = True
         choosing_start = True
