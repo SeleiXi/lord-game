@@ -22,6 +22,10 @@
 # 減少默認速度，點擊兩下D開啟疾跑
 # 在點擊f但沒有進入畫面的情況下，enter完兩個框的內容可以直接進入
 # BUG(284行的檢測輸入是if(event.type == pygame.KEYDOWN)可能是問題，經測試，第一次輸入時有時候能通過這個if但是通過不了(event.key == pygame.K_RETURN)，有時候甚至通過不了前面的if):用中文輸入法剛進入選兵界面時點擊框輸入數字，不能成功輸入，輸入一次/對其他地方空enter一次後輸入才有效(按m等操作不會使其有效化)
+# 解決方法1：以其他庫的函數來偵測K_RETURN，並且event.type == pygame.KEYDOWN改為pressing == True, 或是pynput.keyboard中研究怎麼偵測到RETURN的值 2.RETURN判定改為try
+# 點擊其他按鍵的情況下，切換到輸入框輸入shift會輸入剛才的那些字符（設定一個對shift等操作的判定: content = ""）
+# 輸入0應該是被允許的
+# 向左移動時有對應的移動圖片，疾跑有對應的移動圖片
 # 上載一些遊戲截圖到github，以及取得最高評分時最後衝刺的影片
 # 上載至一些遊戲網站/遊戲平台如steam，以能在不同環境等情況展示遊戲？
 
@@ -288,7 +292,7 @@ class InputBox:
                     if(event.key == pygame.K_RETURN):
                         global num_list,txt,input_type_legal
                         try:
-                            if int(self.text)>0:
+                            if int(self.text)>=0:
                                 num_list.append(int(self.text))
                                 txt = int(self.text)
                                 self.finish = True
