@@ -1,4 +1,6 @@
 # 唔規範嘅地方：小部分用駝峰式，部分變量不符合命名法，branch名字應該改為master，部分地方可以函數化
+# 應將func和初始值變量放到獨立的文件裡,init.py + func_lib.py + class.py等等
+# func需要的變量在func文件夾，在debug的時候也方便了解變量是幹什麼的
 # 未利用到sprite的碰撞等函數，在x y坐標都可以移動的遊戲裡這種算法不利
 
 # 可增加處/改善處（Lord_Game V2時改善）
@@ -19,7 +21,9 @@
 # 因為enemy長度過長而導致"剩餘時間"字樣無法顯示的問題
 # 減少默認速度，點擊兩下D開啟疾跑
 # 在點擊f但沒有進入畫面的情況下，enter完兩個框的內容可以直接進入
-# BUG:剛進入選兵界面時點擊框輸入數字，不能成功輸入，輸入一次/對其他地方空enter一次後輸入才有效(按m等操作不會使其有效化)
+# BUG(284行的檢測輸入是if(event.type == pygame.KEYDOWN)可能是問題，經測試，第一次輸入時有時候能通過這個if但是通過不了(event.key == pygame.K_RETURN)，有時候甚至通過不了前面的if):用中文輸入法剛進入選兵界面時點擊框輸入數字，不能成功輸入，輸入一次/對其他地方空enter一次後輸入才有效(按m等操作不會使其有效化)
+# 上載一些遊戲截圖到github，以及取得最高評分時最後衝刺的影片
+# 上載至一些遊戲網站/遊戲平台如steam，以能在不同環境等情況展示遊戲？
 
 # 把func和初始值變量放到獨立的文件裡,init.py + func_lib.py + class.py等等
 # func需要的變量在func文件夾，在debug的時候也方便了解變量是幹什麼的
@@ -250,7 +254,7 @@ class enemy(pygame.sprite.Sprite):
         self.rect.y = 490
         # 不添加x坐標,因為每個enemy的x坐標都不一樣
 
-num_legal = True
+num_amount_legal = True
 text_content = ""
 class InputBox:
     # 文本輸入框(選兵界面的)
@@ -277,28 +281,29 @@ class InputBox:
                 self.active = False
             self.color = self.color_active if(
                 self.active) else self.color_inactive
-        if(event.type == pygame.KEYDOWN):  # 鍵盤輸入響應
+        if(event.type == pygame.KEYDOWN or pressing == True):  # 鍵盤輸入響應
             if(self.active):
-                global num_legal,text_content
-             
+                global num_amount_legal,text_content
                 if self.finish == False:
                     if(event.key == pygame.K_RETURN):
-                        global num_list,txt,input_legal
+                        global num_list,txt,input_type_legal
                         try:
                             if int(self.text)>0:
                                 num_list.append(int(self.text))
                                 txt = int(self.text)
                                 self.finish = True
-                                num_legal = True
-                                input_legal = True
+                                num_amount_legal = True
+                                input_type_legal = True
                             else:
+                                self.text = ""
                                 text = f.render("請輸入合理範圍的數值",True,(0,100,255))
                                 text_content = "請輸入合理範圍的數值"
                                 screen.blit(text,(160,384))
-                                num_legal = False
+                                num_amount_legal = False
                         except:
+                            self.text = ""
                             text = f.render("請輸入正常數字",True,(0,100,255))
-                            num_legal = False
+                            num_amount_legal = False
                             screen.blit(text,(160,384))
                             text_content = "請輸入正常數字"
                         # if 
@@ -307,7 +312,9 @@ class InputBox:
                     elif(event.key == pygame.K_BACKSPACE):
                         self.text = self.text[:-1]
                     else:
-                        self.text += event.unicode
+                        # self.text += 用戶輸入的內容
+                        # self.tesxt += event.unicode
+                        self.text += pressing_content
         
 
     def draw(self, screen: pygame.surface.Surface):
@@ -479,7 +486,7 @@ def watching_mode():
 
 def choosing_mode_entering():
     # 點擊s時會重置頁面的函數，把所有數額重置
-    global num_list,choosing,choosing_start,inputbox,inputbox2,first_choosing,selecting_page,num_legal,input_legal
+    global num_list,choosing,choosing_start,inputbox,inputbox2,first_choosing,selecting_page,num_amount_legal,input_type_legal
     selecting_page = pygame.image.load("icons/selecting_page.png")
     screen.blit(selecting_page,(0,0))
     num_list = []
@@ -498,8 +505,8 @@ def choosing_mode_entering():
     first_choosing == False
 
     #待添加 #blit：進入遊戲：F(以英文輸入法) (可啟動 / 不可啟動)，火鴿子數目： Killer數目：
-    num_legal = True
-    input_legal = True
+    num_amount_legal = True
+    input_type_legal = True
 
 def fail_ending():
     # 失敗時觸發的function
@@ -540,7 +547,7 @@ first_choosing = False
 music_muted = False
 selection = 0
 entering = False
-input_legal = True
+input_type_legal = True
 
 while True: 
     frequency += 1
@@ -557,6 +564,10 @@ while True:
 
         if choosing == True and game_end == False:
             # 把選擇界面的各個圖像都blit/draw上去
+
+            # 嘗試修復BUG：第一次因為未定義inputbox導致deal event無法成立
+            # if first_choosing == False:
+            # choosing_mode_entering()
             if len(num_list)== 1:
                 selecting_page = pygame.image.load("icons/nf_1.png")
                 screen.blit(selecting_page,(0,0))
@@ -565,20 +576,29 @@ while True:
                 selecting_page = pygame.image.load("icons/f_2.png")
                 screen.blit(selecting_page,(0,0))
                 selection = 3
-            input1 = inputbox.dealEvent(event)
+
+            # 嘗試修復BUG2：第一次因為未定義inputbox導致deal event無法成立
+            # if inputbox.
+            # inputbox = InputBox(pygame.Rect(150, 450, 10, 32)) 
+            # inputbox2 = InputBox(pygame.Rect(450, 450, 10, 32)) 
+
+
+            
+            
             # inputbox1_text = txt
             # print(inputbox1_text)
             screen.blit(selecting_page,(0,0)) # 是否導致【請輸入正常數字】出現的關鍵
             # 123
-            if num_legal == False:
+            if num_amount_legal == False:
                 text = f.render(text_content,True,(0,100,255))
                 screen.blit(text,(160,384))
-            if input_legal == False:
+            if input_type_legal == False:
                 text = f.render("請完成所有輸入",True,(255,0,0),(0,0,0))
                 screen.blit(text,(510,546))
             inputbox.draw(screen)
-            input2 = inputbox2.dealEvent(event)
             inputbox2.draw(screen) 
+            input2 = inputbox2.dealEvent(event)
+            input1 = inputbox.dealEvent(event)
             text = f.render("輸入兵種數目並輸入enter(注意需要從左到右執行),輸入S重置界面",True,(255,0,0))
             text = pygame.transform.scale(text, (text.get_width() // 2, text.get_height() // (1.5)))
             screen.blit(text,(0,0))
@@ -647,7 +667,7 @@ while True:
                 text = f.render("請完成所有輸入",True,(255,0,0),(0,0,0))
                 screen.blit(text,(510,546))
                 entering = False
-                input_legal = False
+                input_type_legal = False
                 break
             if total_cost <=300:
                 entering = False
