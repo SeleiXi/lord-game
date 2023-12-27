@@ -281,7 +281,7 @@ class InputBox:
                 self.active = False
             self.color = self.color_active if(
                 self.active) else self.color_inactive
-        if(event.type == pygame.KEYDOWN or pressing == True):  # 鍵盤輸入響應
+        if(event.type == pygame.KEYDOWN):  # 鍵盤輸入響應
             if(self.active):
                 global num_amount_legal,text_content
                 if self.finish == False:
