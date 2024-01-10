@@ -29,6 +29,13 @@
 # 上載一些遊戲截圖到github，以及取得最高評分時最後衝刺的影片
 # 上載至一些遊戲網站/遊戲平台如steam，以能在不同環境等情況展示遊戲？
 # pygame字體描邊
+# 進階模式（遊戲開始界面的時候選擇）：兵種選擇改為DP問題（遊戲設計複雜化）
+# 進入遊戲後，可以進行戰鬥（免得選完兵就相當於遊戲結束
+# 選兵界面點擊輸入框後，有游標閃爍
+# 像lol一樣，點哪裡走哪裡，點敵人可以有帶特效的處決動畫
+# 鏈接redis，微服務，上傳網站並設置nginx，pylint代碼檢查，代碼去重，從concolic test
+
+# 用unity重構一次本遊戲，func等都獨立分，更容易解決重力等問題，最後可以輸出一個安卓手機版本。
 
 # 把func和初始值變量放到獨立的文件裡,init.py + func_lib.py + class.py等等
 # func需要的變量在func文件夾，在debug的時候也方便了解變量是幹什麼的
@@ -47,11 +54,12 @@ import sys
 import pygame
 from PySide2.QtWidgets import QApplication, QMessageBox
 from PySide2.QtUiTools import QUiLoader
+import redis
 import time
 import random
 from threading import Thread
 from pynput.keyboard import KeyCode,Listener
-
+import pymysql
 # 初始化各個值以及加載圖片
 pygame.init()
 width = 800
@@ -173,6 +181,15 @@ def on_press(key):
 listener = Listener(on_press=on_press)
 listener.start()
 
+
+# Redis及SQL鏈接
+# redis_database = redis.Redis(host='localhost', port=6379, db=0)
+# db = pymysql.connect(host='localhost',
+#                      user='seleixi',
+#                      password='8451',
+#                      database ='KPGMSP1')
+# cursor = db.cursor()
+# cursor.execute("create table KPGMSP1(QBID varchar(30),name varchar(15),race varchar(30),server varchar(2),premission int(1),PW char(30),Message int(255),MSGContent char(255),NMSG int(10),NMC char(255))")
 
 # class Stats:
 #     # 治療面板（已取消，呢個版本唔設置cure function）
@@ -552,6 +569,19 @@ selection = 0
 entering = False
 input_type_legal = True
 
+def bin_search_algo(target_list):
+    l = 0 
+    r = len(target_list) - 1
+    mid = (l+r)//2
+    target  = 6
+    while not num_list[mid] == target:
+        if target > target_list[mid]:
+            l = mid+1
+        elif target < target_list[mid]:
+            r = mid-1
+        mid = (l+r)//2
+    print(mid)    
+
 while True: 
     frequency += 1
     clock.tick(60)
@@ -672,7 +702,7 @@ while True:
                 entering = False
                 input_type_legal = False
                 break
-            if total_cost <=300:
+            if total_cost <=300 and total_cost != 0:
                 entering = False
                 money -= total_cost
                 for i in range(num_list[0]):
